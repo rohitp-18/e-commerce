@@ -1,0 +1,72 @@
+section.updateUser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  height: 600px;
+  width: 100%;
+  background-color: #eee;
+
+  form {
+    background-color: white;
+    width: 400px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-direction: column;
+    box-shadow: 0 0 10px #aaa;
+    border-radius: 10px;
+
+    .avatar-div {
+      position: relative;
+
+      .MuiAvatar-root {
+        height: 100px;
+        width: 100px;
+      }
+
+      .camera {
+        position: absolute;
+        bottom: 5px;
+        right: -6px;
+        background-color: tomato;
+        color: white;
+        border-radius: 100%;
+        padding: 8px;
+      }
+    }
+
+    button.submit {
+      margin-top: 20px;
+      padding: 10px;
+      border: none;
+      outline: none;
+      color: #fff;
+      background-color: tomato;
+      width: 70%;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  section.updateUser {
+    width: 100%;
+    background-color: white;
+
+    form {
+      max-width: 600px;
+      box-shadow: none;
+      width: 100%;
+
+      h3 {
+        margin-bottom: 20px;
+      }
+
+      button.submit {
+        width: 220px;
+      }
+    }
+  }
+}

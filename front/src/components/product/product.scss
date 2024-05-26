@@ -1,0 +1,302 @@
+main {
+  background-color: #fff;
+
+  section.product {
+    display: flex;
+    padding: 10px;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+
+    .image {
+      padding: 10px;
+      width: 60%;
+
+      .carousel-div {
+        img {
+          width: 50vw;
+          height: 80vh;
+          object-fit: contain;
+        }
+      }
+    }
+
+    section {
+      width: 60%;
+      height: 100%;
+    }
+
+    .product-info {
+      min-width: 300px;
+      max-width: 400px;
+      padding: 6px 0;
+
+      .ratings {
+        padding: 10px 0;
+        display: flex;
+        justify-content: first baseline;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .price {
+        font-weight: bold;
+        padding-top: 10px;
+        padding-bottom: 1.5rem;
+        font-size: 22px;
+      }
+
+      .select {
+        display: flex;
+        padding: 10px 0;
+        gap: 10px;
+
+        .selected {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+
+          button {
+            border: 1px solid black;
+            background-color: black;
+            padding: 5px;
+            color: white;
+          }
+        }
+
+        input {
+          border: none;
+          text-align: center;
+          width: 20px;
+          background-color: transparent;
+          outline: none;
+        }
+
+        .cart {
+          border: none;
+          outline: none;
+          padding: 7px 22px;
+          color: white;
+          border-radius: 20px;
+          cursor: pointer;
+          background-color: tomato;
+        }
+      }
+
+      .description {
+        font-size: 15px;
+        font-weight: 300;
+        padding-bottom: 5px;
+      }
+
+      .status {
+        padding: 8px 0;
+        display: flex;
+        align-items: center;
+
+        h3 {
+          font-size: 18px;
+          padding-right: 5px;
+        }
+
+        .stock {
+          font-size: 25px;
+          color: tomato;
+          font-weight: 600;
+        }
+        .avail {
+          color: rgb(6, 196, 6);
+        }
+      }
+
+      .description {
+        font-weight: 300;
+        font-size: 16px;
+
+        h4 {
+          font-weight: 600;
+          padding-bottom: 3px;
+          font-size: 20px;
+        }
+      }
+
+      .submit-review {
+        padding: 5px 0;
+
+        button {
+          background-color: tomato;
+          font-size: 18px;
+          color: white;
+          margin: 15px 0;
+          padding: 8px 20px;
+          border-radius: 20px;
+          border: none;
+          outline: none;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  section.reviews {
+    div:first-child {
+      display: flex;
+    }
+
+    div {
+      div {
+        border-bottom: 1px solid #444;
+        display: inline-block;
+        margin: 0 auto;
+        padding: 20px;
+        font-weight: 600;
+        color: #222;
+        align-items: center;
+        font-size: 25px;
+      }
+
+      p {
+        display: inline-block;
+        padding-top: 15px;
+        font-weight: 400;
+        color: #222;
+        align-items: center;
+        font-size: 20px;
+        overflow: overlay;
+        font-size: 17px;
+      }
+    }
+
+    .no-reviews {
+      font-weight: 300;
+      font-size: 15px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .all-reviews {
+      overflow: scroll;
+      flex: none;
+      padding: 15px 8px;
+      gap: 5px;
+      display: flex;
+
+      .review-item {
+        flex: none;
+        align-items: center;
+        border: 1px solid #555;
+        width: 320px;
+        height: 250px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 10px 5px;
+        text-align: center;
+        font-size: 17px;
+        font-weight: 300;
+      }
+    }
+  }
+}
+
+.review-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  form {
+    box-shadow: 0 0 10px #555;
+    border-radius: 10px;
+    background-color: white;
+    width: 500px;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-direction: column;
+
+    h4 {
+      text-align: center;
+    }
+
+    .text-field {
+      width: 70%;
+    }
+
+    .buttons {
+      width: 100%;
+      display: flex;
+      justify-content: right;
+      gap: 10px;
+
+      button {
+        padding: 8px 0;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        background-color: transparent;
+        color: rgba(255, 0, 0, 0.722);
+        width: 100px;
+
+        &:hover {
+          color: red;
+          background-color: #ddd;
+        }
+      }
+      button[type="submit"] {
+        background-color: tomato;
+        color: white;
+      }
+    }
+  }
+}
+
+.border-bottom {
+  border-bottom: 1px solid #333;
+}
+@media (max-width: 600px) {
+  main section.product {
+    flex-direction: column;
+
+    section {
+      width: 100%;
+    }
+    .image {
+      width: 100%;
+
+      .carousel {
+        padding: 20px 0;
+
+        .carousel-div {
+          width: 100%;
+          height: 50vh;
+
+          img {
+            width: 100vw;
+            height: 50vh;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+
+    &:last-child {
+      width: 50%;
+    }
+  }
+
+  section.reviews div div {
+    padding: 12px;
+  }
+
+  .review-modal {
+    form {
+      width: 320px;
+
+      .text-field {
+        width: 90%;
+      }
+    }
+  }
+}

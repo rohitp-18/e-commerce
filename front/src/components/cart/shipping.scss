@@ -1,0 +1,48 @@
+.shipping-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  height: 800px;
+
+  form {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px 5px;
+    gap: 20px;
+    box-shadow: 0 0 10px #aaa;
+    border-radius: 12px;
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+    }
+    .cart-submit {
+      button {
+        padding: 8px 20px;
+        width: 100%;
+        margin: 8px;
+        border: none;
+        border-radius: 5px;
+        background-color: tomato;
+        color: white;
+      }
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .shipping-section {
+    form {
+      box-shadow: none;
+      width: 100%;
+    }
+  }
+}

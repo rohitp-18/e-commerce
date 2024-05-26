@@ -1,0 +1,48 @@
+// @import "../../index.scss";
+
+.payment-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+  height: 100vh;
+
+  form {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid #ddd;
+    padding: 20px 40px;
+    box-shadow: 0 0 10px #aaa;
+    border-radius: 15px;
+    background-color: #fff;
+
+    button {
+      padding: 8px 10px;
+      background-color: tomato;
+      color: white;
+      width: 100%;
+      border: none;
+      outline: none;
+      margin-top: 20px;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .payment-section {
+    form {
+      border: none;
+      background-color: #fff;
+      width: 100%;
+      padding: 20px 10px;
+
+      button {
+        max-width: 256px;
+      }
+    }
+  }
+}

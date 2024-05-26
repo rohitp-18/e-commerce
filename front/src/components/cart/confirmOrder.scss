@@ -1,0 +1,138 @@
+.confirm-order {
+  display: flex;
+  justify-content: space-between;
+  min-height: 100vh;
+  align-items: center;
+  padding: 20px 30px;
+
+  .shipping-order {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+
+    .shipping-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      h2 {
+        padding-bottom: 10px;
+      }
+
+      p {
+        padding: 6px 30px;
+        font-weight: 550;
+        display: flex;
+        gap: 10px;
+        font-size: 15px;
+
+        span {
+          font-weight: 400;
+        }
+      }
+    }
+
+    .cart-items {
+      h2 {
+        padding: 20px 0;
+      }
+      .cart-card {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        min-width: 500px;
+        align-items: center;
+        padding: 10px;
+        overflow: hidden;
+        height: 70px;
+
+        .cart-img {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+
+          img {
+            width: 70px;
+          }
+        }
+
+        .cart-price {
+          font-weight: 400;
+
+          span {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  .order-summary {
+    border-left: 1px solid tomato;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    padding-left: 50px;
+    min-height: 600px;
+    width: 400px;
+
+    h2 {
+      padding-bottom: 15px;
+      text-align: center;
+      width: 80%;
+      border-bottom: 1px solid #aaa;
+    }
+
+    div {
+      width: 80%;
+      display: flex;
+      padding-bottom: 5px;
+      justify-content: space-between;
+    }
+
+    .total-info {
+      padding-top: 5px;
+      border-top: 1px solid #aaa;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: tomato;
+      color: white;
+      width: 80%;
+      border: none;
+      outline: none;
+    }
+
+    button:hover {
+      color: tomato;
+      background-color: white;
+      border: 1px solid tomato;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .confirm-order {
+    flex-direction: column;
+    padding: 20px 10px;
+
+    .shipping-order {
+      .cart-items {
+        padding: 0;
+        .cart-card {
+          min-width: 100%;
+          font-size: 15px;
+        }
+      }
+    }
+    .order-summary {
+      border: none;
+      padding: 0;
+      width: 100%;
+    }
+  }
+}

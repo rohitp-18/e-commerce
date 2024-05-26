@@ -1,0 +1,38 @@
+.order-success {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+
+  svg {
+    color: tomato;
+    font-size: 70px;
+  }
+
+  button {
+    border: none;
+    padding: 10px 20px;
+    background-color: tomato;
+    color: white;
+  }
+
+  button:hover {
+    background-color: white;
+    color: tomato;
+    border: 1px solid tomato;
+    scale: 1.1;
+  }
+}
+
+@media (max-width: 650px) {
+  .order-success {
+    font-size: 13px;
+
+    h2 {
+      text-align: center;
+    }
+  }
+}

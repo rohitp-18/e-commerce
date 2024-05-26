@@ -1,0 +1,11 @@
+.tooltip {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  .MuiAvatar-circular {
+    svg {
+      width: 35px;
+    }
+  }
+}

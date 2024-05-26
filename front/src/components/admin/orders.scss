@@ -1,0 +1,29 @@
+.admin-orders {
+  min-height: 100vh;
+  height: 800px;
+  width: 100%;
+  padding-left: 20px;
+
+  p {
+    text-align: center;
+    font-size: 23px;
+    padding: 20px 0;
+  }
+
+  .data-grid {
+    height: 400px;
+    min-height: 600px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      font-size: medium;
+    }
+
+    .MuiDataGrid-columnHeadersInner {
+      background-color: tomato;
+      color: white;
+    }
+  }
+}

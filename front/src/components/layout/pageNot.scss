@@ -1,0 +1,35 @@
+.page-not {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+  min-height: 100vh;
+
+  svg {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    background-color: tomato;
+    color: white;
+  }
+
+  p {
+    font-size: 20px;
+  }
+
+  button {
+    background-color: tomato;
+    color: white;
+    border: none;
+    outline: none;
+    padding: 8px 10px;
+
+    &:hover {
+      color: tomato;
+      background-color: white;
+      border: 1px solid tomato;
+    }
+  }
+}

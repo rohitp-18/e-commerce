@@ -1,0 +1,178 @@
+.nav {
+  padding: 10px 7px;
+  background: rgb(197, 55, 30);
+
+  .nav-items {
+    font-weight: 500;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: whitesmoke;
+
+    .logo {
+      font-size: 25px;
+      font-weight: bolder;
+    }
+
+    .search {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      min-width: 300px;
+      text-decoration: none;
+
+      .search-icon {
+        position: absolute;
+        top: 10%;
+        left: 9px;
+      }
+
+      input {
+        width: 100%;
+        border-radius: 15px;
+        border: 1px solid #222;
+        padding: 6px 35px;
+      }
+
+      .clear {
+        position: absolute;
+        top: 10%;
+        right: 9px;
+      }
+    }
+
+    .nav-icons {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      flex-basis: 35%;
+
+      button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+        background: transparent;
+        border: none;
+        color: whitesmoke;
+      }
+    }
+
+    .menu {
+      display: none;
+    }
+  }
+
+  .nav-search {
+    display: none;
+
+    input {
+      width: 100%;
+      border-radius: 15px;
+      border: 1px solid #222;
+      padding: 6px 35px;
+    }
+  }
+}
+
+.drawer {
+  display: block;
+}
+
+@media (max-width: 650px) {
+  .nav {
+    .nav-items {
+      display: flex;
+      margin-bottom: 5px;
+      padding: 10px 0;
+
+      .menu {
+        display: block;
+        position: absolute;
+        top: 25px;
+        left: 20px;
+      }
+
+      .search {
+        display: none;
+      }
+
+      .nav-icons {
+        display: none;
+      }
+    }
+
+    .nav-search {
+      display: none;
+      max-width: 400px;
+      margin: 0 auto;
+      margin-top: 15px;
+      position: relative;
+
+      .search-icon {
+        position: absolute;
+        top: 8px;
+        left: 6px;
+      }
+
+      input {
+        padding: 10px 10px;
+        padding-left: 30px;
+        font-size: 15px;
+      }
+    }
+  }
+
+  .drawer {
+    width: 300px;
+
+    .clear {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 28px;
+    }
+
+    .profile {
+      display: flex;
+      justify-content: center;
+
+      h2 {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+    }
+
+    .navigate {
+      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
+
+      div {
+        display: flex;
+        align-items: center;
+        height: 40px;
+        padding: 12px 10px;
+        gap: 10px;
+        border-bottom: 1px solid #aaa;
+        cursor: pointer;
+
+        span {
+          font-weight: 600;
+        }
+
+        &:hover {
+          background-color: tomato;
+          color: white;
+        }
+      }
+    }
+    a {
+      position: absolute;
+      top: 600px;
+      right: 40%;
+    }
+  }
+}

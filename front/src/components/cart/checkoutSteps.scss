@@ -1,0 +1,16 @@
+.checkout-steps {
+  width: 80%;
+  margin: 10px auto;
+}
+
+@media (max-width: 650px) {
+  .checkout-steps {
+    width: 95%;
+    font-size: 15px;
+
+    .label {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

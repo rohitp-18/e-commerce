@@ -1,0 +1,73 @@
+.login-form {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #ccc;
+  transform: all 0.5s;
+
+  .switchTabs {
+    width: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #fff;
+
+    p {
+      width: 100%;
+      text-align: center;
+      padding: 10px 0;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab {
+      border-bottom: 3px solid black;
+    }
+  }
+}
+.loginform {
+  width: 320px;
+  height: 400px;
+  background-color: #fff;
+  padding: 6px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 18px;
+
+  .forgot-password {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    margin: 8px auto;
+    color: #1310cf;
+
+    &:hover {
+      text-decoration: underline;
+      transform: scale(1.01);
+    }
+
+    &:visited {
+      color: #1310cf;
+    }
+  }
+
+  .submit-button {
+    border: none;
+    padding: 8px 50px;
+    color: white;
+    background-color: #1310cf;
+    font-weight: 500;
+    letter-spacing: 2px;
+
+    &:hover {
+      background-color: white;
+      color: #1310cf;
+      transform: scale(1.01);
+      border: 1px solid #1310cf;
+    }
+  }
+}

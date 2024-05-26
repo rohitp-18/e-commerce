@@ -1,0 +1,67 @@
+.all-orders {
+  min-height: 100vh;
+  padding: 20px;
+
+  h2 {
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .data-grid {
+    .MuiDataGrid-columnHeadersInner {
+      background-color: tomato;
+      color: white;
+    }
+  }
+
+  .order-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    flex-direction: column;
+
+    svg {
+      background-color: tomato;
+      color: white;
+      border-radius: 100%;
+      font-size: 35px;
+      padding: 25px;
+    }
+
+    h2 {
+      padding: 15px;
+    }
+
+    button {
+      border: 0.2px solid tomato;
+      outline: none;
+      background-color: transparent;
+      padding: 5px 10px;
+    }
+
+    button:hover {
+      color: white;
+      background-color: tomato;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .all-orders {
+    padding: 0;
+
+    .data-grid {
+      font-size: small !important;
+
+      .MuiDataGrid-menuIcon {
+        display: none;
+      }
+
+      .MuiDataGrid-footerContainer {
+        font-size: small;
+      }
+    }
+  }
+}

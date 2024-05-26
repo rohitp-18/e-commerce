@@ -1,0 +1,43 @@
+.admin-users {
+  min-height: 100vh;
+  height: 800px;
+  width: 100%;
+  padding-left: 20px;
+
+  p {
+    text-align: center;
+    font-size: 23px;
+    padding: 20px 0;
+  }
+
+  .data-grid {
+    min-height: 600px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      font-size: medium;
+    }
+
+    .MuiDataGrid-columnHeadersInner {
+      background-color: tomato;
+      color: white;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .admin-users {
+    background-color: red;
+    // width: auto;
+
+    .data-grid {
+      padding: 8px;
+
+      .MuiDataGrid-menuIcon {
+        display: none;
+      }
+    }
+  }
+}

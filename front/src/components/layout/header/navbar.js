@@ -8,6 +8,7 @@ import {
   Menu,
   Home,
   Group,
+  ShoppingBagOutlined,
 } from "@mui/icons-material";
 import "./navbar.scss";
 import { useSelector } from "react-redux";
@@ -111,7 +112,13 @@ function Navbar() {
                     </Link>
                   </>
                 ) : (
-                  <></>
+                  <>
+                    <Link style={{ textDecoration: "none" }} to={"/login"}>
+                      <Button variant="outlined" size="small" className="login">
+                        <AccountCircleOutlined /> <span>Login</span>
+                      </Button>
+                    </Link>
+                  </>
                 )}
               </div>
               <div className="navigate">
@@ -149,8 +156,8 @@ function Navbar() {
               <ShoppingCartOutlined /> <span>Cart</span>
             </Link>
             <Link to="/orders">
-              <NotificationsNoneOutlined />
-              <span>Notification</span>
+              <ShoppingBagOutlined />
+              <span>Orders</span>
             </Link>
           </div>
         </div>

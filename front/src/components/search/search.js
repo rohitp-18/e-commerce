@@ -20,7 +20,7 @@ function Search() {
   const [width, setWidth] = useState(window.innerWidth);
 
   const dispatch = useDispatch();
-  const { products, loading } = useSelector((state) => state.allProducts);
+  const { products } = useSelector((state) => state.allProducts);
 
   useEffect(() => {
     dispatch(getAllProducts(category, price, keyword, ratings));
@@ -30,7 +30,7 @@ function Search() {
     e.preventDefault();
 
     if (e.code === 13) {
-      setKeyword(word);
+      setKeyword(() => setKeyword(word));
     }
   };
 

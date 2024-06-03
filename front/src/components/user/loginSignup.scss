@@ -1,11 +1,12 @@
 .login-form {
+  padding: 30px 0;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #ccc;
+  background-color: #eee;
   transform: all 0.5s;
 
   .switchTabs {
@@ -14,6 +15,7 @@
     align-items: center;
     justify-content: space-around;
     background-color: #fff;
+    border-radius: 10px 10px 0 0;
 
     p {
       width: 100%;
@@ -23,27 +25,35 @@
     }
 
     .tab {
+      font-weight: bold;
       border-bottom: 3px solid black;
     }
   }
 }
 .loginform {
   width: 320px;
-  height: 400px;
+  min-height: 470px;
   background-color: #fff;
   padding: 6px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 0 10px #aaa;
   gap: 18px;
+
+  &.none {
+    min-height: 350px;
+  }
 
   .forgot-password {
     display: flex;
     justify-content: center;
     text-decoration: none;
     margin: 8px auto;
-    color: #1310cf;
+    color: #1310cfb4;
+    font-size: 15px;
 
     &:hover {
       text-decoration: underline;
@@ -57,17 +67,40 @@
 
   .submit-button {
     border: none;
-    padding: 8px 50px;
+    padding: 9px 50px;
     color: white;
-    background-color: #1310cf;
+    background-color: tomato;
     font-weight: 500;
     letter-spacing: 2px;
+    width: 280px;
+    outline: none;
+    margin: 0 20px;
 
     &:hover {
       background-color: white;
-      color: #1310cf;
-      transform: scale(1.01);
-      border: 1px solid #1310cf;
+      color: tomato;
+      border: 1px solid tomato;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .login-form {
+    padding: 50px 0;
+    background-color: white;
+
+    .switchTabs {
+      width: 100%;
+    }
+  }
+
+  .loginform {
+    width: 100%;
+    padding: 0;
+    box-shadow: none;
+
+    .forgot-password {
+      opacity: 0.8;
     }
   }
 }

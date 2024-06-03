@@ -29,6 +29,15 @@ import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAIL,
+  FORGOT_PASSWORD_ID_REQUEST,
+  FORGOT_PASSWORD_ID_SUCCESS,
+  FORGOT_PASSWORD_ID_FAIL,
+  FORGOT_PASSWORD_CHANGE_REQUEST,
+  FORGOT_PASSWORD_CHANGE_SUCCESS,
+  FORGOT_PASSWORD_CHANGE_FAIL,
 } from "../constants/userConstants";
 import axios from "../axios";
 
@@ -188,6 +197,61 @@ const updateAdminUser = (id, user) => async (dispatch) => {
   }
 };
 
+const forgotPasswordRequest = (email) => async (dispatch) => {
+  try {
+    dispatch({ type: FORGOT_PASSWORD_REQUEST });
+
+    const { data } = await axios.post(
+      "/user/forgot/password",
+      { email },
+      { withCredentials: true }
+    );
+
+    dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: FORGOT_PASSWORD_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+const forgotPasswordId = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: FORGOT_PASSWORD_ID_REQUEST });
+
+    const { data } = await axios.get(`/user/forgot/password/${id}`, {
+      withCredentials: true,
+    });
+
+    dispatch({ type: FORGOT_PASSWORD_ID_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: FORGOT_PASSWORD_ID_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+const forgotPasswordChange = (password, id) => async (dispatch) => {
+  try {
+    dispatch({ type: FORGOT_PASSWORD_CHANGE_REQUEST });
+
+    const { data } = await axios.post(
+      `/user/forgot/password/${id}`,
+      { password },
+      { withCredentials: true }
+    );
+
+    dispatch({ type: FORGOT_PASSWORD_CHANGE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: FORGOT_PASSWORD_CHANGE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 export {
   loginAction,
   signupAction,
@@ -199,4 +263,7 @@ export {
   deleteUser,
   detailsUser,
   updateAdminUser,
+  forgotPasswordRequest,
+  forgotPasswordId,
+  forgotPasswordChange,
 };

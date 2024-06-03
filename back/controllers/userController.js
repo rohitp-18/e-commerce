@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const ErrorHandler = require("../utils/errorHandler");
 const cloudinary = require("cloudinary").v2;
 const Order = require("../models/orderModel");
+const sendMail = require("../config/sendMail");
 
 const loginHandler = expressAsyncHandler(async (req, res, next) => {
   let { email, password } = req.body;
@@ -159,6 +160,89 @@ const updatePassword = expressAsyncHandler(async (req, res, next) => {
   });
 });
 
+const forgotPassword = expressAsyncHandler(async (req, res, next) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return next(new ErrorHandler("Invalid Email Address", 404));
+  }
+  const token = "";
+  user.resetPasswordToken = token;
+  user.resetPasswordExpire = new Date(Date.now() + 10 * 60 * 1000);
+
+  await user.save();
+
+  const data = {
+    email,
+    subject: "Forgot Password Email send",
+    text: "forgot email password email send be done",
+    html: `<div>
+      <h2>Forgot Email Password </h2>
+      <p>
+        this email has to send on the request of forgot password this link valid for only 10 minutes if you not apply for this then just ignore it
+      </p><br><br>
+      <a style="padding-top: 20px" href=${token}>Click Here</a> to reset password
+    </div>`,
+  };
+
+  sendMail(data, next);
+
+  res.status(200).json({
+    success: true,
+    message: "Email has been sended to your emaill",
+  });
+});
+
+const passwordToken = async (req, next) => {
+  next();
+};
+
+const forgotPasswordToken = expressAsyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ resetPasswordToken: req.params.id });
+
+  if (!user) {
+    return next(new ErrorHandler("Invalid Link", 400));
+  }
+
+  if (user.resetPasswordExpire < new Date(Date.now())) {
+    return next(new ErrorHandler("Invalid Link", 400));
+  }
+
+  req.user = user;
+
+  res.status(200).json({
+    success: true,
+    message: "Email Verified",
+  });
+});
+
+const forgotPasswordChange = expressAsyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ resetPasswordToken: req.params.id });
+
+  if (!user) {
+    return next(new ErrorHandler("Invalid Link", 400));
+  }
+
+  if (user.resetPasswordExpire < new Date(Date.now())) {
+    return next(new ErrorHandler("Invalid Link", 400));
+  }
+
+  req.user = user;
+
+  req.user.password = req.password;
+  req.user.resetPasswordExpire = null;
+  req.user.resetPasswordToken = null;
+
+  await req.user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Password Changed successfully",
+  });
+});
+
 const getAllUsers = expressAsyncHandler(async (req, res, next) => {
   const users = await User.find();
 
@@ -242,6 +326,9 @@ module.exports = {
   userInfo,
   loginHandler,
   updatePassword,
+  forgotPassword,
+  forgotPasswordChange,
+  forgotPasswordToken,
   updateUser,
   // admin
   getAllUsers,

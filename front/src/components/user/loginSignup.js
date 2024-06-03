@@ -169,6 +169,7 @@ function LoginSignup() {
               >
                 <LockOutlined sx={{ color: "action.active", mr: 1, my: 0.5 }} />
                 <TextField
+                  type="password"
                   required={tab !== "login"}
                   name="conPassword"
                   value={confirmPassword}
@@ -235,7 +236,12 @@ function LoginSignup() {
                   value={`${tab === "login" ? "LOGIN" : "SIGN UP"}`}
                 />
               </Box>
-              <Box style={{ display: tab === "login" ? "block" : "none" }}>
+              <Box
+                style={{
+                  fontSize: "15px",
+                  display: tab === "login" ? "block" : "none",
+                }}
+              >
                 Don't have an account?{" "}
                 <span
                   style={{ display: "inline" }}
@@ -245,7 +251,9 @@ function LoginSignup() {
                   Sign UP
                 </span>
               </Box>
-              <Box style={{ display: tab === "login" && "none" }}>
+              <Box
+                style={{ fontSize: "15px", display: tab === "login" && "none" }}
+              >
                 already have an account?{" "}
                 <span
                   style={{ display: "inline" }}

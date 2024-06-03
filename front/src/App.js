@@ -34,6 +34,8 @@ import { AlertProvider } from "./components/layout/alertProvider";
 import MetaData from "./components/layout/header/MetaData";
 import "./App.scss";
 import ForgotPassword from "./components/user/forgotPassword";
+import ResetPassword from "./components/user/ResetPassword";
+import Back from "./components/layout/header/Back";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +53,7 @@ const router = createBrowserRouter([
     element: (
       <>
         <MetaData title="HOME - Products" />
+        <Navbar />
         <Tooltip />
         <Search />
       </>
@@ -61,6 +64,7 @@ const router = createBrowserRouter([
     element: (
       <>
         <MetaData title="HOME - Products" />
+        <Navbar />
         <Tooltip />
         <Product />
       </>
@@ -79,6 +83,7 @@ const router = createBrowserRouter([
     path: "/account",
     element: (
       <ProtectRoute>
+        <Navbar />
         <Tooltip />
         <AccountInfo />
       </ProtectRoute>
@@ -88,7 +93,19 @@ const router = createBrowserRouter([
     path: "/password/forgot",
     element: (
       <>
+        <MetaData title="Forgot Password" />
+        <Back />
         <ForgotPassword />
+      </>
+    ),
+  },
+  {
+    path: "/password/forgot/:id",
+    element: (
+      <>
+        <MetaData title="Reset Password" />
+        <Back />
+        <ResetPassword />
       </>
     ),
   },
@@ -96,7 +113,8 @@ const router = createBrowserRouter([
     path: "/user/update",
     element: (
       <ProtectRoute>
-        <MetaData title="HOME - Products" />
+        <MetaData title="Update Profile" />
+        <Back />
         <Tooltip />
         <UpadateUser />
       </ProtectRoute>
@@ -106,6 +124,8 @@ const router = createBrowserRouter([
     path: "/user/password",
     element: (
       <ProtectRoute>
+        <MetaData title="Change Password" />
+        <Back />
         <Tooltip />
         <UpdatePassword />
       </ProtectRoute>
@@ -116,6 +136,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectRoute>
         <MetaData title="Cart" />
+        <Navbar />
         <Tooltip />
         <Cart />
       </ProtectRoute>
@@ -126,6 +147,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectRoute>
         <MetaData title="Shipping Info" />
+        <Back />
         <Tooltip />
         <Shipping />
       </ProtectRoute>
@@ -136,6 +158,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectRoute>
         <MetaData title="HOME - Products" />
+        <Back />
         <Tooltip />
         <ConfirmOrder />
       </ProtectRoute>
@@ -146,6 +169,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectRoute>
         <MetaData title="HOME - Products" />
+        <Back />
         <Tooltip />
         <Payment />
       </ProtectRoute>
@@ -156,6 +180,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectRoute>
         <MetaData title="HOME - Products" />
+        <Navbar />
         <Tooltip />
         <Success />
       </ProtectRoute>
@@ -166,6 +191,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectRoute>
         <MetaData title="HOME - Products" />
+        <Navbar />
         <Tooltip />
         <AllOrders />
       </ProtectRoute>
@@ -176,6 +202,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectRoute>
         <MetaData title="HOME - Products" />
+        <Navbar />
         <Tooltip />
         <SingleOrder />
       </ProtectRoute>

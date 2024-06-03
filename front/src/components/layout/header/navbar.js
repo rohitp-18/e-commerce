@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AccountCircleOutlined,
   NotificationsNoneOutlined,
@@ -10,14 +10,65 @@ import {
   Group,
 } from "@mui/icons-material";
 import "./navbar.scss";
-import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Drawer, Avatar } from "@mui/material";
+import {
+  Drawer,
+  Avatar,
+  Box,
+  Button,
+  Autocomplete,
+  TextField,
+} from "@mui/material";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState(false);
+  const [word, setWord] = useState();
   const navigate = useNavigate();
-  const change = (e) => {};
+  const locat = useLocation();
+
+  const opt = ["hello", "laptop", "tv"];
+
+  const setKey = (e) => {
+    e.preventDefault();
+
+    if (e.keyCode === 13) {
+      setWord(e.target.value);
+      navigate(`/search?q=${e.target.value}`);
+      return;
+    }
+  };
+
+  let val;
+
+  useEffect(() => {
+    if (locat.search) {
+      setWord(locat.search ? locat.search.split("=")[1] : word);
+      setSearch(true);
+    }
+  }, [locat]);
+
+  const Auto = () => {
+    return (
+      <Autocomplete
+        freeSolo
+        options={opt.map((option) => option)}
+        renderInput={(params) => (
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <Search sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <TextField
+              {...params}
+              value={word}
+              onChange={() => setWord(word)}
+              onKeyUp={(e) => setKey(e)}
+            />
+          </Box>
+        )}
+      />
+    );
+  };
+
   const { user } = useSelector((state) => state.user);
 
   return (
@@ -28,9 +79,16 @@ function Navbar() {
           <div className="logo">E-Commerce</div>
           <Search
             className="menu"
-            style={{ right: "20px", left: "unset" }}
-            onClick={() => navigate("/search")}
+            style={{ right: "9px", left: "unset" }}
+            onClick={() => setSearch(!search)}
           />
+          {!user && (
+            <a style={{ textDecoration: "none" }} href={"/login"}>
+              <Button variant="outlined" size="small" className="login">
+                <AccountCircleOutlined /> <span>Login</span>
+              </Button>
+            </a>
+          )}
 
           <Drawer className="drawer" open={open} onClose={() => setOpen(false)}>
             <div className="drawer">
@@ -39,7 +97,7 @@ function Navbar() {
               <div className="profile">
                 {user ? (
                   <>
-                    <div onClick={() => navigate("/account")}>
+                    <Link to="/account">
                       <Avatar
                         src={user.avatar.url}
                         sx={{
@@ -50,69 +108,59 @@ function Navbar() {
                       />
                       <h2>{user.name}</h2>
                       <span>{user.email}</span>
-                    </div>
+                    </Link>
                   </>
                 ) : (
                   <></>
                 )}
               </div>
               <div className="navigate">
-                <div onClick={() => navigate("/")}>
+                <Link to="/">
                   <Home />
                   <span>Home</span>
-                </div>
-                <div onClick={() => navigate("/about")}>
+                </Link>
+                <Link to="/about">
                   <Group />
                   <span>About Us</span>
-                </div>
-                <div onClick={() => navigate("/cart")}>
+                </Link>
+                <Link to="/cart">
                   <ShoppingCartOutlined />
                   <span>Cart</span>
-                </div>
-                <div onClick={() => navigate("/notify")}>
+                </Link>
+                <Link to="/notify">
                   <NotificationsNoneOutlined />
                   <span>Notification</span>
-                </div>
+                </Link>
               </div>
-              <a href="/help">Get Help?</a>
+              <Link to="/help">Get Help?</Link>
             </div>
           </Drawer>
 
-          <Link className="search" to="/search">
-            <Search className="search-icon" />
-            <input placeholder="Search Products..." type="search" />
-            <Clear className="clear" />
-          </Link>
+          <Box className="search">{<Auto />}</Box>
 
           <div className="nav-icons">
-            <button onClick={() => navigate("/account")}>
+            <Link to="/account">
               <AccountCircleOutlined />
               <span style={{ display: "block" }}>
                 {user ? "Account" : "Login"}
               </span>
-            </button>
-            <button onClick={() => navigate("/cart")}>
+            </Link>
+            <Link to="/cart">
               <ShoppingCartOutlined /> <span>Cart</span>
-            </button>
-            <button onClick={() => navigate("/orders")}>
+            </Link>
+            <Link to="/orders">
               <NotificationsNoneOutlined />
               <span>Notification</span>
-            </button>
+            </Link>
           </div>
         </div>
-        <div className="nav-search">
-          <Search className="search-icon" />
-          <input
-            placeholder="Search Products..."
-            onChange={(e) => change(e)}
-            type="search"
-          />
-        </div>
-        {/* <Menu lassName="menu" onClick={() => setOpen(!open)} />
-
-<Drawer className="drawer" open={open} onClose={() => setOpen(false)}>
-  <div className="drawer-menu"></div>
-</Drawer> */}
+        {search && (
+          <div className="nav-search">
+            <Box className="search">
+              <Auto />
+            </Box>
+          </div>
+        )}
       </div>
     </nav>
   );

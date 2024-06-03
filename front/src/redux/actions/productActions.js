@@ -35,9 +35,12 @@ const getAllProducts =
     try {
       dispatch({ type: GET_PRODUCTS_REQUEST });
 
-      const { data } = await axios.get(
-        `/product?keyword=${keyword}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`
-      );
+      let link = `/product?keyword=${keyword}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+      if (category) {
+        link = `/product?keyword=${keyword}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}&category=${category}`;
+      }
+
+      const { data } = await axios.get(link);
 
       dispatch({ type: GET_PRODUCTS_SUCCESS, payload: data });
     } catch (error) {

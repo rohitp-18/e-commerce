@@ -35,6 +35,17 @@ import {
   USER_DETAILS_SUCCESS,
   CLEAR_ERRORS,
   LOGIN_RESET,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAIL,
+  FORGOT_PASSWORD_RESET,
+  FORGOT_PASSWORD_ID_REQUEST,
+  FORGOT_PASSWORD_ID_FAIL,
+  FORGOT_PASSWORD_CHANGE_FAIL,
+  FORGOT_PASSWORD_ID_SUCCESS,
+  FORGOT_PASSWORD_CHANGE_SUCCESS,
+  FORGOT_PASSWORD_ID_RESET,
+  FORGOT_PASSWORD_CHANGE_REQUEST,
 } from "../constants/userConstants";
 
 const userReducer = (state, action) => {
@@ -72,7 +83,7 @@ const userReducer = (state, action) => {
       return {
         loading: false,
         user: null,
-        message: action.payload.message,
+        message: "successfully logout your account",
       };
 
     case LOGIN_FAIL:
@@ -259,4 +270,102 @@ const updateReducer = (state = {}, action) => {
   }
 };
 
-export { getAllUsers, userReducer, updateReducer, updateUserReducer };
+const forgotPasswordReducer = (state = {}, action) => {
+  switch (action.type) {
+    case FORGOT_PASSWORD_REQUEST:
+    case FORGOT_PASSWORD_CHANGE_REQUEST:
+    case FORGOT_PASSWORD_ID_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        message: null,
+        success: false,
+      };
+
+    case FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: action.payload.success,
+        message: action.payload.message,
+      };
+
+    case FORGOT_PASSWORD_CHANGE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+        isUpdate: action.payload.success,
+      };
+
+    case FORGOT_PASSWORD_ID_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        updateId: action.payload.success,
+      };
+
+    case FORGOT_PASSWORD_FAIL:
+    case FORGOT_PASSWORD_CHANGE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        error: action.payload,
+        isUpdate: false,
+      };
+
+    case FORGOT_PASSWORD_ID_FAIL:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        idError: action.payload,
+        updateId: false,
+        isUpdate: false,
+      };
+
+    case FORGOT_PASSWORD_RESET:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        message: null,
+      };
+
+    case FORGOT_PASSWORD_ID_RESET:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        message: null,
+        isUpdate: false,
+        updateId: false,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+        idError: null,
+      };
+
+    default:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        message: null,
+        isUpdate: false,
+        updateId: false,
+      };
+  }
+};
+
+export {
+  getAllUsers,
+  userReducer,
+  updateReducer,
+  updateUserReducer,
+  forgotPasswordReducer,
+};

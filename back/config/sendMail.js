@@ -1,37 +1,35 @@
-const nodemailer = require('nodemailer')
+const nodemailer = require("nodemailer");
+const ErrorHandler = require("../utils/errorHandler");
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  host: 'smtp.gmail.com',
+  service: "gmail",
+  host: "smtp.gmail.com",
   port: 587,
   secure: false,
   auth: {
-    user: 'r1884150@gmail.com',
-    pass: 'udtckscnuptkyfla'
-  }
-})
-
-const mailOptions = {
-  from: {
-    name: "Rohit",
-    address: 'r1884150@gmail.com'
+    user: process.env.SMTP_EMAIL,
+    pass: process.env.SMTP_EMAIL_PASS,
   },
-  to: 'r.rohitpatil12@gmail.com',
-  subject: "Hello from me",
-  text: 'hello! how are you?',
-  html: '<h1>Hello from me</h1>'
-}
+});
 
-const sendMail = async() => {
+const sendMail = async ({ email, subject, text, html }, next) => {
+  const mailOptions = {
+    from: {
+      name: "Rohit",
+      address: process.env.SMTP_EMAIL,
+    },
+    to: email,
+    subject: subject,
+    text,
+    html,
+  };
+
   try {
-    const info = await transporter.sendMail(mailOptions)
-    console.log('Email send',info)
+    const info = await transporter.sendMail(mailOptions);
+    next();
   } catch (error) {
-    console.log(erro)
+    return next(new ErrorHandler("Internal Error", 500));
   }
-}
+};
 
-sendMail()
-
-
-
+module.exports = sendMail;

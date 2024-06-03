@@ -1,6 +1,6 @@
 .nav {
   padding: 10px 7px;
-  background: rgb(197, 55, 30);
+  background: tomato;
 
   .nav-items {
     font-weight: 500;
@@ -15,31 +15,38 @@
     }
 
     .search {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      border: 1px solid white;
+      padding: 0 8px;
+      border-radius: 10px;
+      color: white;
       min-width: 300px;
-      text-decoration: none;
 
-      .search-icon {
-        position: absolute;
-        top: 10%;
-        left: 9px;
+      svg {
+        color: white;
+      }
+
+      fieldset {
+        border: none !important;
+        top: 0;
+      }
+
+      .css-1h51icj-MuiAutocomplete-root .MuiOutlinedInput-root {
+        padding: 3px 0;
       }
 
       input {
         width: 100%;
         border-radius: 15px;
-        border: 1px solid #222;
-        padding: 6px 35px;
+        padding: 6px 3px;
+        color: white;
       }
+    }
 
-      .clear {
-        position: absolute;
-        top: 10%;
-        right: 9px;
-      }
+    .login {
+      display: none;
+      color: white;
+      background-color: tomato;
+      border: 1px solid white;
     }
 
     .nav-icons {
@@ -48,7 +55,8 @@
       align-items: center;
       flex-basis: 35%;
 
-      button {
+      a {
+        text-decoration: none;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -63,21 +71,24 @@
       display: none;
     }
   }
-
-  .nav-search {
-    display: none;
-
-    input {
-      width: 100%;
-      border-radius: 15px;
-      border: 1px solid #222;
-      padding: 6px 35px;
-    }
-  }
 }
 
 .drawer {
   display: block;
+}
+
+@media (max-width: 800px) and (min-width: 650px) {
+  .nav {
+    .nav-items {
+      .nav-icons {
+        a {
+          span {
+            display: none;
+          }
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 650px) {
@@ -85,17 +96,28 @@
     .nav-items {
       display: flex;
       margin-bottom: 5px;
-      padding: 10px 0;
+      padding: 3px 0;
+      align-items: center;
+
+      .logo {
+        font-size: 18px;
+      }
 
       .menu {
         display: block;
         position: absolute;
-        top: 25px;
-        left: 20px;
+        top: 18px;
+        left: 9px;
       }
 
       .search {
         display: none;
+      }
+
+      .login {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .nav-icons {
@@ -104,22 +126,39 @@
     }
 
     .nav-search {
-      display: none;
       max-width: 400px;
       margin: 0 auto;
       margin-top: 15px;
       position: relative;
 
-      .search-icon {
-        position: absolute;
-        top: 8px;
-        left: 6px;
-      }
+      .search {
+        border: 1px solid white;
+        padding: 0 8px;
+        border-radius: 10px;
+        color: white;
+        min-width: 280px;
+        max-width: 350px;
+        margin: 0 auto;
 
-      input {
-        padding: 10px 10px;
-        padding-left: 30px;
-        font-size: 15px;
+        svg {
+          color: white;
+        }
+
+        fieldset {
+          border: none !important;
+          top: 0;
+        }
+
+        .css-1h51icj-MuiAutocomplete-root .MuiOutlinedInput-root {
+          padding: 3px 0;
+        }
+
+        input {
+          width: 100%;
+          border-radius: 15px;
+          padding: 6px 3px;
+          color: white;
+        }
       }
     }
   }
@@ -138,10 +177,15 @@
       display: flex;
       justify-content: center;
 
+      a {
+        text-decoration: none;
+      }
+
       h2 {
         margin-top: 30px;
         margin-bottom: 10px;
         text-align: center;
+        color: black;
       }
     }
 
@@ -150,7 +194,7 @@
       display: flex;
       flex-direction: column;
 
-      div {
+      a {
         display: flex;
         align-items: center;
         height: 40px;
@@ -158,6 +202,8 @@
         gap: 10px;
         border-bottom: 1px solid #aaa;
         cursor: pointer;
+        text-decoration: none;
+        color: black;
 
         span {
           font-weight: 600;
@@ -169,7 +215,7 @@
         }
       }
     }
-    a {
+    a[href="/help"] {
       position: absolute;
       top: 600px;
       right: 40%;

@@ -10,6 +10,9 @@ const {
   deleteUser,
   getUser,
   adminUpdateUser,
+  forgotPassword,
+  forgotPasswordChange,
+  forgotPasswordToken,
 } = require("../controllers/userController");
 const { auth, authorizedRole } = require("../middlewares/auth");
 
@@ -21,6 +24,11 @@ router.route("/login").post(loginHandler);
 router.route("/logout").get(auth, logoutUser);
 router.route("/update").put(auth, updateUser);
 router.route("/update/password").put(auth, updatePassword);
+router.route("/forgot/password").post(forgotPassword);
+router
+  .route("/forgot/password/:id")
+  .get(forgotPasswordToken)
+  .post(forgotPasswordChange);
 
 router.route("/admin").get(auth, authorizedRole("admin"), getAllUsers);
 router

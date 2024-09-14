@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node back/index",
     "back": "nodemon back/index",
+    "build": "npm i && cd front && npm i && npm run build",
     "front": "cd front && npm start"
   },
   "keywords": [],

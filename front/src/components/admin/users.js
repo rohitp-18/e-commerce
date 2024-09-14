@@ -38,7 +38,7 @@ function Users() {
       flex: 0.3,
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<Edit />}
+          icon={<Edit color="error" />}
           label="Edit"
           onClick={() => navigate(`/admin/users/${params.id}`)}
         />,

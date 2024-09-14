@@ -60,6 +60,7 @@ function Navbar() {
             <Search sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <TextField
               {...params}
+              placeholder="Search product...."
               value={word}
               onChange={() => setWord(word)}
               onKeyUp={(e) => setKey(e)}
@@ -158,6 +159,10 @@ function Navbar() {
             <Link to="/orders">
               <ShoppingBagOutlined />
               <span>Orders</span>
+            </Link>
+            <Link to="/">
+              <Home />
+              <span>Home</span>
             </Link>
           </div>
         </div>

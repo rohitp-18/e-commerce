@@ -59,7 +59,7 @@ function AllOrders() {
         <Loader />
       ) : (
         <section className="all-orders">
-          {orders && orders[0]._id ? (
+          {orders && orders.length != 0 ? (
             <>
               <h2>{user.name}'s Orders</h2>
               <DataGrid

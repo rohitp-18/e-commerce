@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { shippingInfoAction } from "../../redux/actions/cartActions";
 import { useNavigate } from "react-router-dom";
 
-function Shipping() {
+function Shipping({ setActiveStep }) {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [pincode, setPincode] = useState();
@@ -30,7 +30,6 @@ function Shipping() {
   const [state, setState] = useState();
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const navigator = useNavigate();
   const { shippingInfo } = useSelector((state) => state.cart);
   const submitHandler = (e) => {
     e.preventDefault();
@@ -45,7 +44,7 @@ function Shipping() {
     };
 
     dispatch(shippingInfoAction(data));
-    navigator("/order/confirm");
+    setActiveStep(1);
   };
 
   const phoneChange = (e) => {
@@ -72,12 +71,8 @@ function Shipping() {
     }
   }, [shippingInfo]);
 
-  useEffect(() => {
-    console.log(country, city);
-  }, [country, city]);
   return (
     <>
-      <CheckoutSteps step={0} />
       <section className="shipping-section">
         <form onSubmit={(e) => submitHandler(e)}>
           <h2>Shipping Form</h2>

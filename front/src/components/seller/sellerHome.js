@@ -3,26 +3,24 @@ import { Doughnut, Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAdminOrders } from "../../redux/actions/orderAction";
-import { getAdminProducts } from "../../redux/actions/productActions";
-import { getAdminUsers } from "../../redux/actions/userAction";
-import "./adminHome.scss";
-import Slider from "./Slider";
+import Slider from "./sellerNavbar";
 import Loader from "../layout/Loader";
 import MetaData from "../layout/header/MetaData";
+import {
+  getSellerProductAction,
+  sellerOrderAction,
+} from "../../redux/actions/sellerAction";
 
-function AdminHome() {
-  const { loading, adminProduct } = useSelector((state) => state.allProducts);
-  const { users } = useSelector((state) => state.allUsers);
-  const { orders } = useSelector((state) => state.allOrders);
+function SellerHome() {
+  const { loading, products } = useSelector((state) => state.sellerProduct);
+  const { orders } = useSelector((state) => state.sellerOrder);
   const dispatch = useDispatch();
   const [amount, setAmount] = useState(0);
   const [outOfStock, setOutOfStock] = useState([]);
 
   useEffect(() => {
-    dispatch(getAdminOrders());
-    dispatch(getAdminProducts());
-    dispatch(getAdminUsers());
+    dispatch(sellerOrderAction());
+    dispatch(getSellerProductAction());
   }, [dispatch]);
 
   useEffect(() => {
@@ -43,7 +41,7 @@ function AdminHome() {
           <Loader />
         ) : (
           <>
-            {orders && users && adminProduct && (
+            {orders && products && (
               <section className="admin-home">
                 <h2>Dashboard</h2>
                 <div className="total-amount">
@@ -53,15 +51,11 @@ function AdminHome() {
                 <div className="circles">
                   <Link to={"/admin/products"}>
                     <span>Products</span>
-                    <span>{adminProduct.length}</span>
+                    <span>{products.length}</span>
                   </Link>
                   <Link to={"/admin/orders"}>
                     <span>Orders</span>
                     <span>{orders.length}</span>
-                  </Link>
-                  <Link to={"/admin/users"}>
-                    <span>Users</span>
-                    <span>{users.length}</span>
                   </Link>
                 </div>
                 <div className="canva-div">
@@ -88,7 +82,7 @@ function AdminHome() {
                             backgroundColor: ["#ff0", "#f0f"],
                             data: [
                               outOfStock.length,
-                              adminProduct.length - outOfStock.length,
+                              products.length - outOfStock.length,
                             ],
                           },
                         ],
@@ -105,4 +99,4 @@ function AdminHome() {
   );
 }
 
-export default AdminHome;
+export default SellerHome;

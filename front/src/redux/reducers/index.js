@@ -21,6 +21,12 @@ import {
   adminGetAllorders,
   updateOrderReducer,
 } from "./orderReducer";
+import {
+  sellerOrderReducer,
+  sellerProductReducer,
+  sellerReviewReducer,
+} from "./sellerReducer";
+import { adminAdvertReducer, sellerAdvertReducer } from "./advertiseReducer";
 
 const reducer = combineReducers({
   allProducts: allProducts,
@@ -39,6 +45,11 @@ const reducer = combineReducers({
   updateUser: updateUserReducer,
   updateProduct: createProductReducer,
   updateReview: updateReviewReducer,
+  sellerOrder: sellerOrderReducer,
+  sellerProduct: sellerProductReducer,
+  advert: adminAdvertReducer,
+  sellerAdvert: sellerAdvertReducer,
+  sellerReview: sellerReviewReducer,
 });
 
 export default reducer;

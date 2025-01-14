@@ -31,7 +31,8 @@ function UpadateUser() {
   const submitHandler = (e) => {
     e.preventDefault();
     if (!name || !email) {
-      console.log("please fill all required fields");
+      sendAlert("please fill all required fields", "error");
+      return;
     }
     if (image === user.avatar.url) {
       dispatch(updateUser({ name, email }));
@@ -41,13 +42,11 @@ function UpadateUser() {
   };
 
   const fileUpload = (e) => {
-    console.log(e.target.files[0]);
     if (!e.target.files || !e.target.files[0]) return;
 
     const reader = new FileReader();
 
     reader.onload = (e) => {
-      console.log(e.target.result);
       setImage(e.target.result);
     };
 

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Slider from "./Slider";
 import "./users.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 import { deleteUser, getAdminUsers } from "../../redux/actions/userAction";
@@ -75,13 +74,13 @@ function Users() {
   }, [users]);
 
   return (
-    <>
+    <div className="admin">
+      <Slider />
       <MetaData title="Users - Admin" />
       {loading ? (
         <Loader />
       ) : (
-        <div className="admin">
-          <Slider />
+        <>
           {users && (
             <section className="admin-users">
               <p>ALL USERS</p>
@@ -94,9 +93,9 @@ function Users() {
               />
             </section>
           )}
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 }
 

@@ -26,6 +26,9 @@ import {
   ALL_REVIEW_FAIL,
   ALL_REVIEW_REQUEST,
   ALL_REVIEW_SUCCESS,
+  SELLER_REVIEW_REQUEST,
+  SELLER_REVIEW_SUCCESS,
+  SELLER_REVIEW_FAIL,
 } from "../constants/productConstants";
 import axios from "../axios";
 
@@ -59,7 +62,6 @@ const getProductDetails = (id) => async (dispatch) => {
 
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
       payload: error.response.data.message,
@@ -77,7 +79,6 @@ const submitReview = (id, review) => async (dispatch) => {
 
     dispatch({ type: REVIEW_SUBMIT_SUCCESS, payload: data });
   } catch (error) {
-    console.log(error.response.data.message);
     dispatch({
       type: REVIEW_SUBMIT_FAIL,
       payload: error.response.data.message,
@@ -184,6 +185,23 @@ const deleteReviewAction = (id, rev) => async (dispatch) => {
   }
 };
 
+const sellerReviewAction = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: SELLER_REVIEW_REQUEST });
+
+    const { data } = await axios.get(`/product/${id}/seller/review`, {
+      withCredentials: true,
+    });
+
+    dispatch({ type: SELLER_REVIEW_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: SELLER_REVIEW_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 export {
   getAllProducts,
   submitReview,
@@ -194,4 +212,5 @@ export {
   deleteProductAction,
   getAllReviewAction,
   deleteReviewAction,
+  sellerReviewAction,
 };

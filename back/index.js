@@ -15,6 +15,7 @@ const error = require("./middlewares/error");
 const userRoute = require("./routers/userRouter");
 const productRoute = require("./routers/productRouter");
 const orderRoute = require("./routers/orderRouter");
+const advertRoute = require("./routers/advertisementRouter");
 
 const app = express();
 mongodb();
@@ -36,6 +37,7 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
 app.use("/api/v1/order", orderRoute);
+app.use("/api/v1/advert", advertRoute);
 
 // app.get("*", (req, res, next) => {
 //   res.sendFile(path.resolve(path.join(__dirname, "../front/build/index.html")));

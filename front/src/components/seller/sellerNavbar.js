@@ -3,24 +3,21 @@ import { Link } from "react-router-dom";
 import { TreeItem, TreeView } from "@mui/x-tree-view";
 import {
   Add,
-  AdsClick,
   Dashboard,
   ExpandMore,
   ImportExport,
   ListAlt,
-  People,
   PostAdd,
   RateReview,
 } from "@mui/icons-material";
-import "./slider.scss";
 
-function Slider() {
+function SellerSlider() {
   return (
     <>
       <section className="slider">
         <Link to={"/"}>E-COMMERCE</Link>
 
-        <Link to={"/admin"}>
+        <Link to={"/seller"}>
           <Dashboard /> Dashboard
         </Link>
 
@@ -30,28 +27,23 @@ function Slider() {
             defaultExpandIcon={<ImportExport />}
           >
             <TreeItem sx={{ background: "#fff" }} nodeId="1" label="products">
-              <Link to={"/admin/products"}>
+              <Link to={"/seller/products"}>
                 <TreeItem icon={<PostAdd />} label="All" nodeId="2" />
               </Link>
-              <Link to={"/admin/product/new"}>
+              <Link to={"/seller/product/new"}>
                 <TreeItem icon={<Add />} label="Create" nodeId="3" />
               </Link>
             </TreeItem>
           </TreeView>
         </div>
 
-        <Link to={"/admin/users"}>
-          <People /> users
-        </Link>
-
-        <Link to={"/admin/orders"}>
+        <Link to={"/seller/orders"}>
           <ListAlt /> Orders
         </Link>
 
-        <Link to={"/admin/reviews"}>
+        <Link to={"/seller/reviews"}>
           <RateReview /> Reviews
         </Link>
-
         <div>
           <TreeView
             defaultCollapseIcon={<ExpandMore />}
@@ -62,10 +54,10 @@ function Slider() {
               nodeId="1"
               label="Advertisements"
             >
-              <Link to={"/admin/ads"}>
+              <Link to={"/seller/ads"}>
                 <TreeItem icon={<PostAdd />} label="All" nodeId="2" />
               </Link>
-              <Link to={"/admin/ads/new"}>
+              <Link to={"/seller/ads/new"}>
                 <TreeItem icon={<Add />} label="Create" nodeId="3" />
               </Link>
             </TreeItem>
@@ -76,4 +68,4 @@ function Slider() {
   );
 }
 
-export default Slider;
+export default SellerSlider;

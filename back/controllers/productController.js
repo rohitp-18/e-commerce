@@ -56,7 +56,7 @@ const deleteProduct = expressAsyncHandler(async (req, res, next) => {
 });
 
 const createProduct = expressAsyncHandler(async (req, res, next) => {
-  const { name, price, stock, description, category, images } = req.body;
+  const { name, price, stock, description, category, image } = req.body;
   if (!name || !stock || !price || !description || !category || !image) {
     return next(new ErrorHandler("please fill all required fields", 400));
   }
@@ -205,6 +205,59 @@ const getAdminProducts = expressAsyncHandler(async (req, res, next) => {
   });
 });
 
+const getSellerProducts = expressAsyncHandler(async (req, res, next) => {
+  const products = await Product.find({ user: req.user._id });
+
+  res.status(200).json({
+    success: true,
+    products,
+  });
+});
+
+const updateSellerProduct = expressAsyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  const product = await Product.findByIdAndUpdate(id, req.body, { new: true });
+
+  if (!product) {
+    return next(new ErrorHandler("product not found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    product,
+  });
+});
+
+const deleteSellerProduct = expressAsyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  const product = await Product.deleteOne({ _id: id, user: req.user._id });
+
+  if (!product) {
+    return next(new ErrorHandler("product not found", 404));
+  }
+
+  res
+    .status(200)
+    .json({ success: true, product, message: "successful deleted" });
+});
+
+const reviewSellerProduct = expressAsyncHandler(async (req, res, next) => {
+  const product = await Product.findOne({
+    _id: req.params.id,
+    user: req.user._id,
+  });
+
+  if (!product) {
+    return next(new ErrorHandler("product not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    reviews: product.reviews,
+  });
+});
+
 module.exports = {
   getAllProducts,
   getProduct,
@@ -215,5 +268,16 @@ module.exports = {
   createProductReview,
   getAllReviews,
   deleteReview,
+
+  //admin
   getAdminProducts,
+
+  // seller products
+  getSellerProducts,
+  deleteSellerProduct,
+  updateSellerProduct,
+  deleteSellerProduct,
+
+  // seller Review products
+  reviewSellerProduct,
 };

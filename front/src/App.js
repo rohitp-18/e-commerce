@@ -36,6 +36,18 @@ import "./App.scss";
 import ForgotPassword from "./components/user/forgotPassword";
 import ResetPassword from "./components/user/ResetPassword";
 import Back from "./components/layout/header/Back";
+import Dashboard from "./components/seller/dashboard";
+import CreateSellerProduct from "./components/seller/createProduct";
+import SellerOrders from "./components/seller/sellerOrder";
+import SellerReview from "./components/seller/sellerReview";
+import SellerProducts from "./components/seller/sellerProduct";
+import SellerUpdateProduct from "./components/seller/updateProduct";
+import SellerUpdateOrder from "./components/seller/sellerUpdateOrder";
+import SellerHome from "./components/seller/sellerHome";
+import Advertises from "./components/admin/advertises";
+import SellerAdvertises from "./components/seller/sellerAds";
+import CreateAds from "./components/admin/createAds";
+import CheckoutSteps from "./components/cart/CheckoutSteps";
 
 const router = createBrowserRouter([
   {
@@ -75,6 +87,7 @@ const router = createBrowserRouter([
     element: (
       <>
         <MetaData title="HOME - Products" />
+        <Back />
         <LoginSignup />
       </>
     ),
@@ -149,7 +162,7 @@ const router = createBrowserRouter([
         <MetaData title="Shipping Info" />
         <Back />
         <Tooltip />
-        <Shipping />
+        <CheckoutSteps />
       </ProtectRoute>
     ),
   },
@@ -290,7 +303,110 @@ const router = createBrowserRouter([
       </ProtectRoute>
     ),
   },
-
+  {
+    path: "/admin/ads",
+    element: (
+      <ProtectRoute user="admin">
+        <Tooltip />
+        <Advertises />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/admin/ads/new",
+    element: (
+      <ProtectRoute user="admin">
+        <Tooltip />
+        <CreateAds />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/seller",
+    element: (
+      <ProtectRoute user="seller">
+        <Tooltip />
+        <SellerHome />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/seller/products",
+    element: (
+      <ProtectRoute user="seller">
+        <Tooltip />
+        <SellerProducts />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/seller/products/:id",
+    element: (
+      <ProtectRoute user="seller">
+        <Tooltip />
+        <SellerUpdateProduct />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/seller/product/new",
+    element: (
+      <ProtectRoute user="seller">
+        <MetaData title="Create New Product" />
+        <Tooltip />
+        <CreateSellerProduct />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/seller/orders",
+    element: (
+      <ProtectRoute user="seller">
+        <MetaData title="Create New Product" />
+        <Tooltip />
+        <SellerOrders />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/seller/reviews",
+    element: (
+      <ProtectRoute user="seller">
+        <MetaData title="Create New Product" />
+        <Tooltip />
+        <SellerReview />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/seller/orders",
+    element: (
+      <ProtectRoute user="seller">
+        <MetaData title="Create New Product" />
+        <Tooltip />
+        <SellerOrders />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/seller/orders/:id",
+    element: (
+      <ProtectRoute user="seller">
+        <MetaData title="Create New Product" />
+        <Tooltip />
+        <SellerUpdateOrder />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/seller/ads",
+    element: (
+      <ProtectRoute user="seller">
+        <Tooltip />
+        <SellerAdvertises />
+      </ProtectRoute>
+    ),
+  },
   {
     path: "*",
     element: (

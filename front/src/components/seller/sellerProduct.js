@@ -1,28 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "./products.scss";
-import Slider from "./Slider";
+import Slider from "./sellerNavbar";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import {
-  deleteProductAction,
-  getAdminProducts,
-} from "../../redux/actions/productActions";
-import { DELETE_PRODUCT_RESET } from "../../redux/constants/productConstants";
 import Loader from "../layout/Loader";
 import MetaData from "../layout/header/MetaData";
 import { AlertContext } from "../layout/alertProvider";
 import { clearErrors } from "../../redux/actions/orderAction";
+import { SELLER_DELETE_PRODUCT_RESET } from "../../redux/constants/sellerConstant";
+import {
+  deleteSellerProductAction,
+  getSellerProductAction,
+} from "../../redux/actions/sellerAction";
 
-function Products() {
-  const { loading, adminProduct } = useSelector((state) => state.allProducts);
+function SellerProducts() {
+  const { loading, products } = useSelector((state) => state.sellerProduct);
   const { isDeleted, error } = useSelector((state) => state.updateProduct);
   const dispatch = useDispatch();
   const [row, setRow] = useState([]);
   const deleteProduct = (id) => {
-    dispatch(deleteProductAction(id));
+    dispatch(deleteSellerProductAction(id));
   };
   const { sendAlert } = useContext(AlertContext);
 
@@ -40,7 +39,7 @@ function Products() {
       renderCell: (params) => (
         <>
           <Button>
-            <Link to={`/admin/products/${params.id}`}>
+            <Link to={`/seller/products/${params.id}`}>
               <Edit />
             </Link>
           </Button>
@@ -53,14 +52,14 @@ function Products() {
   ];
 
   useEffect(() => {
-    dispatch(getAdminProducts());
+    dispatch(getSellerProductAction());
   }, [dispatch]);
 
   useEffect(() => {
     if (isDeleted) {
       sendAlert("Product deleted successfully", "success");
-      dispatch({ type: DELETE_PRODUCT_RESET });
-      dispatch(getAdminProducts());
+      dispatch({ type: SELLER_DELETE_PRODUCT_RESET });
+      dispatch(getSellerProductAction());
     }
 
     if (error) {
@@ -71,8 +70,8 @@ function Products() {
 
   useEffect(() => {
     let law = [];
-    adminProduct &&
-      adminProduct.filter((product) =>
+    products &&
+      products.filter((product) =>
         law.push({
           id: product._id,
           stock: product.stock,
@@ -82,7 +81,7 @@ function Products() {
       );
 
     setRow(law);
-  }, [adminProduct]);
+  }, [products]);
   return (
     <>
       <div className="admin">
@@ -92,7 +91,7 @@ function Products() {
           <Loader />
         ) : (
           <>
-            {adminProduct && (
+            {products && (
               <section className="admin-products">
                 <p>ALL PRODUCTS</p>
                 <DataGrid
@@ -110,4 +109,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default SellerProducts;

@@ -1,10 +1,13 @@
 import {
   ADD_TO_CART,
+  ALL_TEMP_CART,
+  CLEAR_TEMP_CART,
+  ID_TEMP_CART,
   REMOVE_TO_CART,
   SAVE_SHIPPING_INFO,
 } from "../constants/cartConstants";
 
-const cartReducer = (state = { cartItems: [] }, action) => {
+const cartReducer = (state = { cartItems: [], tempItems: [] }, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       const item = action.payload;
@@ -15,7 +18,6 @@ const cartReducer = (state = { cartItems: [] }, action) => {
         state.cartItems.map(
           (i) => i.product === item.product && (i.quantity = item.quantity)
         );
-        console.log(state);
         return {
           ...state,
         };
@@ -36,6 +38,23 @@ const cartReducer = (state = { cartItems: [] }, action) => {
       return {
         ...state,
         shippingInfo: action.payload,
+      };
+
+    case ALL_TEMP_CART:
+      return {
+        ...state,
+        tempItems: action.payload,
+      };
+    case CLEAR_TEMP_CART:
+      return {
+        ...state,
+        tempItems: null,
+      };
+
+    case ID_TEMP_CART:
+      return {
+        ...state,
+        tempItems: [...action.payload],
       };
 
     default:

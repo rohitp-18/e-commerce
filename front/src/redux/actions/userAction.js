@@ -55,7 +55,6 @@ const loginAction =
 
       dispatch({ type: LOGIN_SUCCESS, payload: data });
     } catch (error) {
-      console.log(error);
       dispatch({
         type: LOGIN_FAIL,
         payload: error.response.data.message,
@@ -131,7 +130,6 @@ const updatePassword =
 
       dispatch({ type: UPDATE_PASSWORD_SUCCESS, payload: data });
     } catch (error) {
-      console.log(error);
       dispatch({
         type: UPDATE_PASSWORD_FAIL,
         payload: error.response.data.message,
@@ -161,7 +159,6 @@ const deleteUser = (id) => async (dispatch) => {
 
     dispatch({ type: DELETE_USER_SUCCESS, payload: data });
   } catch (error) {
-    console.log(error);
     dispatch({ type: DELETE_USER_FAIL, payload: error.response.data.message });
   }
 };

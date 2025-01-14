@@ -13,7 +13,6 @@ function SingleOrder() {
 
   useEffect(() => {
     dispatch(getOrderDetailsAction(id));
-    console.log(order);
   }, [dispatch, id]);
   return (
     <>
@@ -57,19 +56,23 @@ function SingleOrder() {
                 </div>
               </div>
               <div className="order-items">
-                <h2>Your Cart Items</h2>
-                {order.orderItems.map((item) => (
-                  <div className="item-card" key={item.product}>
-                    <div className="item-img">
-                      <img src={item.image} alt={item.name} />
-                      <p>{item.name}</p>
-                    </div>
-                    <div className="item-price">
-                      {item.quantity} x ₹{item.price} =
-                      <span>₹{item.price * item.quantity}</span>
-                    </div>
+                <h2>Your Order</h2>
+
+                <div className="item-card">
+                  <div className="item-img">
+                    <img
+                      src={order.orderItems.image}
+                      alt={order.orderItems.name}
+                    />
+                    <p>{order.orderItems.name}</p>
                   </div>
-                ))}
+                  <div className="item-price">
+                    {order.orderItems.quantity} x ₹{order.orderItems.price} =
+                    <span>
+                      ₹{order.orderItems.price * order.orderItems.quantity}
+                    </span>
+                  </div>
+                </div>
               </div>
             </>
           )}

@@ -6,6 +6,10 @@ function MetaData(props) {
     <>
       <Helmet>
         <title>{props.title}</title>
+        <meta
+          name="description"
+          content="Sale the product and buy our products"
+        />
       </Helmet>
     </>
   );

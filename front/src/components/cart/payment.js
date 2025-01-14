@@ -27,10 +27,7 @@ function Payment() {
     const data = {
       orderItems: [...cartItems],
       shippingInfo,
-      itemPrice: price,
-      taxPrice: price * 0.12,
-      shippingPrice: 0,
-      totalPrice: price * 0.12 + price,
+      paymentInfo: { type: "pay", status: "paid" },
     };
 
     dispatch(newOrderAction(data));
@@ -57,7 +54,6 @@ function Payment() {
         <Loader />
       ) : (
         <>
-          <CheckoutSteps step={2} />
           <section className="payment-section">
             <form onSubmit={(e) => submitHandler(e)}>
               <h2>Card Info</h2>

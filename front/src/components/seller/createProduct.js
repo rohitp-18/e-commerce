@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./createProduct.scss";
-import Slider from "./Slider";
+import Slider from "./sellerNavbar";
 import {
   Avatar,
   Box,
@@ -25,14 +24,12 @@ import {
   CLEAR_ERRORS,
   CREATE_PRODUCT_RESET,
 } from "../../redux/constants/productConstants";
-import { useNavigate } from "react-router-dom";
 
-function CreateProduct() {
+function CreateSellerProduct() {
   const dispatch = useDispatch();
   const { isCreated, error, loading } = useSelector(
     (state) => state.updateProduct
   );
-  const navigator = useNavigate();
   const { sendAlert } = useContext(AlertContext);
 
   const [name, setName] = useState("");
@@ -42,6 +39,7 @@ function CreateProduct() {
   const [image, setImage] = useState([]);
   const [category, setCategory] = useState();
 
+  // categoties of product
   const categoryList = [
     "laptop",
     "electronics",
@@ -194,4 +192,4 @@ function CreateProduct() {
   );
 }
 
-export default CreateProduct;
+export default CreateSellerProduct;

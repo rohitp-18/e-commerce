@@ -30,8 +30,6 @@ function Cart() {
     dispatch(removeToCart(id));
   };
 
-  useEffect(() => console.log(cartItems));
-
   return (
     <main className="cart-main">
       <MetaData title="Cart" />

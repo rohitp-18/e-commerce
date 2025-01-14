@@ -59,7 +59,6 @@ function UpdateUser() {
 
   useEffect(() => {
     if (user) {
-      console.log(user);
       setName(user.name);
       setEmail(user.email);
       setRole(user.role);
@@ -123,6 +122,7 @@ function UpdateUser() {
                   >
                     <MenuItem value={"admin"}>Admin</MenuItem>
                     <MenuItem value={"user"}>User</MenuItem>
+                    <MenuItem value={"seller"}>Seller</MenuItem>
                   </Select>
                 </FormControl>
               </Box>

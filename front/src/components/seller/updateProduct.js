@@ -1,11 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./updateProduct.scss";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getProductDetails,
-  updateProductAction,
-} from "../../redux/actions/productActions";
-import Slider from "./Slider";
+import { getProductDetails } from "../../redux/actions/productActions";
+import Slider from "./sellerNavbar";
 import {
   Avatar,
   Box,
@@ -30,11 +26,13 @@ import {
 import Loader from "../layout/Loader";
 import MetaData from "../layout/header/MetaData";
 import { AlertContext } from "../layout/alertProvider";
+import { updateSellerProductAction } from "../../redux/actions/sellerAction";
 
-function UpdateProduct() {
+function SellerUpdateProduct() {
   const dispatch = useDispatch();
   const { product, loading } = useSelector((state) => state.product);
-  const { isUpdated, error } = useSelector((state) => state.updateProduct);
+  const err = useSelector((state) => state.product);
+  const { isUpdated, error } = useSelector((state) => state.sellerProduct);
   const { id } = useParams();
   const navigate = useNavigate();
   const { sendAlert } = useContext(AlertContext);
@@ -63,7 +61,13 @@ function UpdateProduct() {
       return;
     }
     dispatch(
-      updateProductAction(id, { name, price, category, description, stock })
+      updateSellerProductAction(id, {
+        name,
+        price,
+        category,
+        description,
+        stock,
+      })
     );
   };
 
@@ -95,9 +99,9 @@ function UpdateProduct() {
     if (isUpdated) {
       sendAlert("Product Updated successfully", "success");
       dispatch({ type: UPDATE_PRODUCT_RESET });
-      navigate("/admin/products");
+      navigate("/seller/products");
     }
-    if (error) {
+    if (error || err.error) {
       sendAlert(error, "error");
       dispatch({ type: CLEAR_ERRORS });
     }
@@ -131,7 +135,7 @@ function UpdateProduct() {
                     required
                     name="Name"
                     sx={{ width: "30ch" }}
-                    value={product.name}
+                    value={name}
                     label="Name"
                     variant="standard"
                     type="text"
@@ -146,7 +150,7 @@ function UpdateProduct() {
                     required
                     name="price"
                     sx={{ width: "30ch" }}
-                    value={product.price}
+                    value={price}
                     label="Price"
                     variant="standard"
                     type="number"
@@ -162,7 +166,7 @@ function UpdateProduct() {
                     name="Description"
                     sx={{ width: "30ch" }}
                     multiline
-                    value={product.description}
+                    value={description}
                     label="Description"
                     variant="standard"
                     type="text"
@@ -175,7 +179,7 @@ function UpdateProduct() {
                     required
                     name="Stock"
                     sx={{ width: "30ch" }}
-                    value={product.stock}
+                    value={stock}
                     label="Stock"
                     variant="standard"
                     type="number"
@@ -193,7 +197,7 @@ function UpdateProduct() {
                     <Select
                       labelId="demo-simple-select-standard-label"
                       label="Age"
-                      value={product.category}
+                      value={category}
                       sx={{ width: "30ch" }}
                       required
                       onChange={(e) => setCategory(e.target.value)}
@@ -228,4 +232,4 @@ function UpdateProduct() {
   );
 }
 
-export default UpdateProduct;
+export default SellerUpdateProduct;

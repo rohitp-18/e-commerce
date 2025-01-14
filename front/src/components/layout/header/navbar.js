@@ -9,6 +9,7 @@ import {
   Home,
   Group,
   ShoppingBagOutlined,
+  Dashboard,
 } from "@mui/icons-material";
 import "./navbar.scss";
 import { useSelector } from "react-redux";
@@ -29,7 +30,7 @@ function Navbar() {
   const navigate = useNavigate();
   const locat = useLocation();
 
-  const opt = ["hello", "laptop", "tv"];
+  const opt = ["mobile", "laptop", "tv"];
 
   const setKey = (e) => {
     e.preventDefault();
@@ -139,6 +140,18 @@ function Navbar() {
                   <NotificationsNoneOutlined />
                   <span>Notification</span>
                 </Link>
+                {user && user.role === "admin" && (
+                  <Link to="/admin">
+                    <Dashboard />
+                    <span>Dashboard</span>
+                  </Link>
+                )}
+                {user && user.role === "seller" && (
+                  <Link to="/seller">
+                    <Dashboard />
+                    <span>Dashboard</span>
+                  </Link>
+                )}
               </div>
               <Link to="/help">Get Help?</Link>
             </div>
@@ -147,7 +160,19 @@ function Navbar() {
           <Box className="search">{<Auto />}</Box>
 
           <div className="nav-icons">
-            <Link to="/account">
+            {user && user.role === "admin" && (
+              <Link to="/admin">
+                <Dashboard />
+                <span>Dashboard</span>
+              </Link>
+            )}
+            {user && user.role === "seller" && (
+              <Link to="/seller">
+                <Dashboard />
+                <span>Dashboard</span>
+              </Link>
+            )}
+            <Link to={`${user ? "/account" : "/login"}`}>
               <AccountCircleOutlined />
               <span style={{ display: "block" }}>
                 {user ? "Account" : "Login"}

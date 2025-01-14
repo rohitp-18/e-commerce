@@ -1,36 +1,47 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "./products.scss";
-import Slider from "./Slider";
+import Slider from "./sellerNavbar";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import {
-  deleteProductAction,
-  getAdminProducts,
-} from "../../redux/actions/productActions";
-import { DELETE_PRODUCT_RESET } from "../../redux/constants/productConstants";
 import Loader from "../layout/Loader";
 import MetaData from "../layout/header/MetaData";
 import { AlertContext } from "../layout/alertProvider";
 import { clearErrors } from "../../redux/actions/orderAction";
+import {
+  deleteSellerAdvertAction,
+  getSellerAdvertAction,
+} from "../../redux/actions/advertiseAction";
+import { SELLER_DELETE_ADVERT_RESET } from "../../redux/constants/advertiseConstants";
 
-function Products() {
-  const { loading, adminProduct } = useSelector((state) => state.allProducts);
-  const { isDeleted, error } = useSelector((state) => state.updateProduct);
+function SellerAdvertises() {
+  const { loading, advertisements, error, isDeleted } = useSelector(
+    (state) => state.sellerAdvert
+  );
   const dispatch = useDispatch();
   const [row, setRow] = useState([]);
   const deleteProduct = (id) => {
-    dispatch(deleteProductAction(id));
+    dispatch(deleteSellerAdvertAction(id));
   };
   const { sendAlert } = useContext(AlertContext);
 
   const column = [
     { field: "id", headerName: "Id", minWidth: 200, flex: 0.5 },
     { field: "name", headerName: "Name", minWidth: 200, flex: 1 },
-    { field: "stock", headerName: "Stock", minWidth: 100, flex: 0.3 },
-    { field: "price", headerName: "Price", minWidth: 100, flex: 0.3 },
+    { field: "category", headerName: "Category", minWidth: 100, flex: 0.3 },
+    {
+      field: "initialDate",
+      headerName: "Initial Date",
+      minWidth: 100,
+      flex: 0.3,
+    },
+    {
+      field: "expireDate",
+      headerName: "Expire Date",
+      minWidth: 100,
+      flex: 0.3,
+    },
     {
       field: "action",
       headerName: "Action",
@@ -40,7 +51,7 @@ function Products() {
       renderCell: (params) => (
         <>
           <Button>
-            <Link to={`/admin/products/${params.id}`}>
+            <Link to={`/seller/ads/${params.id}`}>
               <Edit />
             </Link>
           </Button>
@@ -53,14 +64,14 @@ function Products() {
   ];
 
   useEffect(() => {
-    dispatch(getAdminProducts());
+    dispatch(getSellerAdvertAction());
   }, [dispatch]);
 
   useEffect(() => {
     if (isDeleted) {
       sendAlert("Product deleted successfully", "success");
-      dispatch({ type: DELETE_PRODUCT_RESET });
-      dispatch(getAdminProducts());
+      dispatch({ type: SELLER_DELETE_ADVERT_RESET });
+      dispatch(getSellerAdvertAction());
     }
 
     if (error) {
@@ -71,18 +82,19 @@ function Products() {
 
   useEffect(() => {
     let law = [];
-    adminProduct &&
-      adminProduct.filter((product) =>
+    advertisements &&
+      advertisements.filter((product) =>
         law.push({
+          ...product,
+          initialDate: new Date(product.initialDate).toDateString(),
+          expireDate: new Date(product.expireDate).toDateString(),
           id: product._id,
-          stock: product.stock,
-          price: product.price,
           name: product.name,
         })
       );
 
     setRow(law);
-  }, [adminProduct]);
+  }, [advertisements]);
   return (
     <>
       <div className="admin">
@@ -92,9 +104,9 @@ function Products() {
           <Loader />
         ) : (
           <>
-            {adminProduct && (
+            {advertisements && (
               <section className="admin-products">
-                <p>ALL PRODUCTS</p>
+                <p>ALL Advertisement</p>
                 <DataGrid
                   columns={column}
                   rows={row}
@@ -110,4 +122,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default SellerAdvertises;

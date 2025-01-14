@@ -1,29 +1,30 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./orders.scss";
-import Slider from "./Slider";
+import Slider from "./sellerNavbar";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteOrderAction,
-  getAdminOrders,
-} from "../../redux/actions/orderAction";
 import { DataGrid } from "@mui/x-data-grid";
 import { Delete, Edit } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { DELETE_ORDER_RESET } from "../../redux/constants/orderConstants";
 import Loader from "../layout/Loader";
 import MetaData from "../layout/header/MetaData";
 import { AlertContext } from "../layout/alertProvider";
+import {
+  deleteSellerOrderAction,
+  sellerOrderAction,
+} from "../../redux/actions/sellerAction";
+import { SELLER_DELETE_ORDER_RESET } from "../../redux/constants/sellerConstant";
 
-function Orders() {
-  const { loading, orders } = useSelector((state) => state.allOrders);
-  const { isDeleted } = useSelector((state) => state.updateOrder);
+function SellerOrders() {
+  const { loading, orders, isDeleted } = useSelector(
+    (state) => state.sellerOrder
+  );
   const { sendAlert } = useContext(AlertContext);
   const dispatch = useDispatch();
   const [row, setRow] = useState([]);
   const navigate = useNavigate();
+
   const deleteProduct = (id) => {
-    dispatch(deleteOrderAction(id));
+    dispatch(deleteSellerOrderAction(id));
   };
 
   const column = [
@@ -39,10 +40,13 @@ function Orders() {
       flex: 0.3,
       renderCell: (params) => (
         <>
-          <Button onClick={() => navigate(`/admin/orders/${params.id}`)}>
+          <Button onClick={() => navigate(`/seller/orders/${params.id}`)}>
             <Edit />
           </Button>
-          <Button onClick={() => deleteProduct(params.id)}>
+          <Button
+            disabled={params.row.status === "cancled"}
+            onClick={() => deleteProduct(params.id)}
+          >
             <Delete />
           </Button>
         </>
@@ -52,11 +56,11 @@ function Orders() {
 
   useEffect(() => {
     if (isDeleted) {
-      sendAlert("Order is Deleted successfully", "success");
-      dispatch({ type: DELETE_ORDER_RESET });
-      dispatch(getAdminOrders());
+      sendAlert("Order is Cancled successfully", "success");
+      dispatch({ type: SELLER_DELETE_ORDER_RESET });
+      dispatch(sellerOrderAction());
     }
-    dispatch(getAdminOrders());
+    dispatch(sellerOrderAction());
   }, [isDeleted, dispatch]);
 
   useEffect(() => {
@@ -75,29 +79,27 @@ function Orders() {
   }, [dispatch, orders]);
   return (
     <>
-      <div className="admin">
-        <Slider />
-        <MetaData title="All Orders - Admin" />
-        {loading ? (
-          <Loader />
-        ) : (
-          <>
-            {orders && (
-              <section className="admin-orders">
-                <p>ALL ORDERS</p>
-                <DataGrid
-                  columns={column}
-                  rows={row}
-                  className="data-grid"
-                  disableRowSelectionOnClick
-                />
-              </section>
-            )}
-          </>
-        )}
-      </div>
+      <MetaData title="All Orders - Admin" />
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="admin">
+          <Slider />
+          {orders && (
+            <section className="admin-orders">
+              <p>ALL ORDERS</p>
+              <DataGrid
+                columns={column}
+                rows={row}
+                className="data-grid"
+                disableRowSelectionOnClick
+              />
+            </section>
+          )}
+        </div>
+      )}
     </>
   );
 }
 
-export default Orders;
+export default SellerOrders;

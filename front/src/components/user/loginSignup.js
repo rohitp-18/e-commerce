@@ -22,6 +22,7 @@ import "./loginSignup.scss";
 import { loginAction, signupAction } from "../../redux/actions/userAction";
 import { AlertContext } from "../layout/alertProvider";
 import Loader from "../layout/Loader";
+import { CLEAR_ERRORS } from "../../redux/constants/userConstants";
 
 function LoginSignup() {
   const [name, setName] = useState("");
@@ -45,18 +46,18 @@ function LoginSignup() {
 
   const loginHandler = () => {
     if (!email || !password) {
-      console.log("please fill all required fields");
+      sendAlert("please fill all required fields", "error");
     }
     dispatch(loginAction({ email, password }));
   };
 
   const registerHandler = () => {
     if (!email || !password || !confirmPassword || !name) {
-      console.log("Please fill all required");
+      sendAlert("Please fill all required", "error");
     }
 
     if (confirmPassword !== password) {
-      console.log("Password should be match");
+      sendAlert("Password should be match", "error");
     }
     dispatch(signupAction({ name, email, password, image }));
   };
@@ -91,6 +92,8 @@ function LoginSignup() {
     if (user) {
       if (sessionStorage.getItem("link")) {
         navigate(sessionStorage.getItem("link"));
+      } else {
+        navigate(-1);
       }
     }
   }, [dispatch, user, navigate]);
@@ -98,9 +101,11 @@ function LoginSignup() {
   useEffect(() => {
     if (message) {
       sendAlert(message, "success");
+      return;
     }
     if (error) {
       sendAlert(error, "error");
+      dispatch({ type: CLEAR_ERRORS });
     }
   }, [message, error]);
   return (

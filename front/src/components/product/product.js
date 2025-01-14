@@ -43,7 +43,6 @@ const Product = () => {
     e.preventDefault();
 
     if (rating === 0) {
-      console.log("Please Provide a rating to our Product");
       return;
     }
 

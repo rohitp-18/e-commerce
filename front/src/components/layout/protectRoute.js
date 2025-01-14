@@ -5,9 +5,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 function ProtectRoute(props) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, loading } = useSelector((state) => state.user);
+  const { user, loading, error } = useSelector((state) => state.user);
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && !user && error) {
       sessionStorage.setItem("link", location.pathname);
       navigate("/login");
     }
@@ -17,11 +17,11 @@ function ProtectRoute(props) {
         navigate(-3);
       }
     }
-  }, [user]);
+  }, [user, error]);
   return (
     <>
-      {props.role ? (
-        props.role === user.role && <>{user && props.children}</>
+      {props.user ? (
+        user && <>{props.user === user.role && props.children}</>
       ) : (
         <>{user && props.children}</>
       )}

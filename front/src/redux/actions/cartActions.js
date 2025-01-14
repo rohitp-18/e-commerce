@@ -1,6 +1,9 @@
 import axios from "../axios";
 import {
   ADD_TO_CART,
+  ALL_TEMP_CART,
+  CLEAR_TEMP_CART,
+  ID_TEMP_CART,
   REMOVE_TO_CART,
   SAVE_SHIPPING_INFO,
 } from "../constants/cartConstants";
@@ -16,6 +19,7 @@ const addToCart = (id, quantity) => async (dispatch, getState) => {
       name: data.product.name,
       price: data.product.price,
       stock: data.product.stock,
+      user: data.product.user,
       quantity,
     },
   });
@@ -38,4 +42,14 @@ const shippingInfoAction = (data) => async (dispatch, getState) => {
   );
 };
 
-export { addToCart, removeToCart, shippingInfoAction };
+const tempCartAction = (id) => async (dispatch, getState) => {
+  if (id === "all") {
+    dispatch({ type: ALL_TEMP_CART, payload: getState().cart.cartItems });
+  }
+  if (id === "clear") dispatch({ type: CLEAR_TEMP_CART });
+  else {
+    dispatch({ type: ID_TEMP_CART, payload: id });
+  }
+};
+
+export { addToCart, removeToCart, shippingInfoAction, tempCartAction };

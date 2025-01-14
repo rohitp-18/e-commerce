@@ -1,62 +1,37 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./review.scss";
-import Slider from "./Slider";
+import Slider from "./sellerNavbar";
 import { Delete, Search } from "@mui/icons-material";
 import { Box, Button, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
-import {
-  deleteReviewAction,
-  getAllReviewAction,
-} from "../../redux/actions/productActions";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { sellerReviewAction } from "../../redux/actions/productActions";
 import Loader from "../layout/Loader";
 import MetaData from "../layout/header/MetaData";
 import { AlertContext } from "../layout/alertProvider";
-import {
-  CLEAR_ERRORS,
-  DELETE_REVIEW_RESET,
-} from "../../redux/constants/productConstants";
+import { CLEAR_ERRORS } from "../../redux/constants/productConstants";
 
-function Review() {
+function SellerReview() {
   const [search, setSearch] = useState("");
   const [show, setShow] = useState(false);
   const [row, setRow] = useState([]);
   const dispatch = useDispatch();
-  const { reviews, loading, isDeleted, error } = useSelector(
-    (state) => state.updateReview
+  const { reviews, loading, error } = useSelector(
+    (state) => state.sellerReview
   );
   const { sendAlert } = useContext(AlertContext);
-
-  const deleteProduct = (revId) => {
-    dispatch(deleteReviewAction(search, revId));
-  };
 
   const column = [
     { field: "id", headerName: "Id", minWidth: 200, flex: 0.5 },
     { field: "name", headerName: "Name", minWidth: 200, flex: 0.3 },
     { field: "rating", headerName: "Rating", minWidth: 100, flex: 0.3 },
     { field: "comment", headerName: "Comment", minWidth: 100, flex: 0.7 },
-    {
-      field: "action",
-      type: "actions",
-      sortable: false,
-      minWidth: 80,
-      flex: 0.2,
-      renderCell: (params) => [
-        <GridActionsCellItem
-          icon={<Delete sx={{ fontSize: "20px" }} />}
-          label="Delete"
-          onClick={() => deleteProduct(params.id)}
-        />,
-      ],
-    },
   ];
 
   const submitHandler = () => {
     if (search.length < 8) {
       return;
     }
-    dispatch(getAllReviewAction(search));
+    dispatch(sellerReviewAction(search));
     setShow(true);
   };
 
@@ -82,17 +57,11 @@ function Review() {
   }, [reviews]);
 
   useEffect(() => {
-    if (isDeleted) {
-      sendAlert("Review is deleted successfully", "success");
-      dispatch({ type: DELETE_REVIEW_RESET });
-      dispatch(getAllReviewAction(search));
-    }
-
     if (error) {
       sendAlert(error, "error");
       dispatch({ type: CLEAR_ERRORS });
     }
-  }, [dispatch, isDeleted, error]);
+  }, [dispatch, error]);
   return (
     <>
       <div className="admin">
@@ -129,6 +98,7 @@ function Review() {
                     columns={column}
                     rows={row}
                     className="data-grid"
+                    slots={{ toolbar: GridToolbar }}
                     disableRowSelectionOnClick
                     // initialState={{
                     //   pagination: {
@@ -148,4 +118,4 @@ function Review() {
   );
 }
 
-export default Review;
+export default SellerReview;

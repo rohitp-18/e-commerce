@@ -4,31 +4,26 @@ const Product = require("../models/productModel");
 const ErrorHandler = require("../utils/errorHandler");
 
 const createOrder = expressAsyncHandler(async (req, res, next) => {
-  const {
-    shippingInfo,
-    orderItems,
-    paymentInfo,
-    itemPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-  } = req.body;
+  const { shippingInfo, orderItems, paymentInfo } = req.body;
 
-  const order = await Order.create({
-    shippingInfo,
-    orderItems,
-    paymentInfo,
-    itemPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-    user: req.user._id,
-    paidAt: Date.now(),
+  let orders = orderItems.map(async (order) => {
+    const order2 = await Order.create({
+      shippingInfo,
+      orderItems: order,
+      totalPrice: order.price * order.quantity,
+      paymentInfo,
+      paidAt: paymentInfo.type === "pay" ? new Date(Date.now()) : null,
+      user: req.user._id,
+      paidAt: Date.now(),
+      seller: order.user,
+    });
+
+    return order2;
   });
 
   res.status(201).json({
     success: true,
-    order,
+    orders,
   });
 });
 
@@ -119,6 +114,74 @@ const adminSingleOrder = expressAsyncHandler(async (req, res, next) => {
   });
 });
 
+const getSellerOrders = expressAsyncHandler(async (req, res, next) => {
+  const orders = await Order.find({ seller: req.user._id });
+
+  res.status(200).json({ success: true, orders });
+});
+
+const getSellerOrder = expressAsyncHandler(async (req, res, next) => {
+  const order = await Order.findOne({
+    _id: req.params.id,
+    seller: req.user._id,
+  });
+
+  if (!order) {
+    return next(new ErrorHandler("Order not found"));
+  }
+
+  res.status(200).json({
+    success: true,
+    order,
+  });
+});
+
+const updateSellerOrder = expressAsyncHandler(async (req, res, next) => {
+  const order = await Order.findOne({
+    _id: req.params.id,
+    seller: req.user._id,
+  });
+
+  if (!order) {
+    return next(new ErrorHandler("Order not found"));
+  }
+
+  if (!order) {
+    return next(new ErrorHandler("order not found", 404));
+  }
+
+  if (order.orderStatus === "Delivered") {
+    return next(new ErrorHandler("Order has been already delivered", 400));
+  }
+
+  if (req.body.status === "Shipped") {
+    order.orderItems.forEach(async (o) => {
+      await updateStock(o.product, o.quantity);
+    });
+  }
+
+  order.orderStatus = req.body.status;
+
+  if (req.body.status === "Delivered") {
+    order.deliverdAt = new Date();
+  }
+
+  await order.save();
+  res.status(200).json({ success: true, order });
+});
+
+const cancelSellerOrder = expressAsyncHandler(async (req, res, next) => {
+  const order = await Order.findOne({
+    _id: req.params.id,
+    seller: req.user._id,
+  });
+
+  order.orderStatus = "cancled";
+  await order.save();
+
+  res.status(200).json({ order, success: true });
+});
+
 module.exports = {
   createOrder,
   getSingleOrder,
@@ -128,4 +191,10 @@ module.exports = {
   getAllOrder,
   updateOrder,
   adminSingleOrder,
+
+  //seller
+  getSellerOrders,
+  getSellerOrder,
+  updateSellerOrder,
+  cancelSellerOrder,
 };

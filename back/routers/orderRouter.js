@@ -6,6 +6,10 @@ const {
   updateOrder,
   adminSingleOrder,
   adminDeleteOrder,
+  getSellerOrders,
+  updateSellerOrder,
+  cancelSellerOrder,
+  getSellerOrder,
 } = require("../controllers/orderController");
 
 const express = require("express");
@@ -16,6 +20,12 @@ router.use(auth);
 router.route("/create").post(createOrder);
 router.get("/", myOrder);
 router.route("/my/:id").get(getSingleOrder); //.delete(deleteOrder);
+router.get("/seller", authorizedRole("seller"), getSellerOrders);
+router
+  .route("/seller/:id")
+  .put(authorizedRole("seller"), updateSellerOrder)
+  .delete(authorizedRole("seller"), cancelSellerOrder)
+  .get(authorizedRole("seller"), getSellerOrder);
 router
   .route("/admin/:id")
   .put(authorizedRole("admin"), updateOrder)

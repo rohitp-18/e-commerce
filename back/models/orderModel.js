@@ -30,60 +30,53 @@ const orderSchema = new mongoose.Schema(
         min: [10, "phone number must be 10 digits"],
       },
     },
-    orderItems: [
-      {
-        name: {
-          type: String,
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
-        price: {
-          type: Number,
-          required: true,
-        },
-        image: {
-          type: String,
-          required: true,
-        },
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
+    orderItems: {
+      name: {
+        type: String,
+        required: true,
       },
-    ],
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+      image: {
+        type: String,
+        required: true,
+      },
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "products",
+        required: true,
+      },
+    },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     paymentInfo: {
-      id: {
+      type: {
         type: String,
         // required: true,
       },
       status: {
         type: String,
+        default: "pending",
         // required: true,
       },
     },
     paidAt: {
       type: Date,
-      required: true,
-    },
-    itemPrice: {
-      type: Number,
-      required: true,
-    },
-    taxPrice: {
-      type: Number,
-      required: true,
-    },
-    shippingPrice: {
-      type: Number,
       required: true,
     },
     totalPrice: {

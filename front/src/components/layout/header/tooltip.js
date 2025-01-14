@@ -22,6 +22,10 @@ function Tooltip() {
     navigate("/admin");
   };
 
+  const seller = () => {
+    navigate("/seller");
+  };
+
   const myAccount = () => {
     navigate("/account");
   };
@@ -48,6 +52,17 @@ function Tooltip() {
           icon: <Dashboard />,
           label: "dashboard",
           click: dashboard,
+        },
+        ...actions,
+      ]);
+    }
+    if (user && user.role === "seller" && actions.length === 3) {
+      setShow(true);
+      setActions([
+        {
+          icon: <Dashboard />,
+          label: "dashboard",
+          click: seller,
         },
         ...actions,
       ]);

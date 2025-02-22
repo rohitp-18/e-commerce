@@ -48,7 +48,7 @@ const getAdminAdverts = () => async (dispatch) => {
     console.log(error);
     dispatch({
       type: ADMIN_ADVERTS_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -65,7 +65,7 @@ const getSingleAdvert = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ADVERT_DETAILS_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -82,7 +82,7 @@ const createAdvertAction = (order) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CREATE_ADVERT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -99,7 +99,7 @@ const deleteAdvertAction = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_ADVERT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -116,7 +116,7 @@ const updateAdvertAction = (id, Advert) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_ADVERT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -133,7 +133,7 @@ const getSellerAdvertAction = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_ADVERTS_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -150,7 +150,7 @@ const createSellerAdvertAction = (form) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_CREATE_ADVERT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -167,7 +167,7 @@ const updateSellerAdvertAction = (id, form) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_UPDATE_ADVERT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -184,7 +184,7 @@ const deleteSellerAdvertAction = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_DELETE_ADVERT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -201,7 +201,7 @@ const getSingleSellerAdvert = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_SINGLE_ORDER_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };

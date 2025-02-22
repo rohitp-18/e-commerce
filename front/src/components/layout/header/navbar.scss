@@ -1,6 +1,9 @@
 .nav {
   padding: 10px 7px;
   background: tomato;
+  position: sticky;
+  top: 0;
+  left: 0;
 
   .nav-items {
     font-weight: 500;

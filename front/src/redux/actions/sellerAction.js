@@ -38,7 +38,7 @@ const getSellerProductAction = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_PRODUCTS_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -55,7 +55,7 @@ const createSellerProductAction = (form) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_CREATE_PRODUCT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -72,7 +72,7 @@ const updateSellerProductAction = (id, form) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_UPDATE_PRODUCT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -89,7 +89,7 @@ const deleteSellerProductAction = (id, form) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_DELETE_PRODUCT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -120,7 +120,7 @@ const getSingleSellerOrder = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_SINGLE_ORDER_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -141,7 +141,7 @@ const updateSellerOrderAction = (id, status) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_UPDATE_ORDER_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -158,7 +158,7 @@ const deleteSellerOrderAction = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_DELETE_ORDER_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };

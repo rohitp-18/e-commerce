@@ -45,6 +45,7 @@
 
   &.none {
     min-height: 350px;
+    max-height: 420px;
   }
 
   .forgot-password {
@@ -86,8 +87,9 @@
 
 @media (max-width: 650px) {
   .login-form {
-    padding: 50px 0;
+    padding: 20px 0;
     background-color: white;
+    min-height: unset;
 
     .switchTabs {
       width: 100%;
@@ -96,7 +98,7 @@
 
   .loginform {
     width: 100%;
-    padding: 0;
+    padding: 20px 0;
     box-shadow: none;
 
     .forgot-password {

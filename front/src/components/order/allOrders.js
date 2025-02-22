@@ -35,10 +35,12 @@ function AllOrders() {
   ];
 
   useEffect(() => {
+    console.log("first");
     dispatch(getMyOrdersAction());
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("first");
     let law = [];
     if (orders) {
       orders.map((order) =>

@@ -66,6 +66,7 @@ function Review() {
   };
 
   useEffect(() => {
+    console.log("first");
     let law = [];
     if (reviews) {
       reviews.filter((review) =>
@@ -82,6 +83,7 @@ function Review() {
   }, [reviews]);
 
   useEffect(() => {
+    console.log("first");
     if (isDeleted) {
       sendAlert("Review is deleted successfully", "success");
       dispatch({ type: DELETE_REVIEW_RESET });
@@ -92,6 +94,7 @@ function Review() {
       sendAlert(error, "error");
       dispatch({ type: CLEAR_ERRORS });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isDeleted, error]);
   return (
     <>

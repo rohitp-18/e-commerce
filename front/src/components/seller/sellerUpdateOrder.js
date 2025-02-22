@@ -33,6 +33,7 @@ function SellerUpdateOrder() {
   };
 
   useEffect(() => {
+    console.log("first");
     if (error) {
       sendAlert(error, "error");
       dispatch({ type: CLEAR_ERRORS });
@@ -45,6 +46,7 @@ function SellerUpdateOrder() {
     dispatch(getSingleSellerOrder(id));
 
     order && setStatus(order.orderStatus);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isUpdated, sendAlert, error, id]);
   return (
     <>

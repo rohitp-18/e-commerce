@@ -16,6 +16,7 @@ const {
 } = require("../controllers/userController");
 const { auth, authorizedRole } = require("../middlewares/auth");
 const User = require("../models/userModel");
+const upload = require("../config/multer");
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.route("/").get(auth, userInfo);
 router.route("/register").post(registerUser);
 router.route("/login").post(loginHandler);
 router.route("/logout").get(auth, logoutUser);
-router.route("/update").put(auth, updateUser);
+router.route("/update").put(auth, upload.single("image"), updateUser);
 router.route("/update/password").put(auth, updatePassword);
 router.route("/forgot/password").post(forgotPassword);
 router

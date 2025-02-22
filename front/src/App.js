@@ -14,7 +14,7 @@ import AccountInfo from "./components/user/account";
 import UpadateUser from "./components/user/updateUser";
 import UpdatePassword from "./components/user/updatePassword";
 import Cart from "./components/cart/cart";
-import Shipping from "./components/cart/shipping";
+// import Shipping from "./components/cart/shipping";
 import Success from "./components/cart/success";
 import ConfirmOrder from "./components/cart/confirmOrder";
 import Payment from "./components/cart/payment";
@@ -48,6 +48,7 @@ import Advertises from "./components/admin/advertises";
 import SellerAdvertises from "./components/seller/sellerAds";
 import CreateAds from "./components/admin/createAds";
 import CheckoutSteps from "./components/cart/CheckoutSteps";
+import { getHomePage } from "./redux/actions/homeActions";
 
 const router = createBrowserRouter([
   {
@@ -64,7 +65,7 @@ const router = createBrowserRouter([
     path: "/search",
     element: (
       <>
-        <MetaData title="HOME - Products" />
+        <MetaData title="Search Products" />
         <Navbar />
         <Tooltip />
         <Search />
@@ -75,7 +76,6 @@ const router = createBrowserRouter([
     path: "/product/:id",
     element: (
       <>
-        <MetaData title="HOME - Products" />
         <Navbar />
         <Tooltip />
         <Product />
@@ -86,8 +86,7 @@ const router = createBrowserRouter([
     path: "/login",
     element: (
       <>
-        <MetaData title="HOME - Products" />
-        <Back />
+        <MetaData title="Login/register - Products" />
         <LoginSignup />
       </>
     ),
@@ -96,6 +95,7 @@ const router = createBrowserRouter([
     path: "/account",
     element: (
       <ProtectRoute>
+        <MetaData title="My account" />
         <Navbar />
         <Tooltip />
         <AccountInfo />
@@ -170,7 +170,7 @@ const router = createBrowserRouter([
     path: "/order/confirm",
     element: (
       <ProtectRoute>
-        <MetaData title="HOME - Products" />
+        <MetaData title="confirm order - Products" />
         <Back />
         <Tooltip />
         <ConfirmOrder />
@@ -181,7 +181,7 @@ const router = createBrowserRouter([
     path: "/payment",
     element: (
       <ProtectRoute>
-        <MetaData title="HOME - Products" />
+        <MetaData title="Payment - Products" />
         <Back />
         <Tooltip />
         <Payment />
@@ -192,7 +192,7 @@ const router = createBrowserRouter([
     path: "/success",
     element: (
       <ProtectRoute>
-        <MetaData title="HOME - Products" />
+        <MetaData title="Success - Products" />
         <Navbar />
         <Tooltip />
         <Success />
@@ -203,7 +203,7 @@ const router = createBrowserRouter([
     path: "/orders",
     element: (
       <ProtectRoute>
-        <MetaData title="HOME - Products" />
+        <MetaData title="Orders - Products" />
         <Navbar />
         <Tooltip />
         <AllOrders />
@@ -214,7 +214,7 @@ const router = createBrowserRouter([
     path: "/orders/:id",
     element: (
       <ProtectRoute>
-        <MetaData title="HOME - Products" />
+        <MetaData title="order - Products" />
         <Navbar />
         <Tooltip />
         <SingleOrder />
@@ -419,8 +419,10 @@ const router = createBrowserRouter([
 
 function App() {
   useEffect(() => {
+    console.log("first");
+    store.dispatch(getHomePage());
     store.dispatch(loadRequest());
-  });
+  }, []);
   return (
     <>
       <AlertProvider>

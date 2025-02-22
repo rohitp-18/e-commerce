@@ -32,7 +32,12 @@
       }
     }
 
-    button {
+    .badge svg {
+      width: 16px !important;
+      height: 16px !important;
+    }
+
+    button[type="submit"] {
       width: 100%;
       background-color: tomato;
       color: white;
@@ -46,6 +51,45 @@
         color: tomato;
         border: 1px solid tomato;
       }
+    }
+  }
+
+  form.text-editor {
+    position: relative;
+    padding-top: 60px;
+
+    button.button {
+      width: 100%;
+      background-color: tomato;
+      color: white;
+      border: none;
+      outline: none;
+      padding: 8px 0;
+      font-size: medium;
+
+      &:hover {
+        background-color: white;
+        color: tomato;
+        border: 1px solid tomato;
+      }
+    }
+
+    .back-button {
+      width: 40px;
+      height: 40px;
+      color: black;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      border: transparent;
+    }
+
+    .text-editor .jodit-wysiwyg {
+      width: 100%;
+      min-height: 500px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
     }
   }
 }

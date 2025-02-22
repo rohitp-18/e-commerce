@@ -45,6 +45,7 @@ function Navbar() {
   let val;
 
   useEffect(() => {
+    console.log("first");
     if (locat.search) {
       setWord(locat.search ? locat.search.split("=")[1] : word);
       setSearch(true);
@@ -139,6 +140,10 @@ function Navbar() {
                 <Link to="/notify">
                   <NotificationsNoneOutlined />
                   <span>Notification</span>
+                </Link>
+                <Link to="/orders">
+                  <ShoppingBagOutlined />
+                  <span>Orders</span>
                 </Link>
                 {user && user.role === "admin" && (
                   <Link to="/admin">

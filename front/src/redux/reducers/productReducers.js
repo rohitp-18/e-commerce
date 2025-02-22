@@ -84,6 +84,10 @@ const productDetails = (state = {}, action) => {
       return {
         loading: false,
         product: action.payload.product,
+        simmilar: action.payload.simmilar,
+        topRatedProducts: action.payload.topRatedProducts,
+        recommended: action.payload.recommended,
+        sponsored: action.payload.sponsored,
       };
 
     case PRODUCT_DETAILS_FAIL:

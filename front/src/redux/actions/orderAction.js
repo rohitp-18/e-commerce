@@ -61,7 +61,7 @@ const getMyOrdersAction = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ALL_ORDERS_FAIL,
-      payload: error.response.data.message.response,
+      payload: error.response?.data.message || "Internal error".response,
     });
   }
 };
@@ -78,7 +78,7 @@ const getAdminOrders = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ADMIN_ORDER_FAIL,
-      payload: error.response.data.message.response,
+      payload: error.response?.data.message || "Internal error".response,
     });
   }
 };

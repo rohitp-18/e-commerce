@@ -27,6 +27,7 @@ function ConfirmOrder({ setActiveStep, cartItems }) {
   };
 
   useEffect(() => {
+    console.log("first");
     console.log(cartItems);
   });
   return (

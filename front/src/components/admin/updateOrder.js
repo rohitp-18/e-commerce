@@ -34,6 +34,7 @@ function UpdateOrder() {
   };
 
   useEffect(() => {
+    console.log("first");
     if (error) {
       sendAlert(error, "error");
       dispatch(clearErrors);
@@ -46,6 +47,7 @@ function UpdateOrder() {
     dispatch(adminsingleOrder(id));
 
     order && setStatus(order.orderStatus);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isUpdated, sendAlert, error, id, navigate]);
   return (
     <>

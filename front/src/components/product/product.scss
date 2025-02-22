@@ -42,7 +42,6 @@ main {
       .price {
         font-weight: bold;
         padding-top: 10px;
-        padding-bottom: 1.5rem;
         font-size: 22px;
       }
 
@@ -122,6 +121,8 @@ main {
 
       .submit-review {
         padding: 5px 0;
+        display: flex;
+        gap: 20px;
 
         button {
           background-color: tomato;
@@ -139,11 +140,11 @@ main {
   }
 
   section.reviews {
-    div:first-child {
+    div.reviews {
       display: flex;
     }
 
-    div {
+    div.reviews {
       div {
         border-bottom: 1px solid #444;
         display: inline-block;
@@ -179,7 +180,9 @@ main {
       flex: none;
       padding: 15px 8px;
       gap: 5px;
+      scrollbar-width: none;
       display: flex;
+      justify-content: center;
 
       .review-item {
         flex: none;

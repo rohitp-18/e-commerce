@@ -57,7 +57,7 @@ const loginAction =
     } catch (error) {
       dispatch({
         type: LOGIN_FAIL,
-        payload: error.response.data.message,
+        payload: error.response?.data.message || "Internal error",
       });
     }
   };
@@ -74,7 +74,7 @@ const signupAction = (form) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SIGNUP_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -132,7 +132,7 @@ const updatePassword =
     } catch (error) {
       dispatch({
         type: UPDATE_PASSWORD_FAIL,
-        payload: error.response.data.message,
+        payload: error.response?.data.message || "Internal error",
       });
     }
   };
@@ -189,7 +189,7 @@ const updateAdminUser = (id, user) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ADMIN_UPDATE_USER_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -208,7 +208,7 @@ const forgotPasswordRequest = (email) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FORGOT_PASSWORD_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -225,7 +225,7 @@ const forgotPasswordId = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FORGOT_PASSWORD_ID_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -244,7 +244,7 @@ const forgotPasswordChange = (password, id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FORGOT_PASSWORD_CHANGE_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };

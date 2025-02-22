@@ -33,7 +33,6 @@ const createAdvertisement = expressAsyncHandler(async (req, res, next) => {
     name,
     initialDate,
     expireDate,
-    image,
     paymentDetails,
   } = req.body;
 
@@ -48,15 +47,22 @@ const createAdvertisement = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("please fill all required fields", 403));
   }
 
-  // let image;
+  let image;
 
-  // if (req.files) {
-  //   image = await cloudinary.uploader.upload(image, {
-  //     folder: "ads",
-  //     width: "250",
-  //     crop: "scale",
-  //   });
-  // }
+  if (req.file) {
+    const b64 = Buffer.from(req.file.buffer).toString("base64");
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+    image = await cloudinary.uploader.upload(dataURI, {
+      folder: `e-commerce/ads/${name}`,
+      height: 200,
+      crop: "pad",
+    });
+
+    info.images[i + info.images.length] = {
+      public_id: data.public_id,
+      url: data.secure_url,
+    };
+  }
 
   const advertisement = await Advertisement.create({
     name,
@@ -67,8 +73,7 @@ const createAdvertisement = expressAsyncHandler(async (req, res, next) => {
     expireDate,
     category,
     description,
-    // image: { url: image.secure_url, public_id: image.public_id },
-    image: { url: image },
+    image: { url: image.secure_url, public_id: image.public_id },
   });
 
   res.status(200).json({
@@ -92,15 +97,18 @@ const updateAdvertisement = expressAsyncHandler(async (req, res, next) => {
 
   let form = { name, expireDate };
 
-  if (req.files) {
-    let image = await cloudinary.uploader.upload(image, {
-      folder: "ads",
-      width: "250",
-      crop: "scale",
+  if (req.file) {
+    const b64 = Buffer.from(req.file.buffer).toString("base64");
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+    image = await cloudinary.uploader.upload(dataURI, {
+      folder: `e-commerce/ads/${name}`,
+      height: 200,
+      crop: "pad",
     });
-    form = {
-      ...form,
-      image: { url: image.secure_url, public_id: image.public_id },
+
+    info.images[i + info.images.length] = {
+      public_id: data.public_id,
+      url: data.secure_url,
     };
   }
 
@@ -164,7 +172,6 @@ const createSellerAdvertisement = expressAsyncHandler(
       name,
       initialDate,
       expireDate,
-      image,
       paymentDetails,
     } = req.body;
 
@@ -179,15 +186,22 @@ const createSellerAdvertisement = expressAsyncHandler(
       return next(new ErrorHandler("please fill all required fields", 403));
     }
 
-    // let image;
+    let image;
 
-    // if (req.files) {
-    //   image = await cloudinary.uploader.upload(image, {
-    //     folder: "ads",
-    //     width: "250",
-    //     crop: "scale",
-    //   });
-    // }
+    if (req.file) {
+      const b64 = Buffer.from(req.file.buffer).toString("base64");
+      let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+      image = await cloudinary.uploader.upload(dataURI, {
+        folder: `e-commerce/ads/${name}`,
+        height: 200,
+        crop: "pad",
+      });
+
+      info.images[i + info.images.length] = {
+        public_id: data.public_id,
+        url: data.secure_url,
+      };
+    }
 
     const advertisement = await Advertisement.create({
       name,
@@ -198,8 +212,7 @@ const createSellerAdvertisement = expressAsyncHandler(
       expireDate,
       category,
       description,
-      // image: { url: image.secure_url, public_id: image.public_id },
-      image: { url: image },
+      image: { url: image.secure_url, public_id: image.public_id },
     });
 
     res.status(200).json({
@@ -228,20 +241,18 @@ const updateSellerAdvertisement = expressAsyncHandler(
 
     let form = { name, expireDate };
 
-    if (req.files) {
-      let image = await cloudinary.uploader.upload(image, {
-        folder: "ads",
-        width: "250",
-        crop: "scale",
+    if (req.file) {
+      const b64 = Buffer.from(req.file.buffer).toString("base64");
+      let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+      form.image = await cloudinary.uploader.upload(dataURI, {
+        folder: `e-commerce/ads/${name}`,
+        height: 200,
+        crop: "pad",
       });
-      form = {
-        ...form,
-        image: { url: image.secure_url, public_id: image.public_id },
-      };
     }
 
     const advertisement = await Advertisement.findByIdAndUpdate(
-      req.params.id,
+      { _id: req.params.id, seller: req.user._id },
       form
     );
 

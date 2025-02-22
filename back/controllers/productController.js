@@ -2,6 +2,52 @@ const Product = require("../models/productModel");
 const expressAsyncHandler = require("express-async-handler");
 const Apifeatures = require("../utils/apiFeatures");
 const ErrorHandler = require("../utils/errorHandler");
+const View = require("../models/viewsModel");
+const cloudinary = require("cloudinary").v2;
+
+const getHomePage = expressAsyncHandler(async (req, res, next) => {
+  const products = await Product.find().limit(10);
+  const newProducts = await Product.find().sort({ createdAt: -1 }).limit(10);
+  const featuredProducts = await Product.find({ ratings: { $gte: 4 } }).limit(
+    10
+  );
+  const topRatedProducts = await Product.find().sort({ ratings: -1 }).limit(10);
+  const sponsored = await Product.find({ sponsored: true }).limit(10);
+
+  if (!req.user) {
+    return res.status(200).json({
+      success: true,
+      products,
+      newProducts,
+      featuredProducts,
+      topRatedProducts,
+      sponsored,
+    });
+  }
+
+  const views = await View.find({ user: req.user._id })
+    .populate("product")
+    .sort({ createdAt: -1 })
+    .limit(10);
+  const favorites = await View.find({ user: req.user._id, status: "favorite" })
+    .populate("product")
+    .sort({ createdAt: -1 })
+    .limit(10);
+
+  // const recommended = await View.find({ user: req.user._id, status: "view" }).populate("product").sort({ createdAt: -1 }).limit(10);
+
+  res.status(200).json({
+    success: true,
+    products,
+    newProducts,
+    featuredProducts,
+    topRatedProducts,
+    sponsored,
+    views,
+    favorites,
+    // recommended,
+  });
+});
 
 const getAllProducts = expressAsyncHandler(async (req, res, next) => {
   let totalProduct = await Product.countDocuments();
@@ -38,7 +84,28 @@ const getProduct = expressAsyncHandler(async (req, res, next) => {
   if (!product) {
     return next(new ErrorHandler("product not found", 404));
   }
-  res.status(200).json({ success: true, product });
+
+  const simmilar = await Product.find({ category: product.category });
+  const recommended = await Product.find({
+    category: product.category,
+    ratings: { $gte: 4 },
+  });
+  const topRatedProducts = await Product.find({ category: product.category })
+    .sort({ ratings: -1 })
+    .limit(10);
+  const sponsored = await Product.find({
+    category: product.category,
+    sponsored: true,
+  }).limit(10);
+
+  res.status(200).json({
+    success: true,
+    product,
+    simmilar,
+    recommended,
+    topRatedProducts,
+    sponsored,
+  });
 });
 
 const deleteProduct = expressAsyncHandler(async (req, res, next) => {
@@ -56,9 +123,36 @@ const deleteProduct = expressAsyncHandler(async (req, res, next) => {
 });
 
 const createProduct = expressAsyncHandler(async (req, res, next) => {
-  const { name, price, stock, description, category, image } = req.body;
-  if (!name || !stock || !price || !description || !category || !image) {
+  const { name, price, stock, description, category } = req.body;
+  if (!name || !stock || !price || !description || !category) {
     return next(new ErrorHandler("please fill all required fields", 400));
+  }
+
+  if (!req.files || req.files.length === 0) {
+    return next(new ErrorHandler("please upload image", 400));
+  }
+
+  let avatar = [];
+
+  try {
+    await Promise.all(
+      req.files.map(async (image, i) => {
+        const b64 = Buffer.from(image.buffer).toString("base64");
+        let dataURI = "data:" + image.mimetype + ";base64," + b64;
+        const data = await cloudinary.uploader.upload(dataURI, {
+          folder: `e-comerce/${category}/${name}`,
+          height: 200,
+          crop: "pad",
+        });
+
+        avatar[i] = {
+          public_id: data.public_id,
+          url: data.secure_url,
+        };
+      })
+    );
+  } catch (error) {
+    return next(new ErrorHandler("internal Error", 500));
   }
 
   const product = await Product.create({
@@ -67,7 +161,7 @@ const createProduct = expressAsyncHandler(async (req, res, next) => {
     description,
     stock,
     category,
-    images: { public_id: "job done", url: "hrllo" },
+    images: avatar,
     user: req.user._id,
   });
 
@@ -84,8 +178,53 @@ const createProduct = expressAsyncHandler(async (req, res, next) => {
 
 const updateProduct = expressAsyncHandler(async (req, res, next) => {
   const { id } = req.params;
+  const { name, price, stock, description, category } = req.body;
 
-  const product = await Product.findByIdAndUpdate(id, req.body, { new: true });
+  let info = {
+    name,
+    price,
+    stock,
+    description,
+    category,
+    images: [],
+  };
+
+  if (!name || !price || !stock || !description || !category) {
+    return next(new ErrorHandler("please fill all required fields", 400));
+  }
+
+  if (req.body.image && req.body.image[0]) {
+    info.images = [...req.body.image];
+  }
+
+  if (req.files) {
+    try {
+      await Promise.all(
+        req.files.map(async (image, i) => {
+          const b64 = Buffer.from(image.buffer).toString("base64");
+          let dataURI = "data:" + image.mimetype + ";base64," + b64;
+          const data = await cloudinary.uploader.upload(dataURI, {
+            folder: `portfolio/project/${name}`,
+            height: 200,
+            crop: "pad",
+          });
+
+          info.images[i + req.body.image?.length || 0] = {
+            public_id: data.public_id,
+            url: data.secure_url,
+          };
+        })
+      );
+    } catch (error) {
+      return next(new ErrorHandler("internal Error", 500));
+    }
+  }
+
+  if (info.images.length <= 0) {
+    return next(new ErrorHandler("please upload image", 400));
+  }
+
+  const product = await Product.findByIdAndUpdate(id, info, { new: true });
 
   if (!product) {
     return next(new ErrorHandler("product not found", 404));
@@ -217,7 +356,64 @@ const getSellerProducts = expressAsyncHandler(async (req, res, next) => {
 const updateSellerProduct = expressAsyncHandler(async (req, res, next) => {
   const { id } = req.params;
 
-  const product = await Product.findByIdAndUpdate(id, req.body, { new: true });
+  const tempProduct = await Product.findOne({ _id: id, user: req.user._id });
+
+  if (!tempProduct) {
+    return next(new ErrorHandler("product not found", 404));
+  }
+
+  let info = {
+    name: req.body.name,
+    price: req.body.price,
+    stock: req.body.stock,
+    description: req.body.description,
+    category: req.body.category,
+    images: [],
+  };
+
+  if (
+    !info.name ||
+    !info.price ||
+    !info.stock ||
+    !info.description ||
+    !info.category
+  ) {
+    return next(new ErrorHandler("please fill all required fields", 400));
+  }
+
+  if (req.body.image) {
+    info.images = [...req.body.image];
+  }
+
+  if (req.files) {
+    console.log(req.files);
+    try {
+      await Promise.all(
+        req.files.map(async (image, i) => {
+          const b64 = Buffer.from(image.buffer).toString("base64");
+          let dataURI = "data:" + image.mimetype + ";base64," + b64;
+          const data = await cloudinary.uploader.upload(dataURI, {
+            folder: `portfolio/project/${name}`,
+            height: 200,
+            crop: "pad",
+          });
+
+          info.images[i + info.images.length] = {
+            public_id: data.public_id,
+            url: data.secure_url,
+          };
+        })
+      );
+    } catch (error) {
+      return next(new ErrorHandler("internal Error", 500));
+    }
+  }
+
+  const product = await Product.findByIdAndUpdate(
+    { id, user: req.user._id },
+    info,
+    { new: true }
+  );
 
   if (!product) {
     return next(new ErrorHandler("product not found", 404));
@@ -259,6 +455,8 @@ const reviewSellerProduct = expressAsyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
+  getHomePage,
+
   getAllProducts,
   getProduct,
   deleteProduct,

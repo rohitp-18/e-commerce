@@ -31,4 +31,21 @@ const authorizedRole = (...roles) => {
   };
 };
 
-module.exports = { auth, authorizedRole };
+const checkAuth = expressAsyncHandler(async (req, res, next) => {
+  const { token } = req.cookies;
+  if (!token) {
+    return next();
+  }
+
+  const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+  if (!_id) {
+    return next();
+  }
+
+  const user = await User.findById(_id);
+  req.user = user;
+
+  next();
+});
+
+module.exports = { auth, authorizedRole, checkAuth };

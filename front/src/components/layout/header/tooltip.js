@@ -45,6 +45,7 @@ function Tooltip() {
   ]);
 
   useEffect(() => {
+    console.log("first");
     if (user && user.role === "admin" && actions.length === 3) {
       setShow(true);
       setActions([

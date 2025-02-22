@@ -22,7 +22,8 @@ function UpadateUser() {
   const { user, loading } = useSelector((state) => state.user);
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
-  const [image, setImage] = useState(user.avatar.url);
+  const [image, setImage] = useState();
+  const [temoImage, setTempImage] = useState();
   const { sendAlert } = useContext(AlertContext);
   const inputFile = useRef(null);
   const dispatch = useDispatch();
@@ -34,10 +35,18 @@ function UpadateUser() {
       sendAlert("please fill all required fields", "error");
       return;
     }
+
+    const form = new FormData();
+    form.append("name", name);
+    form.append("email", email);
+
     if (image === user.avatar.url) {
-      dispatch(updateUser({ name, email }));
+      dispatch(updateUser(form));
       return;
     }
+
+    form.append("image", temoImage);
+
     dispatch(updateUser({ name, email, image }));
   };
 
@@ -45,6 +54,8 @@ function UpadateUser() {
     if (!e.target.files || !e.target.files[0]) return;
 
     const reader = new FileReader();
+
+    setTempImage(e.target.files[0]);
 
     reader.onload = (e) => {
       setImage(e.target.result);
@@ -54,6 +65,7 @@ function UpadateUser() {
   };
 
   useEffect(() => {
+    console.log("first");
     if (isUpdate) {
       sendAlert("Profile has been upadated successfully", "success");
       dispatch({ type: UPDATE_USER_RESET });
@@ -65,6 +77,7 @@ function UpadateUser() {
       sendAlert(error, "error");
       dispatch({ type: CLEAR_ERRORS });
     }
+    // eslint-disable-next-line
   }, [isUpdate, error, dispatch, navigator]);
   return (
     <>
@@ -79,7 +92,10 @@ function UpadateUser() {
               className="avatar-div"
               onClick={() => inputFile.current.click()}
             >
-              <Avatar sizes="medium" src={image} />
+              <Avatar
+                sizes="medium"
+                src={image ? image : user.avatar && user.avatar.url}
+              />
               <CameraAlt className="camera" />
               <input
                 name="file"

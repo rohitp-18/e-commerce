@@ -27,6 +27,7 @@ import {
   sellerReviewReducer,
 } from "./sellerReducer";
 import { adminAdvertReducer, sellerAdvertReducer } from "./advertiseReducer";
+import { homeReducer } from "./homeReducer";
 
 const reducer = combineReducers({
   allProducts: allProducts,
@@ -50,6 +51,7 @@ const reducer = combineReducers({
   advert: adminAdvertReducer,
   sellerAdvert: sellerAdvertReducer,
   sellerReview: sellerReviewReducer,
+  homeReducer: homeReducer,
 });
 
 export default reducer;

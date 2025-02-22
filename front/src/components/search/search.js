@@ -23,6 +23,7 @@ function Search() {
   const { products } = useSelector((state) => state.allProducts);
 
   useEffect(() => {
+    console.log("first");
     dispatch(getAllProducts(category, price, keyword, ratings));
   }, [category, dispatch, price, keyword, ratings]);
 
@@ -35,6 +36,7 @@ function Search() {
   };
 
   useEffect(() => {
+    console.log("first");
     const link = param.search ? param.search.split("=")[1] : "";
     setKeyword(link);
     setWord(link);

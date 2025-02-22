@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const expressFileUpload = require("express-fileupload");
 const cloudinary = require("cloudinary").v2;
 
 dotenv.config({ path: path.resolve(__dirname, "config/.env") });
@@ -15,6 +14,7 @@ const error = require("./middlewares/error");
 const userRoute = require("./routers/userRouter");
 const productRoute = require("./routers/productRouter");
 const orderRoute = require("./routers/orderRouter");
+const viewRoute = require("./routers/viewRouter");
 const advertRoute = require("./routers/advertisementRouter");
 
 const app = express();
@@ -30,7 +30,7 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(expressFileUpload());
+// app.use(expressFileUpload());
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 // app.use(express.static(path.resolve(path.join(__dirname, "../front/build"))));
 
@@ -38,6 +38,7 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
 app.use("/api/v1/order", orderRoute);
 app.use("/api/v1/advert", advertRoute);
+app.use("/api/v1/view", viewRoute);
 
 // app.get("*", (req, res, next) => {
 //   res.sendFile(path.resolve(path.join(__dirname, "../front/build/index.html")));

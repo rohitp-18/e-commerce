@@ -1,5 +1,5 @@
 const express = require("express");
-const { auth, authorizedRole } = require("../middlewares/auth");
+const { auth, authorizedRole, checkAuth } = require("../middlewares/auth");
 const {
   getAllProducts,
   getProduct,
@@ -15,26 +15,36 @@ const {
   deleteSellerProduct,
   updateSellerProduct,
   reviewSellerProduct,
+  getHomePage,
 } = require("../controllers/productController");
+const upload = require("../config/multer");
 
 const router = express.Router();
 
+router.route("/home").get(checkAuth, getHomePage);
 router.route("/").get(getAllProducts);
 router.route("/admin").get(auth, authorizedRole("admin"), getAdminProducts);
 router
   .route("/seller")
   .get(auth, authorizedRole("seller"), getSellerProducts)
-  .post(auth, authorizedRole("seller"), createProduct);
-router.route("/new").post(auth, authorizedRole("admin"), createProduct);
+  .post(auth, upload.array("images"), authorizedRole("seller"), createProduct);
+router
+  .route("/new")
+  .post(auth, upload.array("images"), authorizedRole("admin"), createProduct);
 router
   .route("/seller/:id")
   .delete(auth, authorizedRole("seller"), deleteSellerProduct)
-  .put(auth, authorizedRole("seller"), updateSellerProduct);
+  .put(
+    auth,
+    upload.array("images"),
+    authorizedRole("seller"),
+    updateSellerProduct
+  );
 router
   .route("/:id")
   .get(getProduct)
   .delete(auth, authorizedRole("admin"), deleteProduct)
-  .put(auth, authorizedRole("admin"), updateProduct);
+  .put(auth, upload.array("images"), authorizedRole("admin"), updateProduct);
 
 router.route("/:id/review/new").post(auth, createProductReview);
 router.route("/:id/review/").get(getAllReviews).delete(auth, deleteReview);

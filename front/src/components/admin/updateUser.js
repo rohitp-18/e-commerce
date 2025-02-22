@@ -3,12 +3,7 @@ import Slider from "./Slider";
 import "./updateUser.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  Email,
-  Person,
-  ShoppingCartCheckoutSharp,
-  VerifiedUser,
-} from "@mui/icons-material";
+import { Email, Person, VerifiedUser } from "@mui/icons-material";
 import {
   Box,
   FormControl,
@@ -42,10 +37,12 @@ function UpdateUser() {
   };
 
   useEffect(() => {
+    console.log("first");
     dispatch(detailsUser(id));
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   useEffect(() => {
+    console.log("first");
     if (error) {
       sendAlert(error, "error");
       dispatch(clearErrors);
@@ -55,9 +52,11 @@ function UpdateUser() {
       dispatch({ type: UPDATE_USER_RESET });
       navigate("/admin/users");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, isUpdated]);
 
   useEffect(() => {
+    console.log("first");
     if (user) {
       setName(user.name);
       setEmail(user.email);

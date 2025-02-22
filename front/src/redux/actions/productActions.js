@@ -49,7 +49,7 @@ const getAllProducts =
     } catch (error) {
       dispatch({
         type: GET_PRODUCTS_FAIL,
-        payload: error.response.data.message,
+        payload: error.response?.data.message || "Internal error",
       });
     }
   };
@@ -64,7 +64,7 @@ const getProductDetails = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -81,7 +81,7 @@ const submitReview = (id, review) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: REVIEW_SUBMIT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -98,7 +98,7 @@ const getAdminProducts = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ADMIN_PRODUCTS_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -115,7 +115,7 @@ const createproductAction = (order) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CREATE_PRODUCT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -132,7 +132,7 @@ const deleteProductAction = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_PRODUCT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -149,7 +149,7 @@ const updateProductAction = (id, product) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PRODUCT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -180,7 +180,7 @@ const deleteReviewAction = (id, rev) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_REVIEW_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };
@@ -197,7 +197,7 @@ const sellerReviewAction = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_REVIEW_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data.message || "Internal error",
     });
   }
 };

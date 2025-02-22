@@ -65,10 +65,12 @@ function Advertises() {
   ];
 
   useEffect(() => {
+    console.log("first");
     dispatch(getAdminAdverts());
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("first");
     if (isDeleted) {
       sendAlert("Product deleted successfully", "success");
       dispatch({ type: DELETE_ADVERT_RESET });
@@ -79,9 +81,11 @@ function Advertises() {
       sendAlert(error, "error");
       dispatch(clearErrors());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isDeleted, error]);
 
   useEffect(() => {
+    console.log("first");
     let law = [];
     advertisements &&
       advertisements.filter((product) =>

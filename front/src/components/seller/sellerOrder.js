@@ -55,6 +55,7 @@ function SellerOrders() {
   ];
 
   useEffect(() => {
+    console.log("first");
     if (isDeleted) {
       sendAlert("Order is Cancled successfully", "success");
       dispatch({ type: SELLER_DELETE_ORDER_RESET });
@@ -64,6 +65,7 @@ function SellerOrders() {
   }, [isDeleted, dispatch]);
 
   useEffect(() => {
+    console.log("first");
     let law = [];
     orders &&
       orders.filter((product) =>

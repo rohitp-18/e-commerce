@@ -69,6 +69,10 @@ const productSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    sponsored: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

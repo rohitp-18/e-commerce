@@ -15,6 +15,7 @@ import {
   AccountCircle,
   LockOutlined,
   Visibility,
+  West,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,7 +30,7 @@ function LoginSignup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [image, setImage] = useState();
+  // const [image, setImage] = useState();
   const [tab, setTab] = useState("login");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ function LoginSignup() {
     if (confirmPassword !== password) {
       sendAlert("Password should be match", "error");
     }
-    dispatch(signupAction({ name, email, password, image }));
+    dispatch(signupAction({ name, email, password }));
   };
 
   const toggle = (tabName) => {
@@ -78,27 +79,29 @@ function LoginSignup() {
     event.preventDefault();
   };
 
-  const changeImage = (e) => {
-    if (!e.target.files || !e.target.files[0]) return;
-    const reader = new FileReader();
+  // const changeImage = (e) => {
+  //   if (!e.target.files || !e.target.files[0]) return;
+  //   const reader = new FileReader();
 
-    reader.onload = (e) => {
-      setImage(e.target.result);
-    };
-    reader.readAsDataURL(e.target.files[0]);
-  };
+  //   reader.onload = (e) => {
+  //     setImage(e.target.result);
+  //   };
+  //   reader.readAsDataURL(e.target.files[0]);
+  // };
 
   useEffect(() => {
+    console.log("first");
     if (user) {
       if (sessionStorage.getItem("link")) {
         navigate(sessionStorage.getItem("link"));
       } else {
-        navigate(-1);
+        navigate("/account");
       }
     }
   }, [dispatch, user, navigate]);
 
   useEffect(() => {
+    console.log("first");
     if (message) {
       sendAlert(message, "success");
       return;
@@ -114,162 +117,187 @@ function LoginSignup() {
         <Loader />
       ) : (
         !user && (
-          <section className="login-form">
-            <div className="switchTabs">
-              <p
-                className={`${tab === "login" && "tab"}`}
-                onClick={() => toggle("login")}
-              >
-                LOGIN
-              </p>
-              <p
-                className={`${tab !== "login" && "tab"}`}
-                onClick={(e) => toggle("register")}
-              >
-                REGISTER
-              </p>
-            </div>
-            <form
-              onSubmit={(e) => submitHandler(e)}
-              className={`loginform ${tab === "login" && "none"}`}
-            >
-              <Box
-                sx={{
-                  display: tab === "login" ? "none" : "flex",
-                  alignItems: "flex-end",
-                }}
-              >
-                <AccountCircle
-                  sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                />
-                <TextField
-                  name="name"
-                  required={tab !== "login"}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  sx={{ width: "25ch" }}
-                  label="Your Name"
-                  variant="standard"
-                />
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <EmailOutlined
-                  sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                />
-                <TextField
-                  required
-                  name="email"
-                  sx={{ width: "25ch" }}
-                  value={email}
-                  label="Email"
-                  variant="standard"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Box>
-              <Box
-                sx={{
-                  display: tab === "login" ? "none" : "flex",
-                  alignItems: "flex-end",
-                }}
-              >
-                <LockOutlined sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-                <TextField
-                  type="password"
-                  required={tab !== "login"}
-                  name="conPassword"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  sx={{ width: "25ch" }}
-                  label="Password"
-                  variant="standard"
-                />
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <LockOutlined sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-                <FormControl sx={{ width: "25ch" }} variant="standard">
-                  <InputLabel htmlFor="standard-adornment-password">
-                    {`${tab === "login" ? "Password" : "Confirm Password"}`}
-                  </InputLabel>
-                  <Input
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    type={showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-              </Box>
-              <Box
-                sx={{
-                  display: tab === "login" ? "none" : "flex",
-                  alignItems: "center",
-                  ml: 0.5,
-                }}
-              >
-                <Avatar
-                  sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                  src={image}
-                />
-                <input
-                  name="image"
-                  required={tab !== "login"}
-                  // value={image}
-                  accept="image/*"
-                  onChange={(e) => changeImage(e)}
-                  sx={{ width: "25ch" }}
-                  type="file"
-                  variant="standard"
-                />
-              </Box>
-              <Box>
-                <Link className="forgot-password" to="/password/forgot">
-                  forgot password?
-                </Link>
-                <input
-                  type="submit"
-                  className="submit-button"
-                  value={`${tab === "login" ? "LOGIN" : "SIGN UP"}`}
-                />
-              </Box>
-              <Box
+          <>
+            <nav>
+              <div
                 style={{
-                  fontSize: "15px",
-                  display: tab === "login" ? "block" : "none",
+                  paddingRight: "10px",
+                  background: "transparent",
+                  position: "absolute",
+                  top: "0",
+                  left: "0",
                 }}
+                className="nav"
               >
-                Don't have an account?{" "}
-                <span
-                  style={{ display: "inline" }}
-                  className="forgot-password"
-                  onClick={() => toggle("register")}
-                >
-                  Sign UP
-                </span>
-              </Box>
-              <Box
-                style={{ fontSize: "15px", display: tab === "login" && "none" }}
-              >
-                already have an account?{" "}
-                <span
-                  style={{ display: "inline" }}
-                  className="forgot-password"
+                <Link style={{ padding: "0 20px" }} to={-2}>
+                  <West sx={{ fontSize: "35px" }} />
+                </Link>
+              </div>
+            </nav>
+            <section className="login-form">
+              <div className="switchTabs">
+                <p
+                  className={`${tab === "login" && "tab"}`}
                   onClick={() => toggle("login")}
                 >
-                  Login
-                </span>
-              </Box>
-            </form>
-          </section>
+                  LOGIN
+                </p>
+                <p
+                  className={`${tab !== "login" && "tab"}`}
+                  onClick={(e) => toggle("register")}
+                >
+                  REGISTER
+                </p>
+              </div>
+              <form
+                onSubmit={(e) => submitHandler(e)}
+                className={`loginform ${tab === "login" && "none"}`}
+              >
+                <Box
+                  sx={{
+                    display: tab === "login" ? "none" : "flex",
+                    alignItems: "flex-end",
+                  }}
+                >
+                  <AccountCircle
+                    sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                  />
+                  <TextField
+                    name="name"
+                    required={tab !== "login"}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    sx={{ width: "25ch" }}
+                    label="Your Name"
+                    variant="standard"
+                  />
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                  <EmailOutlined
+                    sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                  />
+                  <TextField
+                    required
+                    name="email"
+                    sx={{ width: "25ch" }}
+                    value={email}
+                    label="Email"
+                    variant="standard"
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    display: tab === "login" ? "none" : "flex",
+                    alignItems: "flex-end",
+                  }}
+                >
+                  <LockOutlined
+                    sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                  />
+                  <TextField
+                    type="password"
+                    required={tab !== "login"}
+                    name="conPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    sx={{ width: "25ch" }}
+                    label="Password"
+                    variant="standard"
+                  />
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                  <LockOutlined
+                    sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                  />
+                  <FormControl sx={{ width: "25ch" }} variant="standard">
+                    <InputLabel htmlFor="standard-adornment-password">
+                      {`${tab === "login" ? "Password" : "Confirm Password"}`}
+                    </InputLabel>
+                    <Input
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      type={showPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Box>
+                {/* <Box
+                  sx={{
+                    display: tab === "login" ? "none" : "flex",
+                    alignItems: "center",
+                    ml: 0.5,
+                  }}
+                >
+                  <Avatar
+                    sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                    src={image}
+                  />
+                  <input
+                    name="image"
+                    required={tab !== "login"}
+                    // value={image}
+                    accept="image/*"
+                    onChange={(e) => changeImage(e)}
+                    sx={{ width: "25ch" }}
+                    type="file"
+                    variant="standard"
+                  />
+                </Box> */}
+                <Box>
+                  <Link className="forgot-password" to="/password/forgot">
+                    forgot password?
+                  </Link>
+                  <input
+                    type="submit"
+                    className="submit-button"
+                    value={`${tab === "login" ? "LOGIN" : "SIGN UP"}`}
+                  />
+                </Box>
+                <Box
+                  style={{
+                    fontSize: "15px",
+                    display: tab === "login" ? "block" : "none",
+                  }}
+                >
+                  Don't have an account?{" "}
+                  <span
+                    style={{ display: "inline" }}
+                    className="forgot-password"
+                    onClick={() => toggle("register")}
+                  >
+                    Sign UP
+                  </span>
+                </Box>
+                <Box
+                  style={{
+                    fontSize: "15px",
+                    display: tab === "login" && "none",
+                  }}
+                >
+                  already have an account?{" "}
+                  <span
+                    style={{ display: "inline" }}
+                    className="forgot-password"
+                    onClick={() => toggle("login")}
+                  >
+                    Login
+                  </span>
+                </Box>
+              </form>
+            </section>
+          </>
         )
       )}
     </>

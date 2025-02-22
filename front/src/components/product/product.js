@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import Carousel from "react-material-ui-carousel";
+import parser from "html-react-parser";
 
 import {
   getProductDetails,
@@ -15,13 +16,18 @@ import Loader from "../layout/Loader";
 import { AlertContext } from "../layout/alertProvider";
 import { clearErrors } from "../../redux/actions/orderAction";
 import { REVIEW_SUBMIT_RESET } from "../../redux/constants/productConstants";
+import MetaData from "../layout/header/MetaData";
+import axios from "../../redux/axios";
+import ProductCard from "../home/product";
 
 const Product = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { success, error } = useSelector((state) => state.review);
-  let { product, loading } = useSelector((state) => state.product);
+  let { product, simmilar, loading, recommended, topRatedProducts, sponsored } =
+    useSelector((state) => state.product);
+  const { home } = useSelector((state) => state.homeReducer);
   const [value, setValue] = useState(1);
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
@@ -63,10 +69,18 @@ const Product = () => {
   };
 
   useEffect(() => {
+    console.log("first");
     dispatch(getProductDetails(id));
   }, [dispatch, id]);
 
   useEffect(() => {
+    try {
+      axios.post("/view/view/new", { product: id }, { withCredentials: true });
+    } catch (error) {}
+  }, [id]);
+
+  useEffect(() => {
+    console.log("first");
     if (error) {
       sendAlert(error, "error");
       dispatch(clearErrors());
@@ -79,6 +93,7 @@ const Product = () => {
   }, [dispatch, success, error]);
 
   useEffect(() => {
+    console.log("first");
     if (open && !user) {
       sessionStorage.setItem("link", location.pathname);
       navigator("/login");
@@ -91,6 +106,7 @@ const Product = () => {
       ) : (
         product && (
           <main>
+            <MetaData title={product.name} />
             <section className="product">
               <div className="image">
                 <Carousel
@@ -113,8 +129,10 @@ const Product = () => {
               <section>
                 <div className="product-info">
                   <h1>{product.name}</h1>
-                  <div className="description">{product.description}</div>
-                  <hr />
+                  <div
+                    style={{ color: "tomato" }}
+                    className="price"
+                  >{`₹${product.price}`}</div>
                   <div className="ratings">
                     <Rating
                       value={product.ratings}
@@ -126,9 +144,7 @@ const Product = () => {
                   </div>
                   <hr />
 
-                  <div className="price">{`₹${product.price}`}</div>
-
-                  <div className="select">
+                  {/* <div className="select">
                     <div className="selected">
                       <button onClick={decreament}>-</button>
                       <input value={value} type="submit" />
@@ -137,23 +153,39 @@ const Product = () => {
                     <button onClick={cartHandler} className="cart">
                       Add to cart
                     </button>
-                  </div>
-                  <hr />
-                  <div className="status">
-                    <h3>Status : </h3>
-                    <div
-                      className={`stock ${product.stock < 0 ? "" : "avail"}`}
-                    >
-                      {product.stock < 0 ? "OutOfStock" : "InStock"}
-                    </div>
-                  </div>
-                  <hr />
+                  </div> */}
+                  {product.stock < 0 && (
+                    <>
+                      <hr />
+                      <div className="status">
+                        <h3>Status : </h3>
+                        <div
+                          className={`stock ${
+                            product.stock < 0 ? "" : "avail"
+                          }`}
+                        >
+                          {product.stock < 0 ? "OutOfStock" : "InStock"}
+                        </div>
+                      </div>
+                      <hr />
+                    </>
+                  )}
                   <div className="descriptions">
                     <h4>Description :-</h4>
-                    <div>{product.description}</div>
+                    <div>{parser(product.description)}</div>
                   </div>
                   <div className="submit-review">
                     <button onClick={() => setOpen(true)}>Submit Review</button>
+                    <button
+                      style={{
+                        background: "transparent",
+                        color: "tomato",
+                        border: "1px solid tomato",
+                      }}
+                      onClick={cartHandler}
+                    >
+                      Add to Cart
+                    </button>
                   </div>
                   <Modal
                     className="review-modal"
@@ -189,7 +221,33 @@ const Product = () => {
               </section>
             </section>
             <section className="reviews">
-              <div>
+              {sponsored && sponsored.length > 0 && (
+                <>
+                  <h3 className="featured-products">Sponsered Products</h3>
+                  <section id="products" className="products-flex">
+                    {sponsored.map((item) => (
+                      <ProductCard key={item._id} product={item} />
+                    ))}
+                    {home &&
+                      home.products &&
+                      home.products.length > 0 &&
+                      home.products.map((item) => (
+                        <ProductCard key={item._id} product={item} />
+                      ))}
+                  </section>
+                </>
+              )}
+              {recommended && recommended.length > 0 && (
+                <>
+                  <h3 className="featured-products">Recommended Products</h3>
+                  <section id="products" className="products-flex">
+                    {recommended.map((item) => (
+                      <ProductCard key={item._id} product={item} />
+                    ))}
+                  </section>
+                </>
+              )}
+              <div className="reviews">
                 <div>Reviews</div>
               </div>
               {product.reviews.length === 0 ? (
@@ -214,6 +272,41 @@ const Product = () => {
                   ))}
                 </div>
               )}
+              <h3 className="featured-products">Simmilar Products</h3>
+              <section id="products" className="products-flex">
+                {simmilar &&
+                  simmilar.map((item) => (
+                    <ProductCard key={item._id} product={item} />
+                  ))}
+                {home &&
+                  home.products &&
+                  home.products.map((item) => (
+                    <ProductCard key={item._id} product={item} />
+                  ))}
+                {home &&
+                  home.products &&
+                  home.products.map((item) => (
+                    <ProductCard key={item._id} product={item} />
+                  ))}
+              </section>
+              <h3 className="featured-products">Top Rated Products</h3>
+              <section id="products" className="products-flex">
+                {topRatedProducts &&
+                  topRatedProducts.map((item) => (
+                    <ProductCard key={item._id} product={item} />
+                  ))}
+
+                {home &&
+                  home.products &&
+                  home.products.map((item) => (
+                    <ProductCard key={item._id} product={item} />
+                  ))}
+                {home &&
+                  home.products &&
+                  home.products.map((item) => (
+                    <ProductCard key={item._id} product={item} />
+                  ))}
+              </section>
             </section>
           </main>
         )

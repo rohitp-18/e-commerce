@@ -51,15 +51,18 @@ function Orders() {
   ];
 
   useEffect(() => {
+    console.log("first");
     if (isDeleted) {
       sendAlert("Order is Deleted successfully", "success");
       dispatch({ type: DELETE_ORDER_RESET });
       dispatch(getAdminOrders());
     }
     dispatch(getAdminOrders());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDeleted, dispatch]);
 
   useEffect(() => {
+    console.log("first");
     let law = [];
     orders &&
       orders.filter((product) =>

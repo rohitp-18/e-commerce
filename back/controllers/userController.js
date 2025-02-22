@@ -29,24 +29,16 @@ const loginHandler = expressAsyncHandler(async (req, res, next) => {
 });
 
 const registerUser = expressAsyncHandler(async (req, res, next) => {
-  const { name, email, password, image } = req.body;
+  const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
     return next(new ErrorHandler("Please fill all required filleds", 400));
   }
 
-  // const avatar = await cloudinary.uploader.upload(image, {
-  //   folder: "Avatar",
-  //   width: 150,
-  //   crop: "scale",
-  // });
-
   const user = await User.create({
     name,
     email,
     password,
-    // avatar: { public_id: avatar.public_id, url: avatar.secure_url },
-    avatar: { public_id: "hoo", url: "hoo" },
   });
 
   if (!user) {
@@ -92,11 +84,13 @@ const updateUser = expressAsyncHandler(async (req, res, next) => {
 
   let avatar;
 
-  if (image) {
-    avatar = await cloudinary.uploader.upload(image, {
-      folder: "Avatar",
-      width: 150,
-      crop: "scale",
+  if (req.file) {
+    const b64 = Buffer.from(image.buffer).toString("base64");
+    let dataURI = "data:" + image.mimetype + ";base64," + b64;
+    avatar = await cloudinary.uploader.upload(dataURI, {
+      folder: `portfolio/project/${name}`,
+      height: 200,
+      crop: "pad",
     });
   }
 

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Slider from "./sellerNavbar";
-import { Delete, Search } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import { Box, Button, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
@@ -41,6 +41,7 @@ function SellerReview() {
   };
 
   useEffect(() => {
+    console.log("first");
     let law = [];
     if (reviews) {
       reviews.filter((review) =>
@@ -57,10 +58,12 @@ function SellerReview() {
   }, [reviews]);
 
   useEffect(() => {
+    console.log("first");
     if (error) {
       sendAlert(error, "error");
       dispatch({ type: CLEAR_ERRORS });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, error]);
   return (
     <>

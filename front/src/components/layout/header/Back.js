@@ -1,16 +1,8 @@
-import {
-  ArrowLeft,
-  ArrowRight,
-  ArrowRightAlt,
-  West,
-} from "@mui/icons-material";
+import { West } from "@mui/icons-material";
 import React from "react";
 import { Link } from "react-router-dom";
 
 function Back() {
-  const styl = {
-    background: "transparent",
-  };
   return (
     <nav>
       <div style={{ paddingRight: "20px", background: "#eee" }} className="nav">

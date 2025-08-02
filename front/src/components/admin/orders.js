@@ -51,7 +51,6 @@ function Orders() {
   ];
 
   useEffect(() => {
-    console.log("first");
     if (isDeleted) {
       sendAlert("Order is Deleted successfully", "success");
       dispatch({ type: DELETE_ORDER_RESET });
@@ -62,7 +61,6 @@ function Orders() {
   }, [isDeleted, dispatch]);
 
   useEffect(() => {
-    console.log("first");
     let law = [];
     orders &&
       orders.filter((product) =>

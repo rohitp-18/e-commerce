@@ -19,13 +19,11 @@ function SellerHome() {
   const [outOfStock, setOutOfStock] = useState([]);
 
   useEffect(() => {
-    console.log("first");
     dispatch(sellerOrderAction());
     dispatch(getSellerProductAction());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("first");
     if (orders) {
       setOutOfStock(orders.filter((order) => order.stock > 1));
       const temp = orders.filter((order) => order.orderStatus !== "cancled");

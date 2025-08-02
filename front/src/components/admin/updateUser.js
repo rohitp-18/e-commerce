@@ -37,12 +37,10 @@ function UpdateUser() {
   };
 
   useEffect(() => {
-    console.log("first");
     dispatch(detailsUser(id));
   }, [dispatch, id]);
 
   useEffect(() => {
-    console.log("first");
     if (error) {
       sendAlert(error, "error");
       dispatch(clearErrors);
@@ -56,7 +54,6 @@ function UpdateUser() {
   }, [error, isUpdated]);
 
   useEffect(() => {
-    console.log("first");
     if (user) {
       setName(user.name);
       setEmail(user.email);

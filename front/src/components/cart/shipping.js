@@ -61,7 +61,6 @@ function Shipping({ setActiveStep }) {
   };
 
   useEffect(() => {
-    console.log("first");
     if (shippingInfo) {
       setAddress(shippingInfo.address);
       setCity(shippingInfo.city);

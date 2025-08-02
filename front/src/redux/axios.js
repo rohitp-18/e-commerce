@@ -5,6 +5,7 @@ const axios = Axios.create({
   headers: {
     "Access-Control-Allow-Origin": "*",
   },
+  withCredentials: true,
 });
 
 export default axios;

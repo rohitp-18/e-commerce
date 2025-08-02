@@ -90,7 +90,6 @@ function LoginSignup() {
   // };
 
   useEffect(() => {
-    console.log("first");
     if (user) {
       if (sessionStorage.getItem("link")) {
         navigate(sessionStorage.getItem("link"));
@@ -101,7 +100,6 @@ function LoginSignup() {
   }, [dispatch, user, navigate]);
 
   useEffect(() => {
-    console.log("first");
     if (message) {
       sendAlert(message, "success");
       return;

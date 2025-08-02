@@ -15,10 +15,8 @@ import {
 } from "@mui/material";
 import {
   AccountTree,
-  ArrowBack,
   AttachMoney,
   Close,
-  Description,
   Spellcheck,
   Storage,
 } from "@mui/icons-material";
@@ -94,9 +92,8 @@ function CreateProduct() {
   };
 
   useEffect(() => {
-    console.log("first");
     if (isCreated) {
-      sendAlert("Product created successfully", isCreated);
+      sendAlert("Product created successfully", "success");
       dispatch({ type: CREATE_PRODUCT_RESET });
       navigator("/admin/products");
     }
@@ -113,7 +110,12 @@ function CreateProduct() {
       <Slider />
       {!textEditor ? (
         <section className="create-products">
-          <form onSubmit={(e) => (e.preventDefault(), setTextEditor(true))}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setTextEditor(true);
+            }}
+          >
             <h3>Create Product</h3>
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
               <Spellcheck sx={{ color: "action.active", mr: 1, my: 0.5 }} />

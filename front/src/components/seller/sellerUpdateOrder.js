@@ -33,7 +33,6 @@ function SellerUpdateOrder() {
   };
 
   useEffect(() => {
-    console.log("first");
     if (error) {
       sendAlert(error, "error");
       dispatch({ type: CLEAR_ERRORS });

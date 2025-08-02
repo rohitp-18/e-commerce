@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { TreeItem, TreeView } from "@mui/x-tree-view";
 import {
   Add,
-  AdsClick,
   Dashboard,
   ExpandMore,
   ImportExport,
@@ -11,6 +10,7 @@ import {
   People,
   PostAdd,
   RateReview,
+  Search,
 } from "@mui/icons-material";
 import "./slider.scss";
 
@@ -66,6 +66,22 @@ function Slider() {
                 <TreeItem icon={<PostAdd />} label="All" nodeId="2" />
               </Link>
               <Link to={"/admin/ads/new"}>
+                <TreeItem icon={<Add />} label="Create" nodeId="3" />
+              </Link>
+            </TreeItem>
+          </TreeView>
+        </div>
+
+        <div>
+          <TreeView
+            defaultCollapseIcon={<ImportExport />}
+            defaultExpandIcon={<Search />}
+          >
+            <TreeItem sx={{ background: "#fff" }} nodeId="1" label="Search">
+              <Link to={"/admin/search"}>
+                <TreeItem icon={<Search />} label="All" nodeId="2" />
+              </Link>
+              <Link to={"/admin/search/new"}>
                 <TreeItem icon={<Add />} label="Create" nodeId="3" />
               </Link>
             </TreeItem>

@@ -12,31 +12,7 @@ import { FavoriteBorder } from "@mui/icons-material";
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   return (
-    <div>
-      {/* <Link className="none" to={`/product/${product._id}`}> */}
-      {/* <div className="product-card">
-        <img
-          src={product.images[0].url}
-          alt={product.name}
-          style={{ width: "100%", overflow: "hidden", height: "65%" }}
-        />
-        <div className="product-info">
-          <h2>{product.name}</h2>
-          <div className="ratings">
-            <Rating
-              style={{ fontSize: "20px" }}
-              value={product.ratings}
-              name="read-only"
-              contentEditable={false}
-              readOnly
-            />
-            <span style={{ fontSize: "12px" }}>
-              ({product.numOfReviews} reviews)
-            </span>
-          </div>
-          <div style={{ color: "red" }}>₹{product.price}</div>
-        </div>
-      </div> */}
+    <div className="flex justify-center items-center">
       <Card className="product-card">
         <CardMedia
           onClick={() => navigate(`/product/${product._id}`)}

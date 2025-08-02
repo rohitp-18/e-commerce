@@ -11,7 +11,6 @@ function AccountInfo() {
   const { user, loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("first");
     dispatch(loadRequest());
   }, [dispatch]);
 

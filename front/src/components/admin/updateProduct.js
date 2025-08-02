@@ -102,12 +102,10 @@ function UpdateProduct() {
   };
 
   useEffect(() => {
-    console.log("first");
     dispatch(getProductDetails(id));
   }, [dispatch, id, navigate]);
 
   useEffect(() => {
-    console.log("first");
     if (isUpdated) {
       sendAlert("Product Updated successfully", "success");
       dispatch({ type: UPDATE_PRODUCT_RESET });
@@ -121,7 +119,6 @@ function UpdateProduct() {
   }, [isUpdated, error, dispatch, navigate]);
 
   useEffect(() => {
-    console.log("first");
     if (product) {
       setName(product.name);
       setPrice(product.price);

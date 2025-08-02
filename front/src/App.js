@@ -36,7 +36,6 @@ import "./App.scss";
 import ForgotPassword from "./components/user/forgotPassword";
 import ResetPassword from "./components/user/ResetPassword";
 import Back from "./components/layout/header/Back";
-import Dashboard from "./components/seller/dashboard";
 import CreateSellerProduct from "./components/seller/createProduct";
 import SellerOrders from "./components/seller/sellerOrder";
 import SellerReview from "./components/seller/sellerReview";
@@ -49,6 +48,8 @@ import SellerAdvertises from "./components/seller/sellerAds";
 import CreateAds from "./components/admin/createAds";
 import CheckoutSteps from "./components/cart/CheckoutSteps";
 import { getHomePage } from "./redux/actions/homeActions";
+import CreateSearch from "./components/admin/createSearch";
+import AdminSearch from "./components/admin/search";
 
 const router = createBrowserRouter([
   {
@@ -322,6 +323,24 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/admin/search",
+    element: (
+      <ProtectRoute user="admin">
+        <Tooltip />
+        <AdminSearch />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/admin/search/new",
+    element: (
+      <ProtectRoute user="admin">
+        <Tooltip />
+        <CreateSearch />
+      </ProtectRoute>
+    ),
+  },
+  {
     path: "/seller",
     element: (
       <ProtectRoute user="seller">
@@ -419,7 +438,6 @@ const router = createBrowserRouter([
 
 function App() {
   useEffect(() => {
-    console.log("first");
     store.dispatch(getHomePage());
     store.dispatch(loadRequest());
   }, []);

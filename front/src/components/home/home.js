@@ -1,11 +1,9 @@
 import ProductCard from "./product";
 import { useEffect } from "react";
 import "./home.scss";
-import { getAllProducts } from "../../redux/actions/productActions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../layout/Loader";
 import { useNavigate } from "react-router-dom";
-import { IconButton } from "@mui/material";
 import {
   CarRental,
   Girl,
@@ -34,7 +32,6 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    console.log("first");
     dispatch(getHomePage());
   }, [dispatch]);
 
@@ -52,23 +49,24 @@ const Home = () => {
         <Loader />
       ) : (
         <>
+          <section className="header">
+            <h2 style={{ fontWeight: 400, color: "#eee" }}>
+              Welcome to Ecommerce
+            </h2>
+            <h1 style={{ fontSize: "25px" }}>FIND AMAZING PRODUCTS BELOW</h1>
+            <a href="#products">
+              <button onClick={() => navigate("#products")}>Scroll</button>
+            </a>
+          </section>
           {home && home.products && home.products.length > 0 && (
             <>
-              <section className="header">
-                <h2 style={{ fontWeight: 400, color: "#eee" }}>
-                  Welcome to Ecommerce
-                </h2>
-                <h1 style={{ fontSize: "25px" }}>
-                  FIND AMAZING PRODUCTS BELOW
-                </h1>
-                <a href="#products">
-                  <button onClick={() => navigate("#products")}>Scroll</button>
-                </a>
-              </section>
               {home.sponsored && home.sponsored.length > 0 && (
                 <>
                   <h3 className="featured-products">Sponsered Products</h3>
-                  <section id="products" className="products-flex">
+                  <section
+                    id="products"
+                    className="products-flex w-full lg:gap-6 md:gap-4 sm:gap-3 justify-start gap-2 items-center"
+                  >
                     {home.sponsored.map((item) => (
                       <ProductCard key={item._id} product={item} />
                     ))}
@@ -78,7 +76,10 @@ const Home = () => {
               {home.products && home.products.length > 0 && (
                 <>
                   <h3 className="featured-products">Products</h3>
-                  <section id="products" className="products-flex">
+                  <section
+                    id="products"
+                    className="products-flex w-full lg:gap-6 md:gap-4 sm:gap-3 justify-start gap-2 items-center"
+                  >
                     {home.products &&
                       home.products.map((item) => (
                         <ProductCard key={item._id} product={item} />
@@ -87,7 +88,10 @@ const Home = () => {
                 </>
               )}
               {/* <h3 className="featured-products">Featured Products</h3> */}
-              <section id="products" className="products-flex">
+              <section
+                id="products"
+                className="products-flex w-full lg:gap-6 md:gap-4 sm:gap-3 justify-center gap-2 items-center"
+              >
                 {categoryList.map((cat) => (
                   <div key={cat.name}>
                     <div className="category-flex">
@@ -101,7 +105,10 @@ const Home = () => {
               {home.recommended && home.recommended.length > 0 && (
                 <>
                   <h3 className="featured-products">Recommended Products</h3>
-                  <section id="products" className="products-flex">
+                  <section
+                    id="products"
+                    className="products-flex w-full lg:gap-6 md:gap-4 sm:gap-3 justify-start gap-2 items-center"
+                  >
                     {home.recommended.map((item) => (
                       <ProductCard key={item._id} product={item} />
                     ))}
@@ -112,25 +119,22 @@ const Home = () => {
               {user && (
                 <>
                   <h3 className="featured-products">Watched Products</h3>
-                  <section id="products" className="products-flex">
+                  <section
+                    id="products"
+                    className="products-flex w-full lg:gap-6 md:gap-4 sm:gap-3 justify-start gap-2 items-center"
+                  >
                     {home.views &&
                       home.views.map((item) => (
                         <ProductCard key={item._id} product={item.product} />
-                      ))}
-
-                    {home.products &&
-                      home.products.map((item) => (
-                        <ProductCard key={item._id} product={item} />
-                      ))}
-                    {home.products &&
-                      home.products.map((item) => (
-                        <ProductCard key={item._id} product={item} />
                       ))}
                   </section>
                 </>
               )}
               <h3 className="featured-products">Featured Products</h3>
-              <section id="products" className="products-flex">
+              <section
+                id="products"
+                className="products-flex w-full lg:gap-6 md:gap-4 sm:gap-3 justify-start gap-2 items-center"
+              >
                 {home.featuredProducts &&
                   home.featuredProducts.map((item) => (
                     <ProductCard key={item._id} product={item} />
@@ -138,25 +142,22 @@ const Home = () => {
               </section>
 
               <h3 className="featured-products">New Products</h3>
-              <section id="products" className="products-flex">
+              <section
+                id="products"
+                className="products-flex w-full lg:gap-6 md:gap-4 sm:gap-3 justify-start gap-2 items-center"
+              >
                 {home.newProducts &&
                   home.newProducts.map((item) => (
-                    <ProductCard key={item._id} product={item} />
-                  ))}
-
-                {home.products &&
-                  home.products.map((item) => (
-                    <ProductCard key={item._id} product={item} />
-                  ))}
-                {home.products &&
-                  home.products.map((item) => (
                     <ProductCard key={item._id} product={item} />
                   ))}
               </section>
               {user && home.favorites && (
                 <>
                   <h3 className="featured-products">Favorite Products</h3>
-                  <section id="products" className="products-flex">
+                  <section
+                    id="products"
+                    className="products-flex w-full lg:gap-6 md:gap-4 sm:gap-3 justify-start gap-2 items-center"
+                  >
                     {home.favorites.map((item) => (
                       <ProductCard key={item._id} product={item.product} />
                     ))}
@@ -165,26 +166,16 @@ const Home = () => {
                       home.products.map((item) => (
                         <ProductCard key={item._id} product={item} />
                       ))}
-                    {home.products &&
-                      home.products.map((item) => (
-                        <ProductCard key={item._id} product={item} />
-                      ))}
                   </section>
                 </>
               )}
               <h3 className="featured-products">Top Rated Products</h3>
-              <section id="products" className="products-flex">
+              <section
+                id="products"
+                className="products-flex w-full lg:gap-6 md:gap-4 sm:gap-3 justify-start gap-2 items-center"
+              >
                 {home.topRatedProducts &&
                   home.topRatedProducts.map((item) => (
-                    <ProductCard key={item._id} product={item} />
-                  ))}
-
-                {home.products &&
-                  home.products.map((item) => (
-                    <ProductCard key={item._id} product={item} />
-                  ))}
-                {home.products &&
-                  home.products.map((item) => (
                     <ProductCard key={item._id} product={item} />
                   ))}
               </section>

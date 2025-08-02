@@ -65,7 +65,6 @@ function UpadateUser() {
   };
 
   useEffect(() => {
-    console.log("first");
     if (isUpdate) {
       sendAlert("Profile has been upadated successfully", "success");
       dispatch({ type: UPDATE_USER_RESET });

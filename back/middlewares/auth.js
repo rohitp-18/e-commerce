@@ -37,7 +37,14 @@ const checkAuth = expressAsyncHandler(async (req, res, next) => {
     return next();
   }
 
-  const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+  let _id;
+
+  try {
+    _id = jwt.verify(token, process.env.JWT_SECRET)._id;
+  } catch (error) {
+    return next();
+  }
+
   if (!_id) {
     return next();
   }

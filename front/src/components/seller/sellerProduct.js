@@ -52,12 +52,10 @@ function SellerProducts() {
   ];
 
   useEffect(() => {
-    console.log("first");
     dispatch(getSellerProductAction());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("first");
     if (isDeleted) {
       sendAlert("Product deleted successfully", "success");
       dispatch({ type: SELLER_DELETE_PRODUCT_RESET });
@@ -72,7 +70,6 @@ function SellerProducts() {
   }, [dispatch, isDeleted, error]);
 
   useEffect(() => {
-    console.log("first");
     let law = [];
     products &&
       products.filter((product) =>

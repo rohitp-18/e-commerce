@@ -64,12 +64,10 @@ function SellerAdvertises() {
   ];
 
   useEffect(() => {
-    console.log("first");
     dispatch(getSellerAdvertAction());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("first");
     if (isDeleted) {
       sendAlert("Product deleted successfully", "success");
       dispatch({ type: SELLER_DELETE_ADVERT_RESET });
@@ -84,7 +82,6 @@ function SellerAdvertises() {
   }, [dispatch, isDeleted, error]);
 
   useEffect(() => {
-    console.log("first");
     let law = [];
     advertisements &&
       advertisements.filter((product) =>

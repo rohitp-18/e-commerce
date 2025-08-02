@@ -56,31 +56,22 @@ const Product = () => {
     setOpen(!open);
   };
 
-  const increament = () => {
-    if (value === product.stock) return;
-
-    setValue(value + 1);
-  };
-
-  const decreament = () => {
-    if (value === 1) return;
-
-    setValue(value - 1);
-  };
-
   useEffect(() => {
-    console.log("first");
     dispatch(getProductDetails(id));
   }, [dispatch, id]);
 
   useEffect(() => {
     try {
-      axios.post("/view/view/new", { product: id }, { withCredentials: true });
+      user &&
+        axios.post(
+          "/view/view/new",
+          { product: id },
+          { withCredentials: true }
+        );
     } catch (error) {}
-  }, [id]);
+  }, [id, user]);
 
   useEffect(() => {
-    console.log("first");
     if (error) {
       sendAlert(error, "error");
       dispatch(clearErrors());
@@ -90,15 +81,14 @@ const Product = () => {
       dispatch({ type: REVIEW_SUBMIT_RESET });
       dispatch(getProductDetails(id));
     }
-  }, [dispatch, success, error]);
+  }, [dispatch, success, error, id, sendAlert]);
 
   useEffect(() => {
-    console.log("first");
     if (open && !user) {
       sessionStorage.setItem("link", location.pathname);
       navigator("/login");
     }
-  }, [open, user, navigator]);
+  }, [open, user, navigator, location.pathname]);
   return (
     <>
       {loading ? (
@@ -228,12 +218,6 @@ const Product = () => {
                     {sponsored.map((item) => (
                       <ProductCard key={item._id} product={item} />
                     ))}
-                    {home &&
-                      home.products &&
-                      home.products.length > 0 &&
-                      home.products.map((item) => (
-                        <ProductCard key={item._id} product={item} />
-                      ))}
                   </section>
                 </>
               )}
@@ -278,32 +262,11 @@ const Product = () => {
                   simmilar.map((item) => (
                     <ProductCard key={item._id} product={item} />
                   ))}
-                {home &&
-                  home.products &&
-                  home.products.map((item) => (
-                    <ProductCard key={item._id} product={item} />
-                  ))}
-                {home &&
-                  home.products &&
-                  home.products.map((item) => (
-                    <ProductCard key={item._id} product={item} />
-                  ))}
               </section>
               <h3 className="featured-products">Top Rated Products</h3>
               <section id="products" className="products-flex">
                 {topRatedProducts &&
                   topRatedProducts.map((item) => (
-                    <ProductCard key={item._id} product={item} />
-                  ))}
-
-                {home &&
-                  home.products &&
-                  home.products.map((item) => (
-                    <ProductCard key={item._id} product={item} />
-                  ))}
-                {home &&
-                  home.products &&
-                  home.products.map((item) => (
                     <ProductCard key={item._id} product={item} />
                   ))}
               </section>

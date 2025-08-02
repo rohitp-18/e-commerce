@@ -74,6 +74,9 @@
       display: none;
     }
   }
+  .nav-search {
+    display: none;
+  }
 }
 
 .drawer {
@@ -129,6 +132,7 @@
     }
 
     .nav-search {
+      display: block;
       max-width: 400px;
       margin: 0 auto;
       margin-top: 15px;

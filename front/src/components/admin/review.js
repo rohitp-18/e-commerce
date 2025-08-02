@@ -66,7 +66,6 @@ function Review() {
   };
 
   useEffect(() => {
-    console.log("first");
     let law = [];
     if (reviews) {
       reviews.filter((review) =>
@@ -83,7 +82,6 @@ function Review() {
   }, [reviews]);
 
   useEffect(() => {
-    console.log("first");
     if (isDeleted) {
       sendAlert("Review is deleted successfully", "success");
       dispatch({ type: DELETE_REVIEW_RESET });

@@ -48,7 +48,7 @@ import {
   FORGOT_PASSWORD_CHANGE_REQUEST,
 } from "../constants/userConstants";
 
-const userReducer = (state, action) => {
+const userReducer = (state = { loading: true }, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
     case LOAD_REQUEST:
@@ -116,7 +116,7 @@ const userReducer = (state, action) => {
       };
 
     default:
-      return { ...state, loading: false };
+      return { ...state, loading: true };
   }
 };
 

@@ -76,12 +76,10 @@ function UpdateAds() {
   };
 
   useEffect(() => {
-    console.log("first");
     dispatch(getSingleAdvert(id));
   }, [dispatch, id, navigate]);
 
   useEffect(() => {
-    console.log("first");
     if (isUpdated) {
       sendAlert("Product created successfully", "success");
       dispatch({ type: UPDATE_ADVERT_RESET });

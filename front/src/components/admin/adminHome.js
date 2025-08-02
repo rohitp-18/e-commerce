@@ -20,14 +20,12 @@ function AdminHome() {
   const [outOfStock, setOutOfStock] = useState([]);
 
   useEffect(() => {
-    console.log("first");
     dispatch(getAdminOrders());
     dispatch(getAdminProducts());
     dispatch(getAdminUsers());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("first");
     if (orders) {
       setOutOfStock(orders.filter((order) => order.stock > 1));
       const temp = orders.filter((order) => order.orderStatus !== "cancled");

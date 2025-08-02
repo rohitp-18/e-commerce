@@ -76,7 +76,6 @@ function CreateAds() {
   };
 
   useEffect(() => {
-    console.log("first");
     if (isCreated) {
       sendAlert("Product created successfully", "success");
       dispatch({ type: CREATE_ADVERT_RESET });

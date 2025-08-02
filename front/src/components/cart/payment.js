@@ -34,7 +34,6 @@ function Payment() {
   };
 
   useEffect(() => {
-    console.log("first");
     if (error) {
       sendAlert(error, "error");
       dispatch(clearErrors());

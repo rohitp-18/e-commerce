@@ -16,6 +16,7 @@ const productRoute = require("./routers/productRouter");
 const orderRoute = require("./routers/orderRouter");
 const viewRoute = require("./routers/viewRouter");
 const advertRoute = require("./routers/advertisementRouter");
+const searchRoute = require("./routers/searchRouter");
 
 const app = express();
 mongodb();
@@ -39,10 +40,13 @@ app.use("/api/v1/product", productRoute);
 app.use("/api/v1/order", orderRoute);
 app.use("/api/v1/advert", advertRoute);
 app.use("/api/v1/view", viewRoute);
+app.use("/api/v1/search", searchRoute);
 
 // app.get("*", (req, res, next) => {
 //   res.sendFile(path.resolve(path.join(__dirname, "../front/build/index.html")));
 // });
 
 app.use(error);
-app.listen(port);
+app.listen(port, () => {
+  console.log("service started");
+});

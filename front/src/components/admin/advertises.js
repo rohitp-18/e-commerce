@@ -65,12 +65,10 @@ function Advertises() {
   ];
 
   useEffect(() => {
-    console.log("first");
     dispatch(getAdminAdverts());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("first");
     if (isDeleted) {
       sendAlert("Product deleted successfully", "success");
       dispatch({ type: DELETE_ADVERT_RESET });
@@ -85,7 +83,6 @@ function Advertises() {
   }, [dispatch, isDeleted, error]);
 
   useEffect(() => {
-    console.log("first");
     let law = [];
     advertisements &&
       advertisements.filter((product) =>

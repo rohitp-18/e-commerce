@@ -53,12 +53,10 @@ function Products() {
   ];
 
   useEffect(() => {
-    console.log("first");
     dispatch(getAdminProducts());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("first");
     if (isDeleted) {
       sendAlert("Product deleted successfully", "success");
       dispatch({ type: DELETE_PRODUCT_RESET });
@@ -73,7 +71,6 @@ function Products() {
   }, [dispatch, isDeleted, error]);
 
   useEffect(() => {
-    console.log("first");
     let law = [];
     adminProduct &&
       adminProduct.filter((product) =>

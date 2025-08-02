@@ -41,7 +41,6 @@ function SellerReview() {
   };
 
   useEffect(() => {
-    console.log("first");
     let law = [];
     if (reviews) {
       reviews.filter((review) =>
@@ -58,7 +57,6 @@ function SellerReview() {
   }, [reviews]);
 
   useEffect(() => {
-    console.log("first");
     if (error) {
       sendAlert(error, "error");
       dispatch({ type: CLEAR_ERRORS });

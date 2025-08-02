@@ -64,6 +64,9 @@ main.main-search {
         }
       }
     }
+    .filter-div {
+      display: none;
+    }
   }
 }
 
@@ -140,6 +143,7 @@ main.main-search {
     width: 100%;
 
     .filters {
+      display: none;
       width: 300px;
       align-items: center;
 

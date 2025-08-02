@@ -90,7 +90,6 @@ function CreateSellerProduct() {
   };
 
   useEffect(() => {
-    console.log("first");
     if (isCreated) {
       sendAlert("Product created successfully", isCreated);
       dispatch({ type: CREATE_PRODUCT_RESET });

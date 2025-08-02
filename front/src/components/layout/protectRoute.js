@@ -7,19 +7,21 @@ function ProtectRoute(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, loading, error } = useSelector((state) => state.user);
+
   useEffect(() => {
-    console.log("first");
+    console.log(loading, user, error);
     if (!loading && !user) {
       sessionStorage.setItem("link", location.pathname);
       navigate("/login");
+      console.log(location.pathname);
     }
 
-    // if (user && props.user) {
-    //   if (props.user !== user.role) {
-    //     navigate(-3);
-    //   }
-    // }
-  }, [user, error, loading]);
+    if (user && props.user) {
+      if (props.user !== user.role) {
+        console.log(navigate(-1));
+      }
+    }
+  }, [user, error, loading, navigate, location.pathname, props.user]);
   return (
     <>
       {props.user ? (

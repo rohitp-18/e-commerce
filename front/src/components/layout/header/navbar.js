@@ -12,7 +12,7 @@ import {
   Dashboard,
 } from "@mui/icons-material";
 import "./navbar.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Drawer,
   Avatar,
@@ -22,56 +22,45 @@ import {
   TextField,
 } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { searchAction } from "../../../redux/actions/searchAction";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState(false);
   const [word, setWord] = useState();
+
+  const dispatch = useDispatch();
+  const { searches, loading } = useSelector((state) => state.search);
   const navigate = useNavigate();
   const locat = useLocation();
-
-  const opt = ["mobile", "laptop", "tv"];
 
   const setKey = (e) => {
     e.preventDefault();
 
     if (e.keyCode === 13) {
-      setWord(e.target.value);
       navigate(`/search?q=${e.target.value}`);
       return;
     }
   };
 
-  let val;
+  useEffect(() => {
+    if (locat.search) {
+      setSearch(true);
+      setWord(
+        decodeURIComponent(locat.search ? locat.search.split("=")[1] : "")
+      );
+    }
+  }, [locat.search]);
 
   useEffect(() => {
-    console.log("first");
-    if (locat.search) {
-      setWord(locat.search ? locat.search.split("=")[1] : word);
-      setSearch(true);
+    if (word) {
+      dispatch(searchAction(word));
     }
-  }, [locat]);
+  }, [word, navigate, dispatch]);
 
-  const Auto = () => {
-    return (
-      <Autocomplete
-        freeSolo
-        options={opt.map((option) => option)}
-        renderInput={(params) => (
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <Search sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-            <TextField
-              {...params}
-              placeholder="Search product...."
-              value={word}
-              onChange={() => setWord(word)}
-              onKeyUp={(e) => setKey(e)}
-            />
-          </Box>
-        )}
-      />
-    );
-  };
+  useEffect(() => {
+    console.log(searches);
+  }, [searches]);
 
   const { user } = useSelector((state) => state.user);
 
@@ -162,7 +151,28 @@ function Navbar() {
             </div>
           </Drawer>
 
-          <Box className="search">{<Auto />}</Box>
+          <Box className="search">
+            <Autocomplete
+              freeSolo
+              options={
+                searches.length > 0
+                  ? searches.map((option) => option.query)
+                  : []
+              }
+              inputValue={word || ""}
+              onInputChange={(event, newInputValue) => setWord(newInputValue)}
+              renderInput={(params) => (
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Search sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                  <TextField
+                    {...params}
+                    placeholder="Search product...."
+                    onKeyUp={(e) => setKey(e)}
+                  />
+                </Box>
+              )}
+            />
+          </Box>
 
           <div className="nav-icons">
             {user && user.role === "admin" && (
@@ -199,7 +209,26 @@ function Navbar() {
         {search && (
           <div className="nav-search">
             <Box className="search">
-              <Auto />
+              <Autocomplete
+                freeSolo
+                options={
+                  searches.length > 0
+                    ? searches.map((option) => option.query)
+                    : []
+                }
+                renderInput={(params) => (
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Search sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                    <TextField
+                      {...params}
+                      placeholder="Search product...."
+                      value={word}
+                      onChange={(e) => setWord(e.target.value)}
+                      onKeyUp={(e) => setKey(e)}
+                    />
+                  </Box>
+                )}
+              />
             </Box>
           </div>
         )}

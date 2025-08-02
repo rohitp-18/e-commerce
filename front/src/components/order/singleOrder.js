@@ -12,7 +12,6 @@ function SingleOrder() {
   const { id } = useParams();
 
   useEffect(() => {
-    console.log("first");
     dispatch(getOrderDetailsAction(id));
   }, [dispatch, id]);
   return (

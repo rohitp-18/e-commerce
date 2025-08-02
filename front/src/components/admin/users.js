@@ -51,7 +51,6 @@ function Users() {
   ];
 
   useEffect(() => {
-    console.log("first");
     if (isDeleted) {
       sendAlert("User Deleted Successfully", "success");
       dispatch({ type: DELETE_USER_RESET });
@@ -60,7 +59,6 @@ function Users() {
   }, [dispatch, isDeleted]);
 
   useEffect(() => {
-    console.log("first");
     let law = [];
     users &&
       users.filter((user) =>

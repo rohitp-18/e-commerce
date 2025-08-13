@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Avatar, Button, Modal, Rating, TextField } from "@mui/material";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
@@ -21,20 +22,21 @@ import axios from "../../redux/axios";
 import ProductCard from "../home/product";
 
 const Product = () => {
-  const location = useLocation();
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
-  const { success, error } = useSelector((state) => state.review);
-  let { product, simmilar, loading, recommended, topRatedProducts, sponsored } =
-    useSelector((state) => state.product);
-  const { home } = useSelector((state) => state.homeReducer);
   const [value, setValue] = useState(1);
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+
+  const location = useLocation();
+  const dispatch = useDispatch();
   const { id } = useParams();
   const navigator = useNavigate();
   const { sendAlert } = useContext(AlertContext);
+  const { user } = useSelector((state) => state.user);
+  const { success, error } = useSelector((state) => state.review);
+  let { product, simmilar, loading, recommended, topRatedProducts, sponsored } =
+    useSelector((state) => state.product);
+  // const { home } = useSelector((state) => state.homeReducer);
 
   const cartHandler = () => {
     if (product.stock < 0) {
@@ -55,6 +57,22 @@ const Product = () => {
     dispatch(submitReview(id, { rating, comment }));
     setOpen(!open);
   };
+
+  const increament = useCallback(() => {
+    if (value >= product.stock) {
+      sendAlert("You cannot add more products", "info");
+      return;
+    }
+    setValue((prev) => prev + 1);
+  }, [setValue, product, value]);
+
+  const decrement = useCallback(() => {
+    if (value <= 1) {
+      sendAlert("You cannot add less than one product", "info");
+      return;
+    }
+    setValue((prev) => prev - 1);
+  }, [setValue, value]);
 
   useEffect(() => {
     dispatch(getProductDetails(id));
@@ -81,12 +99,11 @@ const Product = () => {
       dispatch({ type: REVIEW_SUBMIT_RESET });
       dispatch(getProductDetails(id));
     }
-  }, [dispatch, success, error, id, sendAlert]);
+  }, [dispatch, success, error, id]);
 
   useEffect(() => {
     if (open && !user) {
-      sessionStorage.setItem("link", location.pathname);
-      navigator("/login");
+      navigator(`/login?back=${location.pathname}`);
     }
   }, [open, user, navigator, location.pathname]);
   return (
@@ -134,16 +151,16 @@ const Product = () => {
                   </div>
                   <hr />
 
-                  {/* <div className="select">
+                  <div className="select">
                     <div className="selected">
-                      <button onClick={decreament}>-</button>
+                      <button onClick={decrement}>-</button>
                       <input value={value} type="submit" />
                       <button onClick={increament}>+</button>
                     </div>
                     <button onClick={cartHandler} className="cart">
                       Add to cart
                     </button>
-                  </div> */}
+                  </div>
                   {product.stock < 0 && (
                     <>
                       <hr />
@@ -242,7 +259,7 @@ const Product = () => {
                     <div key={item._id} className="review-item">
                       <Avatar
                         style={{ width: "60px", height: "60px", padding: "0" }}
-                        src={item.user.avatar.url}
+                        src={item.user.avatar?.url}
                       />
                       <h3>{item.user.name}</h3>
                       <Rating

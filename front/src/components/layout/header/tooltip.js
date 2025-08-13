@@ -79,7 +79,7 @@ function Tooltip() {
           className="tooltip"
           icon={
             <Avatar
-              src={user.avatar.url}
+              src={user.avatar?.url}
               sx={{
                 width: "100%",
                 background: "blue",

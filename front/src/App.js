@@ -50,6 +50,7 @@ import CheckoutSteps from "./components/cart/CheckoutSteps";
 import { getHomePage } from "./redux/actions/homeActions";
 import CreateSearch from "./components/admin/createSearch";
 import AdminSearch from "./components/admin/search";
+import CategoryProduct from "./components/utils/categoryProduct";
 
 const router = createBrowserRouter([
   {
@@ -424,6 +425,16 @@ const router = createBrowserRouter([
         <Tooltip />
         <SellerAdvertises />
       </ProtectRoute>
+    ),
+  },
+  {
+    path: "/category/:category",
+    element: (
+      <>
+        <Navbar />
+        <Tooltip />
+        <CategoryProduct />
+      </>
     ),
   },
   {

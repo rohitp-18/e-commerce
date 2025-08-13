@@ -6,27 +6,24 @@ import PageNot from "./pageNot";
 function ProtectRoute(props) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, loading, error } = useSelector((state) => state.user);
+  const { user, loading } = useSelector((state) => state.user);
 
   useEffect(() => {
-    console.log(loading, user, error);
     if (!loading && !user) {
-      sessionStorage.setItem("link", location.pathname);
-      navigate("/login");
-      console.log(location.pathname);
+      navigate(`/login?back=${location.pathname}`);
     }
 
-    if (user && props.user) {
-      if (props.user !== user.role) {
-        console.log(navigate(-1));
-      }
-    }
-  }, [user, error, loading, navigate, location.pathname, props.user]);
+    // if (user && props.user) {
+    //   if (props.user !== user.role) {
+    //     navigate(-1);
+    //   }
+    // }
+  }, [user, loading, navigate, location.pathname, props.user]);
   return (
     <>
       {props.user ? (
         user ? (
-          <>{props.user === user.role && props.children}</>
+          <>{props.user === user.role ? props.children : <PageNot />}</>
         ) : (
           <PageNot />
         )

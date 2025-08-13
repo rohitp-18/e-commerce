@@ -6,7 +6,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary").v2;
 
-dotenv.config({ path: path.resolve(__dirname, "config/.env") });
+dotenv.config({ path: path.resolve(__dirname, "config/.env") }); // for development
 
 const mongodb = require("./config/mongodb");
 const error = require("./middlewares/error");
@@ -31,8 +31,8 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(expressFileUpload());
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "http://localhost:3000", credentials: true })); // for development
+// for deployment
 // app.use(express.static(path.resolve(path.join(__dirname, "../front/build"))));
 
 app.use("/api/v1/user", userRoute);
@@ -42,6 +42,7 @@ app.use("/api/v1/advert", advertRoute);
 app.use("/api/v1/view", viewRoute);
 app.use("/api/v1/search", searchRoute);
 
+// for deployment
 // app.get("*", (req, res, next) => {
 //   res.sendFile(path.resolve(path.join(__dirname, "../front/build/index.html")));
 // });

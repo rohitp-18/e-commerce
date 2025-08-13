@@ -35,6 +35,12 @@ const registerUser = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Please fill all required filleds", 400));
   }
 
+  const tempUser = await User.findOne({ email });
+
+  if (tempUser) {
+    return next(new ErrorHandler("Email address already exists", 400));
+  }
+
   const user = await User.create({
     name,
     email,
@@ -88,7 +94,7 @@ const updateUser = expressAsyncHandler(async (req, res, next) => {
     const b64 = Buffer.from(image.buffer).toString("base64");
     let dataURI = "data:" + image.mimetype + ";base64," + b64;
     avatar = await cloudinary.uploader.upload(dataURI, {
-      folder: `portfolio/project/${name}`,
+      folder: `commerce/project/${name}`,
       height: 200,
       crop: "pad",
     });

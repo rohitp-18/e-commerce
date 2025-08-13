@@ -95,8 +95,7 @@ const removeFavorite = expressAsyncHandler(async (req, res, next) => {
   const { product } = req.body;
   const view = await View.findOneAndUpdate(
     { product, user: req.user._id },
-    { status: "view" },
-    { new: true }
+    { status: "view" }
   );
   res.status(200).json({
     success: true,

@@ -5,6 +5,7 @@ import "./account.scss";
 import { loadRequest } from "../../redux/actions/userAction";
 import Loader from "../layout/Loader";
 import MetaData from "../layout/header/MetaData";
+import { Avatar } from "@mui/material";
 
 function AccountInfo() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function AccountInfo() {
           <h1>Account Info</h1>
           <div className="account-flex">
             <div className="div-img">
-              <img src={user.avatar.url} alt={user.name} />
+              <Avatar src={user.avatar?.url} className="avatar-image" />
               <button onClick={() => navigate("/user/update")}>
                 Edit Profile
               </button>

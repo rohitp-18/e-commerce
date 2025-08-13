@@ -116,7 +116,7 @@ const userReducer = (state = { loading: true }, action) => {
       };
 
     default:
-      return { ...state, loading: true };
+      return { ...state };
   }
 };
 

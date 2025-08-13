@@ -4,6 +4,7 @@
   position: sticky;
   top: 0;
   left: 0;
+  z-index: 1000;
 
   .nav-items {
     font-weight: 500;
@@ -22,11 +23,12 @@
       padding: 0 8px;
       border-radius: 10px;
       color: white;
-      min-width: 300px;
+      min-width: 250px;
+      max-width: 400px;
 
-      svg {
-        color: white;
-      }
+      // svg {
+      //   color: white;
+      // }
 
       fieldset {
         border: none !important;
@@ -83,7 +85,7 @@
   display: block;
 }
 
-@media (max-width: 800px) and (min-width: 650px) {
+@media (max-width: 820px) and (min-width: 650px) {
   .nav {
     .nav-items {
       .nav-icons {
@@ -147,9 +149,9 @@
         max-width: 350px;
         margin: 0 auto;
 
-        svg {
-          color: white;
-        }
+        // svg {
+        //   color: white;
+        // }
 
         fieldset {
           border: none !important;

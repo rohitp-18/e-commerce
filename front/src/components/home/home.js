@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import "./home.scss";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../layout/Loader";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   CarRental,
   Girl,
@@ -34,14 +34,6 @@ const Home = () => {
   useEffect(() => {
     dispatch(getHomePage());
   }, [dispatch]);
-
-  // products,
-  //     newProducts,
-  //     featuredProducts,
-  //     topRatedProducts,
-  // sponsored,
-
-  //     products,
 
   return (
     <main>
@@ -93,12 +85,16 @@ const Home = () => {
                 className="products-flex w-full lg:gap-6 md:gap-4 sm:gap-3 justify-center gap-2 items-center"
               >
                 {categoryList.map((cat) => (
-                  <div key={cat.name}>
+                  <Link
+                    to={`/category/${cat.name}`}
+                    className="block no-underline text-black"
+                    key={cat.name}
+                  >
                     <div className="category-flex">
                       <div className="category-div">{cat.icon}</div>
                       <h4>{cat.name}</h4>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </section>
 

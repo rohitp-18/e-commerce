@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from "react";
 import {
   FormControl,
@@ -7,7 +8,7 @@ import {
   Input,
   Box,
   TextField,
-  Avatar,
+  // Avatar,
 } from "@mui/material";
 import {
   VisibilityOff,
@@ -18,7 +19,7 @@ import {
   West,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./loginSignup.scss";
 import { loginAction, signupAction } from "../../redux/actions/userAction";
 import { AlertContext } from "../layout/alertProvider";
@@ -30,8 +31,10 @@ function LoginSignup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [image, setImage] = useState();
   const [tab, setTab] = useState("login");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { sendAlert } = useContext(AlertContext);
@@ -71,7 +74,6 @@ function LoginSignup() {
 
     setTab(tabName);
   };
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -79,25 +81,16 @@ function LoginSignup() {
     event.preventDefault();
   };
 
-  // const changeImage = (e) => {
-  //   if (!e.target.files || !e.target.files[0]) return;
-  //   const reader = new FileReader();
-
-  //   reader.onload = (e) => {
-  //     setImage(e.target.result);
-  //   };
-  //   reader.readAsDataURL(e.target.files[0]);
-  // };
-
   useEffect(() => {
+    let url = location.search.split("back=")[1]?.split("&")[0];
     if (user) {
-      if (sessionStorage.getItem("link")) {
-        navigate(sessionStorage.getItem("link"));
+      if (url) {
+        navigate(url);
       } else {
         navigate("/account");
       }
     }
-  }, [dispatch, user, navigate]);
+  }, [dispatch, user, navigate, location]);
 
   useEffect(() => {
     if (message) {
@@ -108,7 +101,7 @@ function LoginSignup() {
       sendAlert(error, "error");
       dispatch({ type: CLEAR_ERRORS });
     }
-  }, [message, error]);
+  }, [message, error, dispatch]);
   return (
     <>
       {loading ? (

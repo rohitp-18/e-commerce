@@ -8,8 +8,13 @@ import {
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
 import { FavoriteBorder } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 const ProductCard = ({ product }) => {
+  const [favourite, setFavourite] = useState(false);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
     <div className="flex justify-center items-center">
@@ -22,10 +27,7 @@ const ProductCard = ({ product }) => {
           sx={{ objectFit: "contain" }}
           alt={product.name}
         />
-        <IconButton
-          className="icon-button"
-          onClick={() => console.log("first")}
-        >
+        <IconButton className="icon-button">
           <FavoriteBorder />
         </IconButton>
         <CardContent

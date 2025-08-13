@@ -70,7 +70,7 @@ function Search() {
   );
 
   return (
-    <main className="bg-gray-200 min-h-screen w-full overflow-x-hidden">
+    <main className="bg-gray-200 min-h-screen z-10 w-full overflow-x-hidden">
       <section
         className={
           "block grid-cols-1 lg:grid-cols-[18rem_1fr] gap-8 w-full" +
@@ -103,11 +103,12 @@ function Search() {
         </aside>
         <section className="w-full flex flex-col">
           {/* Mobile Filter Button */}
-          <div className="block lg:hidden mb-4">
+          <div className="block lg:hidden my-4">
             <Button
               variant="contained"
               color="primary"
-              startIcon={<FilterAltOutlined />}
+              sx={{ color: "white" }}
+              startIcon={<FilterAltOutlined className="text-white" />}
               onClick={() => setOpen(true)}
               className="rounded-full"
             >

@@ -40,7 +40,7 @@ function UpadateUser() {
     form.append("name", name);
     form.append("email", email);
 
-    if (image === user.avatar.url) {
+    if (image === user.avatar?.url) {
       dispatch(updateUser(form));
       return;
     }
@@ -93,7 +93,7 @@ function UpadateUser() {
             >
               <Avatar
                 sizes="medium"
-                src={image ? image : user.avatar && user.avatar.url}
+                src={image ? image : user.avatar && user.avatar?.url}
               />
               <CameraAlt className="camera" />
               <input

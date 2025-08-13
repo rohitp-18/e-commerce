@@ -14,6 +14,16 @@ const createSearch = expressAsyncHandler(async (req, res) => {
 
 const createAdminSearch = expressAsyncHandler(async (req, res) => {
   const { query } = req.body;
+
+  const tempSearch = await Search.findOne({ query, user: req.user._id });
+
+  if (tempSearch) {
+    return res.status(400).json({
+      success: false,
+      message: "Search already exists",
+    });
+  }
+
   const search = await Search.create({
     query,
     user: req.user._id,
@@ -39,6 +49,7 @@ const getSearches = expressAsyncHandler(async (req, res) => {
       }).sort({ createdAt: -1 }));
 
     const verifiedSearches = await Search.find({
+      user: { $ne: user ? user._id : null },
       query: { $regex: query, $options: "i" },
       verified: true,
       isDeleted: false,

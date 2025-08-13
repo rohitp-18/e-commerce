@@ -15,14 +15,64 @@ const getHomePage = expressAsyncHandler(async (req, res, next) => {
   const sponsored = await Product.find({ sponsored: true }).limit(10);
 
   if (!req.user) {
-    return res.status(200).json({
-      success: true,
-      products,
-      newProducts,
-      featuredProducts,
-      topRatedProducts,
-      sponsored,
-    });
+    return next(
+      res.status(200).json({
+        success: true,
+        products,
+        newProducts,
+        featuredProducts,
+        topRatedProducts,
+        sponsored,
+      })
+    );
+  }
+
+  const views = await View.find({ user: req.user._id })
+    .populate("product")
+    .sort({ createdAt: -1 })
+    .limit(10);
+  const favorites = await View.find({ user: req.user._id, status: "favorite" })
+    .populate("product")
+    .sort({ createdAt: -1 })
+    .limit(10);
+
+  // const recommended = await View.find({ user: req.user._id, status: "view" }).populate("product").sort({ createdAt: -1 }).limit(10);
+
+  res.status(200).json({
+    success: true,
+    products,
+    newProducts,
+    featuredProducts,
+    topRatedProducts,
+    sponsored,
+    views,
+    favorites,
+    // recommended,
+  });
+});
+
+const getProductCategory = expressAsyncHandler(async (req, res, next) => {
+  const { category } = req.params;
+
+  const products = await Product.find({ category }).limit(10);
+  const newProducts = await Product.find().sort({ createdAt: -1 }).limit(10);
+  const featuredProducts = await Product.find({ ratings: { $gte: 4 } }).limit(
+    10
+  );
+  const topRatedProducts = await Product.find().sort({ ratings: -1 }).limit(10);
+  const sponsored = await Product.find({ sponsored: true }).limit(10);
+
+  if (!req.user) {
+    return next(
+      res.status(200).json({
+        success: true,
+        products,
+        newProducts,
+        featuredProducts,
+        topRatedProducts,
+        sponsored,
+      })
+    );
   }
 
   const views = await View.find({ user: req.user._id })
@@ -204,7 +254,7 @@ const updateProduct = expressAsyncHandler(async (req, res, next) => {
           const b64 = Buffer.from(image.buffer).toString("base64");
           let dataURI = "data:" + image.mimetype + ";base64," + b64;
           const data = await cloudinary.uploader.upload(dataURI, {
-            folder: `portfolio/project/${name}`,
+            folder: `commerce/project/${name}`,
             height: 200,
             crop: "pad",
           });
@@ -393,7 +443,7 @@ const updateSellerProduct = expressAsyncHandler(async (req, res, next) => {
           const b64 = Buffer.from(image.buffer).toString("base64");
           let dataURI = "data:" + image.mimetype + ";base64," + b64;
           const data = await cloudinary.uploader.upload(dataURI, {
-            folder: `portfolio/project/${name}`,
+            folder: `commerce/project/${name}`,
             height: 200,
             crop: "pad",
           });
@@ -456,6 +506,7 @@ const reviewSellerProduct = expressAsyncHandler(async (req, res, next) => {
 
 module.exports = {
   getHomePage,
+  getProductCategory,
 
   getAllProducts,
   getProduct,

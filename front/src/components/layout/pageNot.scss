@@ -5,7 +5,9 @@
   flex-direction: column;
   gap: 30px;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
+  min-height: 400px;
+  max-height: 800px;
 
   svg {
     width: 100px;
@@ -25,11 +27,11 @@
     border: none;
     outline: none;
     padding: 8px 10px;
+    border: 1px solid tomato;
 
     &:hover {
       color: tomato;
       background-color: white;
-      border: 1px solid tomato;
     }
   }
 }

@@ -23,7 +23,6 @@ const {
   ADMIN_CREATE_SEARCH_RESET,
   CREATE_SEARCH_REQUEST,
   CREATE_SEARCH_SUCCESS,
-  CREATE_SEARCH_FAIL,
   CREATE_SEARCH_RESET,
   CLEAR_ERRORS,
 } = require("../constants/searchConstants");
@@ -76,7 +75,6 @@ const searchReducer = (state = { searches: [] }, action) => {
     case UPDATE_SEARCH_FAIL:
     case ADMIN_DELETE_SEARCH_FAIL:
     case ADMIN_CREATE_SEARCH_FAIL:
-    case CREATE_SEARCH_FAIL:
       return { ...state, loading: false, requestError: action.payload };
 
     case ADMIN_SEARCH_FAIL:

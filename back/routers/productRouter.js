@@ -16,12 +16,14 @@ const {
   updateSellerProduct,
   reviewSellerProduct,
   getHomePage,
+  getProductCategory,
 } = require("../controllers/productController");
 const upload = require("../config/multer");
 
 const router = express.Router();
 
 router.route("/home").get(checkAuth, getHomePage);
+router.route("/category/:category").get(checkAuth, getProductCategory);
 router.route("/").get(getAllProducts);
 router.route("/admin").get(auth, authorizedRole("admin"), getAdminProducts);
 router

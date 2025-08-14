@@ -3,10 +3,10 @@ const {
   getAllViews,
   updateView,
   removeView,
-  getFavorites,
-  removeFavorite,
+  getFavourites,
+  removeFavourite,
   createView,
-  createFavorite,
+  createFavourite,
   getViews,
 } = require("../controllers/viewController");
 const { auth } = require("../middlewares/auth");
@@ -20,8 +20,8 @@ router.get("/view", getViews);
 router.post("/view/new", createView);
 router.route("/view/:id").put(updateView).delete(removeView);
 
-router.get("/fav", getFavorites);
-router.post("/fav/new", createFavorite);
-router.delete("/fav/:id", removeFavorite);
+router.get("/fav", getFavourites);
+router.post("/fav/new", createFavourite);
+router.delete("/fav/:id", removeFavourite);
 
 module.exports = router;

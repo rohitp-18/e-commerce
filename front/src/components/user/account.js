@@ -49,6 +49,10 @@ function AccountInfo() {
                 <button onClick={() => navigate("/user/password")}>
                   Change Password
                 </button>
+                <button onClick={() => navigate("/watched")}>My Watched</button>
+                <button onClick={() => navigate("/favourites")}>
+                  My Favourites
+                </button>
               </div>
             </div>
           </div>

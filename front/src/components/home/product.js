@@ -7,15 +7,34 @@ import {
 } from "@mui/material";
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
-import { FavoriteBorder } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import {
+  addToFavouriteAction,
+  removeFromFavouriteAction,
+} from "../../redux/actions/favouriteAction";
 
 const ProductCard = ({ product }) => {
   const [favourite, setFavourite] = useState(false);
 
+  const { favourites } = useSelector((state) => state.view);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  function handleFavouriteToggle() {
+    if (favourite) {
+      dispatch(removeFromFavouriteAction(product._id));
+    } else {
+      dispatch(addToFavouriteAction(product._id));
+    }
+    setFavourite(!favourite);
+  }
+
+  useEffect(() => {
+    favourites &&
+      setFavourite(favourites.some((item) => item.product._id === product._id));
+  }, [product._id, favourites]);
   return (
     <div className="flex justify-center items-center">
       <Card className="product-card">
@@ -27,8 +46,12 @@ const ProductCard = ({ product }) => {
           sx={{ objectFit: "contain" }}
           alt={product.name}
         />
-        <IconButton className="icon-button">
-          <FavoriteBorder />
+        <IconButton onClick={handleFavouriteToggle} className="icon-button">
+          {favourite ? (
+            <Favorite sx={{ fill: "tomato" }} />
+          ) : (
+            <FavoriteBorder />
+          )}
         </IconButton>
         <CardContent
           onClick={() => navigate(`/product/${product._id}`)}

@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary").v2;
+const morgan = require("morgan");
 
 dotenv.config({ path: path.resolve(__dirname, "config/.env") }); // for development
 
@@ -32,6 +33,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({ origin: "http://localhost:3000", credentials: true })); // for development
+app.use(morgan("combined"));
 // for deployment
 // app.use(express.static(path.resolve(path.join(__dirname, "../front/build"))));
 

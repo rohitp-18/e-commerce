@@ -11,6 +11,10 @@ class Apifeatures {
             $regex: this.queryStr.keyword,
             $options: "i",
           },
+          category: {
+            $regex: this.queryStr.keyword,
+            $options: "i",
+          },
         }
       : {};
 

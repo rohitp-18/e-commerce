@@ -51,6 +51,10 @@ import { getHomePage } from "./redux/actions/homeActions";
 import CreateSearch from "./components/admin/createSearch";
 import AdminSearch from "./components/admin/search";
 import CategoryProduct from "./components/utils/categoryProduct";
+import { useSelector } from "react-redux";
+import { getAllFavouriteProducts } from "./redux/actions/favouriteAction";
+import MyFavourite from "./components/utils/myFavourite";
+import WatchList from "./components/utils/watchList";
 
 const router = createBrowserRouter([
   {
@@ -438,9 +442,31 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/favourites",
+    element: (
+      <ProtectRoute>
+        <Navbar />
+        <Tooltip />
+        <MyFavourite />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "/watched",
+    element: (
+      <ProtectRoute>
+        <Navbar />
+        <Tooltip />
+        <WatchList />
+      </ProtectRoute>
+    ),
+  },
+  {
     path: "*",
     element: (
       <>
+        <Navbar />
+        <MetaData title="Page Not Found" />
         <PageNot />
       </>
     ),
@@ -448,10 +474,18 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { user } = useSelector((state) => state.user);
   useEffect(() => {
     store.dispatch(getHomePage());
     store.dispatch(loadRequest());
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      store.dispatch(getAllFavouriteProducts());
+    }
+  }, [user]);
+
   return (
     <>
       <AlertProvider>

@@ -57,44 +57,47 @@ const removeView = expressAsyncHandler(async (req, res, next) => {
   });
 });
 
-const getFavorites = expressAsyncHandler(async (req, res, next) => {
-  const favorites = await View.find({
-    status: "favorite",
+const getFavourites = expressAsyncHandler(async (req, res, next) => {
+  const favourites = await View.find({
+    status: "favourite",
     user: req.user._id,
   }).populate("product");
 
   res.status(200).json({
     success: true,
-    favorites,
+    favourites,
   });
 });
 
-const createFavorite = expressAsyncHandler(async (req, res, next) => {
+const createFavourite = expressAsyncHandler(async (req, res, next) => {
   const { product } = req.body;
-  const view = await View.findOne({ product, user: req.user._id });
+  const view = await View.findOne({ product, user: req.user._id }).populate(
+    "product"
+  );
   if (view) {
-    view.status = "favorite";
+    view.status = "favourite";
     await view.save();
     return res.status(200).json({
       success: true,
       view,
     });
   } else {
-    const favorite = await View.create({
+    const favourite = await View.create({
       product,
       user: req.user._id,
-      status: "favorite",
-    });
+      status: "favourite",
+    }).populate("product");
+
     return res.status(201).json({
       success: true,
-      favorite,
+      favourite,
     });
   }
 });
-const removeFavorite = expressAsyncHandler(async (req, res, next) => {
-  const { product } = req.body;
+const removeFavourite = expressAsyncHandler(async (req, res, next) => {
+  const { id } = req.params;
   const view = await View.findOneAndUpdate(
-    { product, user: req.user._id },
+    { product: id, user: req.user._id },
     { status: "view" }
   );
   res.status(200).json({
@@ -111,7 +114,7 @@ module.exports = {
   removeView,
 
   // fovorite actions
-  getFavorites,
-  createFavorite,
-  removeFavorite,
+  getFavourites,
+  createFavourite,
+  removeFavourite,
 };

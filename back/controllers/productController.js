@@ -31,7 +31,10 @@ const getHomePage = expressAsyncHandler(async (req, res, next) => {
     .populate("product")
     .sort({ createdAt: -1 })
     .limit(10);
-  const favorites = await View.find({ user: req.user._id, status: "favorite" })
+  const favourites = await View.find({
+    user: req.user._id,
+    status: "favourite",
+  })
     .populate("product")
     .sort({ createdAt: -1 })
     .limit(10);
@@ -46,7 +49,7 @@ const getHomePage = expressAsyncHandler(async (req, res, next) => {
     topRatedProducts,
     sponsored,
     views,
-    favorites,
+    favourites,
     // recommended,
   });
 });
@@ -79,7 +82,11 @@ const getProductCategory = expressAsyncHandler(async (req, res, next) => {
     .populate("product")
     .sort({ createdAt: -1 })
     .limit(10);
-  const favorites = await View.find({ user: req.user._id, status: "favorite" })
+
+  const favourites = await View.find({
+    user: req.user._id,
+    status: "favourite",
+  })
     .populate("product")
     .sort({ createdAt: -1 })
     .limit(10);
@@ -94,7 +101,7 @@ const getProductCategory = expressAsyncHandler(async (req, res, next) => {
     topRatedProducts,
     sponsored,
     views,
-    favorites,
+    favourites,
     // recommended,
   });
 });

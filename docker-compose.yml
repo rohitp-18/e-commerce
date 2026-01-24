@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  social-media-backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+
+    image: social-media-backend:latest
+    container_name: social-media-backend
+    restart: always
+    environment:
+      - PORT=3000
+
+    ports:
+      - "${PORT}:${PORT}"
+
+    networks:
+      - web-net
+networks:
+  web-net:
+    external: true

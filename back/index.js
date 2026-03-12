@@ -19,6 +19,7 @@ const orderRoute = require("./routers/orderRouter");
 const viewRoute = require("./routers/viewRouter");
 const advertRoute = require("./routers/advertisementRouter");
 const searchRoute = require("./routers/searchRouter");
+const cartRoute = require("./routers/cartRouter");
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/api/v1/product", productRoute);
 app.use("/api/v1/order", orderRoute);
 app.use("/api/v1/advert", advertRoute);
 app.use("/api/v1/view", viewRoute);
+app.use("/api/v1/cart", cartRoute);
 app.use("/api/v1/search", searchRoute);
 
 // for deployment

@@ -2,6 +2,7 @@ const Order = require("../models/orderModel");
 const expressAsyncHandler = require("express-async-handler");
 const Product = require("../models/productModel");
 const ErrorHandler = require("../utils/errorHandler");
+const { redisClient } = require("../config/redis");
 
 const createOrder = expressAsyncHandler(async (req, res, next) => {
   const { shippingInfo, orderItems, paymentInfo } = req.body;
@@ -44,7 +45,21 @@ const getSingleOrder = expressAsyncHandler(async (req, res, next) => {
 });
 
 const myOrder = expressAsyncHandler(async (req, res, next) => {
-  const orders = await Order.find({ user: req.user._id });
+  let orders;
+  if (redisClient) {
+    let tempOrders = await redisClient.get(`order:${req.user._id}`);
+    if (tempOrders) {
+      orders = JSON.parse(tempOrders);
+    }
+  }
+
+  if (!orders) {
+    orders = await Order.find({ user: req.user._id });
+  }
+
+  if (redisClient) {
+    await redisClient.set(`order:${req.user._id}`, JSON.stringify(orders));
+  }
 
   res.status(200).json({
     success: true,
@@ -106,7 +121,7 @@ const adminDeleteOrder = expressAsyncHandler(async (req, res, next) => {
 const adminSingleOrder = expressAsyncHandler(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate(
     "user",
-    "name email"
+    "name email",
   );
   res.status(200).json({
     success: true,

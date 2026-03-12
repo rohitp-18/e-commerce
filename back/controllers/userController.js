@@ -6,6 +6,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const cloudinary = require("cloudinary").v2;
 const Order = require("../models/orderModel");
 const sendMail = require("../config/sendMail");
+const { redisClient } = require("../config/redis");
 
 const loginHandler = expressAsyncHandler(async (req, res, next) => {
   let { email, password } = req.body;
@@ -55,30 +56,18 @@ const registerUser = expressAsyncHandler(async (req, res, next) => {
 });
 
 const userInfo = expressAsyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user._id);
-
-  if (!user) {
-    return next(new ErrorHandler("User not found", 404));
-  }
-  sendToken(res, user, 200);
+  sendToken(res, req.user, 200);
 });
 
 const logoutUser = expressAsyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user._id);
-
-  if (!user) {
-    return next(new ErrorHandler("user not found", 404));
+  if (redisClient) {
+    await redisClient.del(`user:${req.user._id}`);
   }
 
-  res
-    .status(200)
-    .cookie("token", null, {
-      expireIn: new Date(Date.now()),
-    })
-    .json({
-      success: true,
-      message: "Logout successfully",
-    });
+  res.status(200).clearCookie("token").json({
+    success: true,
+    message: "Logout successfully",
+  });
 });
 
 const updateUser = expressAsyncHandler(async (req, res, next) => {
@@ -129,7 +118,7 @@ const updatePassword = expressAsyncHandler(async (req, res, next) => {
 
   if (req.body.oldPassword === req.body.password) {
     return next(
-      new ErrorHandler("old password and new password canonot be same", 400)
+      new ErrorHandler("old password and new password canonot be same", 400),
     );
   }
 
@@ -279,7 +268,7 @@ const adminUpdateUser = expressAsyncHandler(async (req, res, next) => {
       email,
       role,
     },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   );
 
   if (!user) {

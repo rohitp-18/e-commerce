@@ -11,6 +11,7 @@ dotenv.config({ path: path.resolve(__dirname, "config/.env") }); // for developm
 
 const mongodb = require("./config/mongodb");
 const error = require("./middlewares/error");
+const { connectRedis } = require("./config/redis");
 
 const userRoute = require("./routers/userRouter");
 const productRoute = require("./routers/productRouter");
@@ -20,7 +21,9 @@ const advertRoute = require("./routers/advertisementRouter");
 const searchRoute = require("./routers/searchRouter");
 
 const app = express();
+
 mongodb();
+connectRedis();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -33,7 +36,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({ origin: "http://localhost:3000", credentials: true })); // for development
-app.use(morgan("combined"));
+app.use(morgan("dev"));
 // for deployment
 // app.use(express.static(path.resolve(path.join(__dirname, "../front/build"))));
 

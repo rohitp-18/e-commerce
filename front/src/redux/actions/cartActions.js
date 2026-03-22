@@ -8,23 +8,26 @@ import {
   SAVE_SHIPPING_INFO,
 } from "../constants/cartConstants";
 
-const addToCart = (id, quantity) => async (dispatch, getState) => {
-  const { data } = await axios.get(`/product/${id}`);
-
+const addToCart = (product, quantity) => async (dispatch, getState) => {
   dispatch({
     type: ADD_TO_CART,
     payload: {
-      product: data.product._id,
-      image: data.product.images[0].url,
-      name: data.product.name,
-      price: data.product.price,
-      stock: data.product.stock,
-      user: data.product.user,
+      product: product._id,
+      image: product.images[0].url,
+      name: product.name,
+      price: product.price,
+      stock: product.stock,
+      user: product.user,
       quantity,
     },
   });
 
-  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+  try {
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(getState().cart.cartItems),
+    );
+  } catch (error) {}
 };
 
 const removeToCart = (id) => async (dispatch, getState) => {
@@ -38,7 +41,7 @@ const shippingInfoAction = (data) => async (dispatch, getState) => {
 
   localStorage.setItem(
     "shippingInfo",
-    JSON.stringify(getState().cart.shippingInfo)
+    JSON.stringify(getState().cart.shippingInfo),
   );
 };
 

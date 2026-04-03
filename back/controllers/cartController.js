@@ -14,8 +14,10 @@ const addToCartController = expressAsyncHandler(async (req, res, next) => {
   let index = user.cart.findIndex({ productId });
 
   if (index == -1) {
-    user.cart.push({ productId });
+    user.cart.push({ productId, quantity });
     await user.save();
+  } else {
+    user.cart[index].quantity = quantity;
   }
 
   res.status(200).json({
@@ -42,4 +44,17 @@ const removeFromCart = expressAsyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports = { addToCartController, removeFromCart };
+const getAllCart = expressAsyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user._id).select("cart");
+
+  if (user.cart.length == 0) {
+    return next(new ErrorHandler("Cart is empty!!", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    cart: user.cart,
+  });
+});
+
+module.exports = { addToCartController, removeFromCart, getAllCart };

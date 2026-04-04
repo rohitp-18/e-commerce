@@ -40,7 +40,7 @@ function AdminSearch() {
 
   const dispatch = useDispatch();
   const { searches, loading, isDeleted, error, isUpdated } = useSelector(
-    (state) => state.search
+    (state) => state.search,
   );
   const { sendAlert } = useContext(AlertContext);
 
@@ -64,7 +64,7 @@ function AdminSearch() {
       updateAction(editData.id, {
         query: editData.query,
         verified: editData.verified,
-      })
+      }),
     );
     setOpen(false);
   };
@@ -117,7 +117,7 @@ function AdminSearch() {
         id: item._id,
         query: item.query,
         verified: item.verified ? "Yes" : "No",
-      }))
+      })),
     );
   }, [searches]);
 

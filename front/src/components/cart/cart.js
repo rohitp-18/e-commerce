@@ -83,7 +83,7 @@ function Cart() {
             <div>
               {cartItems.reduce(
                 (acc, item) => acc + item.quantity * item.price,
-                0
+                0,
               )}
             </div>
           </div>

@@ -11,7 +11,7 @@ dotenv.config({ path: path.resolve(__dirname, "config/.env") }); // for developm
 
 const mongodb = require("./config/mongodb");
 const error = require("./middlewares/error");
-const { connectRedis } = require("./config/redis");
+const { connectRedis, redisClient } = require("./config/redis");
 
 const userRoute = require("./routers/userRouter");
 const productRoute = require("./routers/productRouter");
@@ -40,6 +40,10 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true })); // for de
 app.use(morgan("dev"));
 app.use(async (req, res, next) => {
   try {
+    if (await redisClient.isOpen()) {
+      req.redisConncted = false;
+      next();
+    }
     req.redisConncted = true;
   } catch (error) {
     req.redisConncted = false;

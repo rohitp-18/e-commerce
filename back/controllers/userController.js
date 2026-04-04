@@ -60,7 +60,7 @@ const userInfo = expressAsyncHandler(async (req, res, next) => {
 });
 
 const logoutUser = expressAsyncHandler(async (req, res, next) => {
-  if (redisClient) {
+  if (req.redisConncted) {
     await redisClient.del(`user:${req.user._id}`);
   }
 

@@ -46,7 +46,7 @@ const getSingleOrder = expressAsyncHandler(async (req, res, next) => {
 
 const myOrder = expressAsyncHandler(async (req, res, next) => {
   let orders;
-  if (redisClient) {
+  if (req.redisConncted) {
     let tempOrders = await redisClient.get(`order:${req.user._id}`);
     if (tempOrders) {
       orders = JSON.parse(tempOrders);
@@ -57,7 +57,7 @@ const myOrder = expressAsyncHandler(async (req, res, next) => {
     orders = await Order.find({ user: req.user._id });
   }
 
-  if (redisClient) {
+  if (req.redisConncted) {
     await redisClient.set(`order:${req.user._id}`, JSON.stringify(orders));
   }
 

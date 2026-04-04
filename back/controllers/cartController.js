@@ -1,6 +1,6 @@
 const expressAsyncHandler = require("express-async-handler");
 const ErrorHandler = require("../utils/errorHandler");
-const User = require("../models/userModel");
+const Cart = require("../models/cartModel");
 
 const addToCartController = expressAsyncHandler(async (req, res, next) => {
   const { productId, quantity } = req.body;
@@ -9,15 +9,16 @@ const addToCartController = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Please provide all fields", 400));
   }
 
-  const user = await User.findById(req.user._id);
+  const cartItem = await Cart.findOne({ user: req.user._id, productId });
 
-  let index = user.cart.findIndex({ productId });
-
-  if (index == -1) {
-    user.cart.push({ productId, quantity });
-    await user.save();
+  if (cartItem) {
+    cartItem.quantity = quantity;
   } else {
-    user.cart[index].quantity = quantity;
+    await Cart.create({
+      userId: req.user._id,
+      productId,
+      quantity,
+    });
   }
 
   res.status(200).json({
@@ -33,10 +34,14 @@ const removeFromCart = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Invalid Product id", 400));
   }
 
-  const user = await User.findById(req.user._id);
+  const cartItem = await Cart.findOneAndDelete({
+    userId: req.user._id,
+    productId,
+  });
 
-  user.cart = user.cart.filter((product) => product !== productId);
-  await user.save();
+  if (!cartItem.id) {
+    return next(new ErrorHandler("Product does not found in cart", 404));
+  }
 
   res.status(200).json({
     success: true,
@@ -45,15 +50,11 @@ const removeFromCart = expressAsyncHandler(async (req, res, next) => {
 });
 
 const getAllCart = expressAsyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user._id).select("cart");
-
-  if (user.cart.length == 0) {
-    return next(new ErrorHandler("Cart is empty!!", 404));
-  }
+  const cartItems = await Cart.find({ user: req.user._id });
 
   res.status(200).json({
     success: true,
-    cart: user.cart,
+    cart: cartItems,
   });
 });
 

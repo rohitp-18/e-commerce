@@ -87,7 +87,7 @@ const getCartsAction = () => async (dispatch) => {
 
     const { data } = await axios.get("/cart/");
 
-    dispatch({ type: GET_CART_SUCCESS, payload: data.carts });
+    dispatch({ type: GET_CART_SUCCESS, payload: data.cart });
   } catch (error) {
     if (isAxiosError(error)) {
       dispatch({ type: GET_CART_FAIL, error: error.response.data.message });

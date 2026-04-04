@@ -11,4 +11,13 @@ async function connectRedis() {
   }
 }
 
-module.exports = { redisClient, connectRedis };
+async function checkRedisClient() {
+  try {
+    await redisClient.ping;
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+module.exports = { redisClient, connectRedis, checkRedisClient };

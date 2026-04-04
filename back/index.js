@@ -38,6 +38,14 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({ origin: "http://localhost:3000", credentials: true })); // for development
 app.use(morgan("dev"));
+app.use(async (req, res, next) => {
+  try {
+    req.redisConncted = true;
+  } catch (error) {
+    req.redisConncted = false;
+  }
+  next();
+});
 // for deployment
 // app.use(express.static(path.resolve(path.join(__dirname, "../front/build"))));
 
@@ -56,5 +64,5 @@ app.use("/api/v1/search", searchRoute);
 
 app.use(error);
 app.listen(port, () => {
-  console.log("service started");
+  console.log("app is running");
 });

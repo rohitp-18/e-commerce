@@ -6,52 +6,36 @@ const View = require("../models/viewsModel");
 const cloudinary = require("cloudinary").v2;
 
 const getHomePage = expressAsyncHandler(async (req, res, next) => {
-  const products = await Product.find().limit(10);
-  const newProducts = await Product.find().sort({ createdAt: -1 }).limit(10);
-  const featuredProducts = await Product.find({ ratings: { $gte: 4 } }).limit(
-    10
-  );
-  const topRatedProducts = await Product.find().sort({ ratings: -1 }).limit(10);
-  const sponsored = await Product.find({ sponsored: true }).limit(10);
-
-  if (!req.user) {
-    return next(
-      res.status(200).json({
-        success: true,
-        products,
-        newProducts,
-        featuredProducts,
-        topRatedProducts,
-        sponsored,
-      })
-    );
-  }
-
-  const views = await View.find({ user: req.user._id })
-    .populate("product")
-    .sort({ createdAt: -1 })
-    .limit(10);
-  const favourites = await View.find({
-    user: req.user._id,
-    status: "favourite",
-  })
-    .populate("product")
-    .sort({ createdAt: -1 })
-    .limit(10);
-
-  // const recommended = await View.find({ user: req.user._id, status: "view" }).populate("product").sort({ createdAt: -1 }).limit(10);
-
-  res.status(200).json({
+  const jsonObject = {
     success: true,
-    products,
-    newProducts,
-    featuredProducts,
-    topRatedProducts,
-    sponsored,
-    views,
-    favourites,
-    // recommended,
-  });
+  };
+
+  jsonObject.products = await Product.find().limit(10);
+  jsonObject.newProducts = await Product.find()
+    .sort({ createdAt: -1 })
+    .limit(10);
+  jsonObject.featuredProducts = await Product.find({
+    ratings: { $gte: 4 },
+  }).limit(10);
+  jsonObject.topRatedProducts = await Product.find()
+    .sort({ ratings: -1 })
+    .limit(10);
+  jsonObject.sponsored = await Product.find({ sponsored: true }).limit(10);
+
+  if (req.user) {
+    jsonObject.views = await View.find({ user: req.user._id })
+      .populate("product")
+      .sort({ createdAt: -1 })
+      .limit(10);
+    jsonObject.favourites = await View.find({
+      user: req.user._id,
+      status: "favourite",
+    })
+      .populate("product")
+      .sort({ createdAt: -1 })
+      .limit(10);
+  }
+  res.status(200).json(jsonObject);
 });
 
 const getProductCategory = expressAsyncHandler(async (req, res, next) => {
@@ -60,7 +44,7 @@ const getProductCategory = expressAsyncHandler(async (req, res, next) => {
   const products = await Product.find({ category }).limit(10);
   const newProducts = await Product.find().sort({ createdAt: -1 }).limit(10);
   const featuredProducts = await Product.find({ ratings: { $gte: 4 } }).limit(
-    10
+    10,
   );
   const topRatedProducts = await Product.find().sort({ ratings: -1 }).limit(10);
   const sponsored = await Product.find({ sponsored: true }).limit(10);
@@ -74,7 +58,7 @@ const getProductCategory = expressAsyncHandler(async (req, res, next) => {
         featuredProducts,
         topRatedProducts,
         sponsored,
-      })
+      }),
     );
   }
 
@@ -206,7 +190,7 @@ const createProduct = expressAsyncHandler(async (req, res, next) => {
           public_id: data.public_id,
           url: data.secure_url,
         };
-      })
+      }),
     );
   } catch (error) {
     return next(new ErrorHandler("internal Error", 500));
@@ -270,7 +254,7 @@ const updateProduct = expressAsyncHandler(async (req, res, next) => {
             public_id: data.public_id,
             url: data.secure_url,
           };
-        })
+        }),
       );
     } catch (error) {
       return next(new ErrorHandler("internal Error", 500));
@@ -313,7 +297,7 @@ const createProductReview = expressAsyncHandler(async (req, res, next) => {
   };
 
   let check = product.reviews.find(
-    (item) => item.user.toString() === req.user._id.toString()
+    (item) => item.user.toString() === req.user._id.toString(),
   );
 
   if (!check) {
@@ -321,7 +305,7 @@ const createProductReview = expressAsyncHandler(async (req, res, next) => {
   } else {
     product.reviews.forEach((item) => {
       if (item.user.toString() === req.user._id.toString())
-        (item.rating = rating), (item.comment = comment);
+        ((item.rating = rating), (item.comment = comment));
     });
   }
 
@@ -362,7 +346,7 @@ const deleteReview = expressAsyncHandler(async (req, res, next) => {
   }
 
   const review = product.reviews.filter(
-    (rev) => rev._id.toString() !== req.query.revId.toString()
+    (rev) => rev._id.toString() !== req.query.revId.toString(),
   );
 
   product.reviews = review;
@@ -459,7 +443,7 @@ const updateSellerProduct = expressAsyncHandler(async (req, res, next) => {
             public_id: data.public_id,
             url: data.secure_url,
           };
-        })
+        }),
       );
     } catch (error) {
       return next(new ErrorHandler("internal Error", 500));
@@ -469,7 +453,7 @@ const updateSellerProduct = expressAsyncHandler(async (req, res, next) => {
   const product = await Product.findByIdAndUpdate(
     { id, user: req.user._id },
     info,
-    { new: true }
+    { new: true },
   );
 
   if (!product) {

@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 const { redisClient } = require("../config/redis");
 
 const auth = expressAsyncHandler(async (req, res, next) => {
+  req.redis = await req.redis;
   const { token } = req.cookies;
   if (!token) {
     return next(new ErrorHandler("please login first", 403));
@@ -12,7 +13,7 @@ const auth = expressAsyncHandler(async (req, res, next) => {
 
   const { _id } = jwt.verify(token, process.env.JWT_SECRET);
 
-  if (redisClient) {
+  if (req.redis) {
     const user = await redisClient.get(`user:${_id}`);
     if (user) {
       req.user = JSON.parse(user);
@@ -29,7 +30,7 @@ const auth = expressAsyncHandler(async (req, res, next) => {
   const user = await User.findById(_id);
   req.user = user;
 
-  if (redisClient) {
+  if (req.redis) {
     await redisClient.set(`user:${_id}`, JSON.stringify(user));
   }
 
@@ -53,19 +54,20 @@ const checkAuth = expressAsyncHandler(async (req, res, next) => {
     return next();
   }
 
-  if (redisClient) {
-    req.user = await JSON.parse(redisClient.get(`user:${token}`));
-    return next();
+  const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+  console.log(_id);
+
+  if (req.redis) {
+    const user = await redisClient.get(`user:${_id}`);
+    if (user) {
+      req.user = JSON.parse(user);
+      req.user.source = "redis";
+      console.log("redis");
+      return next();
+    }
   }
 
-  let _id;
-
-  try {
-    _id = jwt.verify(token, process.env.JWT_SECRET)._id;
-  } catch (error) {
-    return next();
-  }
-
+  console.log("69", _id);
   if (!_id) {
     return next();
   }
@@ -73,7 +75,7 @@ const checkAuth = expressAsyncHandler(async (req, res, next) => {
   const user = await User.findById(_id);
   req.user = user;
 
-  if (redisClient) {
+  if (req.redis) {
     await redisClient.set(`user:${_id}`, JSON.stringify(user));
   }
 

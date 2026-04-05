@@ -10,7 +10,15 @@ const auth = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("please login first", 403));
   }
 
-  const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+  let _id;
+
+  try {
+    const res = jwt.verify(token, process.env.JWT_SECRET);
+    _id = res._id;
+  } catch (err) {
+    res.clearCookie("token");
+    return next(new ErrorHandler("Please Login first", 403));
+  }
 
   if (req.redisConncted) {
     const user = await redisClient.get(`user:${_id}`);
@@ -52,14 +60,20 @@ const checkAuth = expressAsyncHandler(async (req, res, next) => {
     return next();
   }
 
-  const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+  let _id;
+
+  try {
+    const res = jwt.verify(token, process.env.JWT_SECRET);
+    _id = res._id;
+  } catch (err) {
+    res.clearCookie("token");
+  }
 
   if (req.redisConncted) {
     const user = await redisClient.get(`user:${_id}`);
     if (user) {
       req.user = JSON.parse(user);
       req.user.source = "redis";
-      console.log("redis");
       return next();
     }
   }

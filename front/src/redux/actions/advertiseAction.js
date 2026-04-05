@@ -45,7 +45,6 @@ const getAdminAdverts = () => async (dispatch) => {
 
     dispatch({ type: ADMIN_ADVERTS_SUCCESS, payload: data });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: ADMIN_ADVERTS_FAIL,
       payload: error.response?.data.message || "Internal error",

@@ -4,22 +4,31 @@ import CartCard from "./CartCard";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCartOutlined } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeToCart } from "../../redux/actions/cartActions";
+import {
+  getCartsAction,
+  removeToCart,
+  updateToCart,
+} from "../../redux/actions/cartActions";
 import MetaData from "../layout/header/MetaData";
+import Loader from "../layout/Loader";
 
 function Cart() {
   const navigator = useNavigate();
   const dispatch = useDispatch();
-  const { cartItems } = useSelector((state) => state.cart);
+  const { cartItems, loading } = useSelector((state) => state.cart);
 
-  const increament = (id, quantity, stock) => {
-    if (stock <= quantity) return;
-    dispatch(addToCart(id, quantity + 1));
+  const increament = (cartItem) => {
+    if (cartItem.productId.stock <= cartItem.quantity) return;
+    dispatch(
+      updateToCart({ id: cartItem._id, quantity: cartItem.quantity + 1 }),
+    );
   };
 
-  const decreament = (id, quantity) => {
-    if (quantity <= 1) return;
-    dispatch(addToCart(id, quantity - 1));
+  const decreament = (cartItem) => {
+    if (cartItem.quantity <= 1) return;
+    dispatch(
+      updateToCart({ id: cartItem._id, quantity: cartItem.quantity - 1 }),
+    );
   };
 
   const checkout = () => {
@@ -29,6 +38,14 @@ function Cart() {
   const deleteCart = (id) => {
     dispatch(removeToCart(id));
   };
+
+  useEffect(() => {
+    dispatch(getCartsAction());
+  }, [dispatch]);
+
+  if (!cartItems || loading) {
+    return <Loader />;
+  }
 
   return (
     <main className="cart-main">
@@ -47,32 +64,22 @@ function Cart() {
             <h3>Price</h3>
           </div>
           {cartItems.map((item, i) => (
-            <Fragment key={item.product}>
+            <Fragment key={item._id}>
               <section className="cart-card">
                 <CartCard
-                  item={item}
+                  item={item.productId}
                   deleteCart={() => deleteCart(item.product)}
                 />
                 <div className="cart-quantity">
                   <div className="selected">
-                    <button
-                      onClick={() => decreament(item.product, item.quantity)}
-                    >
-                      -
-                    </button>
+                    <button onClick={() => decreament(item)}>-</button>
                     <input value={item.quantity} type="submit" readOnly />
-                    <button
-                      onClick={() =>
-                        increament(item.product, item.quantity, item.stock)
-                      }
-                    >
-                      +
-                    </button>
+                    <button onClick={() => increament(item)}>+</button>
                   </div>
                 </div>
 
                 <div className="cart-price">
-                  <span>₹{item.price * item.quantity}</span>
+                  <span>₹{item.productId?.price * item.quantity}</span>
                 </div>
               </section>
               {i < cartItems.length - 1 && <hr />}
@@ -82,7 +89,7 @@ function Cart() {
             <div>Total Price</div>
             <div>
               {cartItems.reduce(
-                (acc, item) => acc + item.quantity * item.price,
+                (acc, item) => acc + item.quantity * item.productId.price,
                 0,
               )}
             </div>

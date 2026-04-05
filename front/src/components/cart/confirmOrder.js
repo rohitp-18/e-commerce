@@ -26,9 +26,6 @@ function ConfirmOrder({ setActiveStep, cartItems }) {
     dispatch(addToCart(id, quantity + 1));
   };
 
-  useEffect(() => {
-    console.log(cartItems);
-  });
   return (
     <>
       <section className="confirm-order">

@@ -10,29 +10,41 @@ import {
   ID_TEMP_CART,
   REMOVE_TO_CART_SUCCESS,
   SAVE_SHIPPING_INFO,
+  UPDATE_CART_FAIL,
+  UPDATE_CART_SUCCESS,
 } from "../constants/cartConstants";
 import { REMOVE_FAVOURITE_FAIL } from "../constants/favouriteConstant";
 
 const cartReducer = (state = { cartItems: [], tempItems: [] }, action) => {
   switch (action.type) {
-    case ADD_TO_CART_SUCCESS:
-      const item = action.payload;
-
-      let isExit = state.cartItems.find((i) => i.product === item.product);
-
-      if (isExit) {
-        state.cartItems.map(
-          (i) => i.product === item.product && (i.quantity = item.quantity),
-        );
-        return {
-          ...state,
-        };
-      } else {
-        state.cartItems.push(item);
-        return {
-          ...state,
-        };
+    case UPDATE_CART_SUCCESS:
+      if (state.cartItems && Array.isArray(state.cartItems)) {
+        state.cartItems = state.cartItems.map((c) => {
+          if (c._id === action.payload._id) {
+            c.quantity = action.payload.quantity;
+          }
+          return c;
+        });
       }
+      return {
+        ...state,
+      };
+
+    case UPDATE_CART_FAIL:
+      return {
+        ...state,
+        error: action.error,
+      };
+
+    case ADD_TO_CART_SUCCESS:
+      if (state.cartItems && Array.isArray(state.cartItems)) {
+        state.cartItems.push(action.payload);
+      } else {
+        state.cartItems = [action.payload];
+      }
+      return {
+        ...state,
+      };
 
     case ADD_TO_CART_FAIL:
       return {
@@ -43,7 +55,10 @@ const cartReducer = (state = { cartItems: [], tempItems: [] }, action) => {
     case REMOVE_TO_CART_SUCCESS:
       return {
         ...state,
-        cartItems: state.cartItems.filter((i) => i.product !== action.payload),
+        cartItems:
+          state.cartItems && Array.isArray(state.cartItems)
+            ? state.cartItems.filter((i) => i._id !== action.payload)
+            : [],
       };
 
     case REMOVE_FAVOURITE_FAIL:
@@ -79,7 +94,7 @@ const cartReducer = (state = { cartItems: [], tempItems: [] }, action) => {
       return {
         ...state,
         error: action.error,
-        loading: true,
+        loading: false,
       };
 
     case GET_CART_REQUEST:
@@ -92,7 +107,7 @@ const cartReducer = (state = { cartItems: [], tempItems: [] }, action) => {
       return {
         ...state,
         cartItems: action.payload,
-        loading: true,
+        loading: false,
       };
 
     case CLEAR_ERRORS:

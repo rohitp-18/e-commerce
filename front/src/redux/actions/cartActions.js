@@ -11,56 +11,69 @@ import {
   GET_CART_FAIL,
   GET_CART_REQUEST,
   GET_CART_SUCCESS,
+  UPDATE_CART_SUCCESS,
+  UPDATE_CART_FAIL,
+  REMOVE_TO_CART_FAIL,
 } from "../constants/cartConstants";
 import { REMOVE_FAVOURITE_FAIL } from "../constants/favouriteConstant";
 
-const addToCart = (product, quantity) => async (dispatch, getState) => {
-  try {
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(getState().cart.cartItems),
-    );
-    await axios.post("/cart/add", { productId: product._id, quantity });
-    dispatch({
-      type: ADD_TO_CART_SUCCESS,
-      payload: {
-        product: product._id,
-        image: product.images[0].url,
-        name: product.name,
-        price: product.price,
-        stock: product.stock,
-        user: product.user,
-        quantity,
-      },
-    });
-  } catch (error) {
-    if (isAxiosError(error)) {
-      dispatch({ type: ADD_TO_CART_FAIL, error: error.response.data.message });
-      return;
+const addToCart =
+  ({ id, value }) =>
+  async (dispatch, getState) => {
+    try {
+      const { data } = await axios.post("/cart/add", {
+        productId: id,
+        quantity: value,
+      });
+      dispatch({
+        type: ADD_TO_CART_SUCCESS,
+        payload: data.cart,
+      });
+    } catch (error) {
+      if (isAxiosError(error)) {
+        dispatch({
+          type: ADD_TO_CART_FAIL,
+          error: error.response.data.message,
+        });
+        return;
+      }
+      dispatch({ type: ADD_TO_CART_FAIL, error: error.message });
     }
-    dispatch({ type: ADD_TO_CART_FAIL, error: error.message });
-  }
-};
+  };
 
 const removeToCart = (id) => async (dispatch, getState) => {
   try {
     await axios.delete(`/cart/product/${id}`);
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(getState().cart.cartItems),
-    );
     dispatch({ type: REMOVE_TO_CART_SUCCESS, payload: id });
   } catch (error) {
     if (isAxiosError(error)) {
       dispatch({
-        type: REMOVE_FAVOURITE_FAIL,
+        type: REMOVE_TO_CART_FAIL,
         error: error.response.data.message,
       });
       return;
     }
-    dispatch({ type: REMOVE_FAVOURITE_FAIL, error: error.message });
+    dispatch({ type: REMOVE_TO_CART_FAIL, error: error.message });
   }
 };
+
+const updateToCart =
+  ({ id, quantity }) =>
+  async (dispatch, getState) => {
+    try {
+      await axios.put(`/cart/product/${id}`, { quantity });
+      dispatch({ type: UPDATE_CART_SUCCESS, payload: { _id: id, quantity } });
+    } catch (error) {
+      if (isAxiosError(error)) {
+        dispatch({
+          type: UPDATE_CART_FAIL,
+          error: error.response.data.message,
+        });
+        return;
+      }
+      dispatch({ type: UPDATE_CART_FAIL, error: error.message });
+    }
+  };
 
 const shippingInfoAction = (data) => async (dispatch, getState) => {
   dispatch({ type: SAVE_SHIPPING_INFO, payload: data });
@@ -93,7 +106,7 @@ const getCartsAction = () => async (dispatch) => {
       dispatch({ type: GET_CART_FAIL, error: error.response.data.message });
       return;
     }
-    dispatch({ type: ADD_TO_CART_FAIL, error: error.message });
+    dispatch({ type: GET_CART_FAIL, error: error.message });
   }
 };
 
@@ -103,4 +116,5 @@ export {
   shippingInfoAction,
   tempCartAction,
   getCartsAction,
+  updateToCart,
 };

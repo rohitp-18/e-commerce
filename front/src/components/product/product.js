@@ -43,7 +43,7 @@ const Product = () => {
       sendAlert("This product is out of stock", "error");
       return;
     }
-    dispatch(addToCart(id, value));
+    dispatch(addToCart({ id, value }));
     navigator("/cart");
   };
 
@@ -84,7 +84,7 @@ const Product = () => {
         axios.post(
           "/view/view/new",
           { product: id },
-          { withCredentials: true }
+          { withCredentials: true },
         );
     } catch (error) {}
   }, [id, user]);

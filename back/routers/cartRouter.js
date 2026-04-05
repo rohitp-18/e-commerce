@@ -2,6 +2,7 @@ const {
   addToCartController,
   removeFromCart,
   getAllCart,
+  updateCartItem,
 } = require("../controllers/cartController");
 const express = require("express");
 const { auth } = require("../middlewares/auth");
@@ -12,6 +13,6 @@ router.use(auth);
 
 router.get("/", getAllCart);
 router.post("/add", addToCartController);
-router.delete("/product/:id", removeFromCart);
+router.route("/product/:id").delete(removeFromCart).put(updateCartItem);
 
 module.exports = router;

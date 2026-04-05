@@ -126,10 +126,6 @@ function AdminSearch() {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(searches);
-  }, [searches]);
-
-  useEffect(() => {
     if (isDeleted) {
       sendAlert("AdminSearch is deleted successfully", "success");
       dispatch({ type: ADMIN_DELETE_SEARCH_RESET });

@@ -9,12 +9,14 @@ const addToCartController = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Please provide all fields", 400));
   }
 
-  const cartItem = await Cart.findOne({ user: req.user._id, productId });
+  let cartItem = await Cart.findOne({ userId: req.user._id, productId });
 
   if (cartItem) {
     cartItem.quantity = quantity;
+
+    await cartItem.save();
   } else {
-    await Cart.create({
+    cartItem = await Cart.create({
       userId: req.user._id,
       productId,
       quantity,
@@ -24,20 +26,14 @@ const addToCartController = expressAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Product added to cart successfully",
+    cart: cartItem,
   });
 });
 
 const removeFromCart = expressAsyncHandler(async (req, res, next) => {
-  const { id: productId } = req.params;
+  const { id } = req.params;
 
-  if (!productId) {
-    return next(new ErrorHandler("Invalid Product id", 400));
-  }
-
-  const cartItem = await Cart.findOneAndDelete({
-    userId: req.user._id,
-    productId,
-  });
+  const cartItem = await Cart.findByIdAndDelete(id);
 
   if (!cartItem.id) {
     return next(new ErrorHandler("Product does not found in cart", 404));
@@ -50,7 +46,10 @@ const removeFromCart = expressAsyncHandler(async (req, res, next) => {
 });
 
 const getAllCart = expressAsyncHandler(async (req, res, next) => {
-  const cartItems = await Cart.find({ user: req.user._id });
+  const cartItems = await Cart.find({ userId: req.user._id }).populate(
+    "productId",
+    "images name price stock",
+  );
 
   res.status(200).json({
     success: true,
@@ -58,4 +57,25 @@ const getAllCart = expressAsyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports = { addToCartController, removeFromCart, getAllCart };
+const updateCartItem = expressAsyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const { quantity } = req.body;
+
+  const cartItem = await Cart.findByIdAndUpdate(id, { quantity });
+
+  if (!cartItem) {
+    return next(new ErrorHandler("Product does not found in cart", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Product removed from cart successfully",
+  });
+});
+
+module.exports = {
+  addToCartController,
+  removeFromCart,
+  getAllCart,
+  updateCartItem,
+};

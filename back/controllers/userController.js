@@ -15,7 +15,7 @@ const loginHandler = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Please fill all required fields", 400));
   }
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("password");
 
   if (!user) {
     return next(new ErrorHandler("Invalid eamil and password", 400));
@@ -25,6 +25,8 @@ const loginHandler = expressAsyncHandler(async (req, res, next) => {
   if (!comparePassword) {
     return next(new ErrorHandler("Invalid email and password", 400));
   }
+
+  user.password = null;
 
   sendToken(res, user, 200);
 });
@@ -36,27 +38,20 @@ const registerUser = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Please fill all required filleds", 400));
   }
 
-  const tempUser = await User.findOne({ email });
-
-  if (tempUser) {
-    return next(new ErrorHandler("Email address already exists", 400));
-  }
-
-  const user = await User.create({
-    name,
-    email,
-    password,
-  });
+  const user = await User.create({ name, email, password });
 
   if (!user) {
     return next(new ErrorHandler("Internal Error", 500));
   }
 
+  user.password = null;
+
   sendToken(res, user, 201);
 });
 
 const userInfo = expressAsyncHandler(async (req, res, next) => {
-  sendToken(res, req.user, 200);
+  const user = await User.findById(req.user._id);
+  sendToken(res, user, 200);
 });
 
 const logoutUser = expressAsyncHandler(async (req, res, next) => {

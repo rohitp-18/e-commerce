@@ -5,7 +5,7 @@ function CartCard({ item, deleteCart }) {
   return (
     <div className="cart-product">
       <div className="img">
-        <img alt={item.name} src={item.image} />
+        <img alt={item.name} src={item.images[0]?.url} />
       </div>
       <div className="cart-info">
         <h3>{item.name}</h3>

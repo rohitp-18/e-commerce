@@ -1,47 +1,29 @@
 import React, { Fragment, useEffect } from "react";
 import "./cart.scss";
-import CartCard from "./CartCard";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCartOutlined } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getCartsAction,
-  removeToCart,
-  updateToCart,
-} from "../../redux/actions/cartActions";
+import { getCartsAction } from "../../redux/actions/cartActions";
 import MetaData from "../layout/header/MetaData";
 import Loader from "../layout/Loader";
+import CartItem from "./cartItem";
 
 function Cart() {
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const { cartItems, loading } = useSelector((state) => state.cart);
 
-  const increament = (cartItem) => {
-    if (cartItem.productId.stock <= cartItem.quantity) return;
-    dispatch(
-      updateToCart({ id: cartItem._id, quantity: cartItem.quantity + 1 }),
-    );
-  };
-
-  const decreament = (cartItem) => {
-    if (cartItem.quantity <= 1) return;
-    dispatch(
-      updateToCart({ id: cartItem._id, quantity: cartItem.quantity - 1 }),
-    );
-  };
-
   const checkout = () => {
     navigator("/shipping");
-  };
-
-  const deleteCart = (id) => {
-    dispatch(removeToCart(id));
   };
 
   useEffect(() => {
     dispatch(getCartsAction());
   }, [dispatch]);
+
+  useEffect(() => {
+    console.log(cartItems);
+  }, [cartItems]);
 
   if (!cartItems || loading) {
     return <Loader />;
@@ -65,23 +47,7 @@ function Cart() {
           </div>
           {cartItems.map((item, i) => (
             <Fragment key={item._id}>
-              <section className="cart-card">
-                <CartCard
-                  item={item.productId}
-                  deleteCart={() => deleteCart(item.product)}
-                />
-                <div className="cart-quantity">
-                  <div className="selected">
-                    <button onClick={() => decreament(item)}>-</button>
-                    <input value={item.quantity} type="submit" readOnly />
-                    <button onClick={() => increament(item)}>+</button>
-                  </div>
-                </div>
-
-                <div className="cart-price">
-                  <span>₹{item.productId?.price * item.quantity}</span>
-                </div>
-              </section>
+              <CartItem item={item} />
               {i < cartItems.length - 1 && <hr />}
             </Fragment>
           ))}

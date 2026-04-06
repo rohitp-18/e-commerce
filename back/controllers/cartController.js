@@ -9,7 +9,10 @@ const addToCartController = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Please provide all fields", 400));
   }
 
-  let cartItem = await Cart.findOne({ userId: req.user._id, productId });
+  let cartItem = await Cart.findOne({
+    userId: req.user._id,
+    productId,
+  }).populate("productId", "images name price stock");
 
   if (cartItem) {
     cartItem.quantity = quantity;

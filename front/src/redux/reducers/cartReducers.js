@@ -21,6 +21,7 @@ const cartReducer = (state = { cartItems: [], tempItems: [] }, action) => {
       if (state.cartItems && Array.isArray(state.cartItems)) {
         state.cartItems = state.cartItems.map((c) => {
           if (c._id === action.payload._id) {
+            console.log(action.payload);
             c.quantity = action.payload.quantity;
           }
           return c;

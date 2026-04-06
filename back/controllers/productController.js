@@ -290,7 +290,6 @@ const createProductReview = expressAsyncHandler(async (req, res, next) => {
   }
 
   const review = {
-    name: req.user.name,
     user: req.user._id,
     rating,
     comment,

@@ -1,9 +1,13 @@
 const jwt = require("jsonwebtoken");
 
 const sendToken = (res, user, statusCode) => {
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE * 24 * 60 * 60 * 1000,
-  });
+  const token = jwt.sign(
+    { _id: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRE * 24 * 60 * 60 * 1000,
+    },
+  );
 
   res
     .status(statusCode)

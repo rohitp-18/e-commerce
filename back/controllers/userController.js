@@ -90,12 +90,13 @@ const updateUser = expressAsyncHandler(async (req, res, next) => {
   }
 
   const data = {
-    avatar: avatar
-      ? { public_id: avatar.public_id, url: avatar.secure_url }
-      : req.user.avatar,
     name,
     email,
   };
+
+  if (avatar) {
+    data.avatar = { public_id: avatar.public_id, url: avatar.secure_url };
+  }
 
   const user = await User.findByIdAndUpdate(req.user._id, data);
 
@@ -210,13 +211,11 @@ const forgotPasswordChange = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Invalid Link", 400));
   }
 
-  req.user = user;
+  user.password = req.password;
+  user.resetPasswordExpire = null;
+  user.resetPasswordToken = null;
 
-  req.user.password = req.password;
-  req.user.resetPasswordExpire = null;
-  req.user.resetPasswordToken = null;
-
-  await req.user.save();
+  await user.save();
 
   res.status(200).json({
     success: true,

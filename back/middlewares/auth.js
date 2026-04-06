@@ -1,8 +1,6 @@
 const expressAsyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const ErrorHandler = require("../utils/errorHandler");
-const User = require("../models/userModel");
-const { redisClient } = require("../config/redis");
 
 const auth = expressAsyncHandler(async (req, res, next) => {
   const { token } = req.cookies;
@@ -10,35 +8,22 @@ const auth = expressAsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("please login first", 403));
   }
 
-  let _id;
+  let _id, role;
 
   try {
     const res = jwt.verify(token, process.env.JWT_SECRET);
     _id = res._id;
+    role = res.role;
   } catch (err) {
     res.clearCookie("token");
     return next(new ErrorHandler("Please Login first", 403));
-  }
-
-  if (req.redisConncted) {
-    const user = await redisClient.get(`user:${_id}`);
-    if (user) {
-      req.user = JSON.parse(user);
-      req.user.source = "redis";
-      return next();
-    }
   }
 
   if (!_id) {
     return next(new ErrorHandler("please login first", 403));
   }
 
-  const user = await User.findById(_id);
-  req.user = user;
-
-  if (req.redisConncted) {
-    await redisClient.set(`user:${_id}`, JSON.stringify(user));
-  }
+  req.user = { _id, role };
 
   next();
 });
@@ -60,34 +45,21 @@ const checkAuth = expressAsyncHandler(async (req, res, next) => {
     return next();
   }
 
-  let _id;
+  let _id, role;
 
   try {
     const res = jwt.verify(token, process.env.JWT_SECRET);
     _id = res._id;
+    role = res.role;
   } catch (err) {
     res.clearCookie("token");
-  }
-
-  if (req.redisConncted) {
-    const user = await redisClient.get(`user:${_id}`);
-    if (user) {
-      req.user = JSON.parse(user);
-      req.user.source = "redis";
-      return next();
-    }
   }
 
   if (!_id) {
     return next();
   }
 
-  const user = await User.findById(_id);
-  req.user = user;
-
-  if (req.redisConncted) {
-    await redisClient.set(`user:${_id}`, JSON.stringify(user));
-  }
+  req.user = { _id, role };
 
   next();
 });
